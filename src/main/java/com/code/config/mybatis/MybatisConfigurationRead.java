@@ -1,10 +1,6 @@
 package com.code.config.mybatis;
 
-import java.io.IOException;
-import java.util.Properties;
-
-import javax.sql.DataSource;
-
+import com.github.pagehelper.PageHelper;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.ibatis.plugin.Interceptor;
@@ -28,7 +24,10 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.TransactionManagementConfigurer;
 
-import com.github.pagehelper.PageHelper;
+import javax.sql.DataSource;
+import java.io.IOException;
+import java.util.Properties;
+
 /**
  * mybatis的相关配置设置
  * @author Jfei
@@ -38,32 +37,31 @@ import com.github.pagehelper.PageHelper;
 @AutoConfigureAfter(DatasourceConfig.class)
 @ConfigurationProperties
 @EnableTransactionManagement
-@MapperScan(basePackages={"com.code.dao.write"},sqlSessionFactoryRef = "sqlSessionFactory")
-public class MybatisConfiguration {
+@MapperScan(basePackages={"com.code.dao.read"},sqlSessionFactoryRef = "sqlSessionFactory2")
+public class MybatisConfigurationRead {
 
-	private static Log logger = LogFactory.getLog(MybatisConfiguration.class);
+	private static Log logger = LogFactory.getLog(MybatisConfigurationRead.class);
 
     //  配置类型别名
-        @Value("${mybatis.typeAliasesPackage}")
+        @Value("${readmybatis.typeAliasesPackage}")
         private String typeAliasesPackage;
 
     //  配置mapper的扫描，找到所有的mapper.xml映射文件
-//        @Value("${mybatis.mapperLocations : classpath:com/fei/springboot/dao/*.xml}")
-        @Value("${mybatis.mapperLocations}")
+
+        @Value("${readmybatis.mapperLocations}")
         private String mapperLocations;
 
     //  加载全局的配置文件
-        @Value("${mybatis.configLocation}")
+        @Value("${readmybatis.configLocation}")
         private String configLocation;
 
         @Autowired
-        @Qualifier("dataSource")
+        @Qualifier("readDataSource")
         private DataSource dataSource;
 
         // 提供SqlSeesion
-        @Bean(name = "sqlSessionFactory")
-        @Primary
-        public SqlSessionFactory sqlSessionFactory() {
+        @Bean(name = "sqlSessionFactory2")
+        public SqlSessionFactory sqlSessionFactory2() {
             try {
                 SqlSessionFactoryBean sessionFactoryBean = new SqlSessionFactoryBean();
                 sessionFactoryBean.setDataSource(dataSource);
@@ -105,15 +103,11 @@ public class MybatisConfiguration {
         //将要执行的sql进行日志打印(不想拦截，就把这方法注释掉)
         @Bean
         public SqlPrintInterceptor sqlPrintInterceptor(){
-            System.out.print("从写数据库读数据");
+            System.out.print("从只读数据库读数据");
             return new SqlPrintInterceptor();
         }
 
-        /**
-         * 分页插件
-         * @param dataSource
-         * @return
-         */
+
         
 //        <!-- 分页插件 -->
 //    	<plugins>        

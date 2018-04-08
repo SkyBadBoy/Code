@@ -7,6 +7,8 @@ import javax.sql.DataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -111,7 +113,12 @@ public class DatasourceConfig {
         }  
         return datasource;  
     }
-    
+
+    @Bean(name = "readDataSource")
+    @ConfigurationProperties(prefix = "spring.readdatasource") // application.properteis中对应属性的前缀
+    public DataSource dataSource2() {
+        return DataSourceBuilder.create().build();
+    }
     /////////  下面是druid 监控访问的设置  /////////////////
     @Bean
     public ServletRegistrationBean druidServlet() {

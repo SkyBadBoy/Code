@@ -1,10 +1,10 @@
 package com.code.controller;
 
 
-import com.code.service.*;
+import com.code.service.write.*;
+import com.code.service.read.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -31,6 +31,9 @@ public class BaseController {
 	protected WeChatInfoService weChatInfoService;
 	@Autowired
 	protected RegionService regionService;
+
+	@Autowired
+	protected ReadBoxService ReadBoxService;
 	//@ExceptionHandler
 	public void exp(HttpServletRequest request, HttpServletResponse response, Exception ex, HttpSession session) throws ServletException, IOException {
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();

@@ -1,4 +1,4 @@
-package com.code.dao;
+package com.code.dao.write;
 
 import com.code.domain.Admin;
 import org.apache.ibatis.annotations.Mapper;

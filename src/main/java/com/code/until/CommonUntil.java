@@ -3,13 +3,12 @@ package com.code.until;
 import com.code.domain.Return;
 import com.code.domain.User;
 import com.code.domain.WeChatInfo;
-import com.code.service.WeChatInfoService;
+import com.code.service.write.WeChatInfoService;
 import com.code.until.wechat.WXPayUtil;
 import com.code.until.wechat.XMLUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 

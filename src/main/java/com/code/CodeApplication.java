@@ -12,7 +12,6 @@ import org.springframework.context.annotation.ComponentScan;
  */
 @SpringBootApplication
 @ComponentScan(basePackages={"com.code"})
-@MapperScan(basePackages={"com.code.dao"})
 public class CodeApplication extends SpringBootServletInitializer {
 
 

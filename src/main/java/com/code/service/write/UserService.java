@@ -1,6 +1,6 @@
-package com.code.service;
+package com.code.service.write;
 
-import com.code.dao.UserMapper;
+import com.code.dao.write.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CachePut;

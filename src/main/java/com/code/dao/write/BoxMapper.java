@@ -1,4 +1,4 @@
-package com.code.dao;
+package com.code.dao.write;
 
 import com.code.config.mybatis.*;
 import com.code.domain.Box;

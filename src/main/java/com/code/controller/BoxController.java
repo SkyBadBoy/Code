@@ -6,7 +6,7 @@ import com.github.pagehelper.PageInfo;
 import com.code.domain.Box;
 import com.code.domain.Record;
 import com.code.domain.User;
-import com.code.service.BoxService;
+import com.code.service.write.BoxService;
 import com.code.until.CommonStatus;
 import com.code.until.CommonUntil;
 import org.springframework.stereotype.Controller;
@@ -25,23 +25,23 @@ import java.util.*;
 @RequestMapping("/box")
 public class BoxController extends BaseController{
 
-//
-//	/**
-//	 *
-//	 * @param data
-//	 * @return
-//	 *
-//	 * 创建房间
-//	 * 金额 盒子数 谁  测试用,正式必须要关闭
-//     */
-//	@PostMapping("/CreateBox")
-//	@ResponseBody
-//	public Map<String,Object> CreateBox(String data){
-//		Map<String,Object> returnMap=new HashMap<String, Object>();
-//		CreateBox(data,boxService);
-//		returnMap=CommonUntil.ReturnMap(0,"正在创建中",null);
-//		return returnMap;
-//	}
+
+	/**
+	 *
+	 * @param data
+	 * @return
+	 *
+	 * 创建房间
+	 * 金额 盒子数 谁  测试用,正式必须要关闭
+     */
+	@GetMapping("/CreateBox")
+	@ResponseBody
+	public Map<String,Object> CreateBox(String data){
+		Map<String,Object> returnMap=new HashMap<String, Object>();
+		CreateBox(data,boxService);
+
+		return returnMap;
+	}
 
 
 	/**
@@ -157,11 +157,14 @@ public class BoxController extends BaseController{
 
 	public  static Box CreateBox (String box,BoxService boxService){
 		Box b= JSON.parseObject(box,Box.class);
+		b=new Box();
 		b.setId(CommonUntil.CreateNewID());
 		b.setStatus(CommonStatus.Status.Ectivity.getid());
 		b.setType(CommonStatus.Status.Run.getid());
-		int place = new Random().nextInt(Integer.parseInt(b.getNum())) + 1;
+		//int place = new Random().nextInt(Integer.parseInt(b.getNum())) + 1;
+		int place =1;
 		b.setPlace(place+"");
+		b.setUserid("123123");
 		Box bo=boxService.insert(b);
 		return bo!=null?bo:null;
 	}
@@ -298,7 +301,7 @@ public class BoxController extends BaseController{
 		if(status!=0){
 			queryMap.put("status",status);
 		}
-		PageInfo<Box> page = this.boxService.queryPage(queryMap, pageNumber, pageSize);
+		PageInfo<Box> page = this.ReadBoxService.queryPage(queryMap, pageNumber, pageSize);
 		returnMap.put("rows",page.getList());
 		returnMap.put("total",page.getTotal());
 		return returnMap;

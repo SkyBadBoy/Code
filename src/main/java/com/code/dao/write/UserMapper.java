@@ -1,4 +1,4 @@
-package com.code.dao;
+package com.code.dao.write;
 
 import java.util.List;
 import java.util.Map;
