@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.code.dao.UserMapper">
+    <cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+    <resultMap type="com.code.domain.User" id="ClassResultMap">
+        <result property="id" column="user_id" />
+        <result property="name" column="user_name"/>
+        <result property="openid" column="user_openid"/>
+        <result property="headImg" column="user_headImg"/>
+        <result property="status" column="user_status"/>
+        <result property="createTime" column="user_createTime"/>
+        <result property="modifyTime" column="user_modifyTime"/>
+        <result property="blessCount" column="user_blessCount"/>
+    </resultMap>
+    <!-- 数据库字段 -->
+    <sql id="sql">
+        user_id,
+        user_name,
+        user_openid,
+        user_headImg,
+        user_status,
+        user_createTime,
+        user_modifyTime,
+        user_blessCount
+    </sql>
+    <sql id="insertSql">
+        #{id},
+        #{name},
+        #{openid},
+        #{headImg},
+        #{status},
+        now(),
+        now(),
+        0
+    </sql>
+    <sql id="updateSql">
+        user_name=#{name},
+        user_openid=#{openid},
+        user_headImg=#{headImg},
+        user_status=#{status},
+        user_modifyTime=now(),
+        user_blessCount=#{blessCount}
+    </sql>
+    <sql id="updateWhere">
+        user_id=#{id}
+    </sql>
+    <!-- 查询条件 -->
+    <sql id="where">
+        1=1
+        <if test="id != null">
+            and user_id = #{id}
+        </if>
+        <if test="name != null">
+            and user_name = #{name}
+        </if>
+        <if test="search != null">
+            and (user_name like CONCAT(CONCAT('%', #{search,jdbcType=VARCHAR}),'%') )
+        </if>
+        <if test="openid != null">
+            and user_openid = #{openid}
+        </if>
+        <if test="status != null">
+            and user_status = #{status}
+        </if>
+        <!--<if test="status == null">-->
+            <!--and user_status = 1-->
+        <!--</if>-->
+        <if test="blessCount != null">
+            and user_blessCount = #{blessCount}
+        </if>
+
+
+    </sql>
+    <!--表名字 -->
+    <sql id="table">
+        t_user
+    </sql>
+
+    <!--查询全部信息 -->
+    <select id="query"  resultMap="ClassResultMap" parameterType="map">
+        select <include refid="sql"/>
+        from <include refid="table"/>
+        <where>
+            <include refid="where"/>
+        </where>
+        ORDER BY user_createTime DESC
+    </select>
+
+    <!-- 查找单个 -->
+    <select id="find"  resultMap="ClassResultMap" parameterType="string" >
+        select <include refid="sql"/>
+        from <include refid="table"/>
+        where user_id = #{_parameter}
+    </select>
+
+    <select id="findByOpenid"  resultMap="ClassResultMap" parameterType="string" >
+        select <include refid="sql"/>
+        from <include refid="table"/>
+        where
+        <if test="_parameter != null" >
+            user_openid = #{_parameter}
+        </if>
+
+    </select>
+
+    <!-- 插入的代码 -->
+    <insert id="insert"  parameterType="com.code.domain.User">
+        insert <include refid="table"/>(<include refid="sql"/>) VALUES (<include refid="insertSql" />)
+    </insert>
+
+    <update id="update" parameterType="com.code.domain.User">
+        update <include refid="table"/> set <include refid="updateSql"/> where <include refid="updateWhere"/>
+    </update>
+
+    <update id="delete" parameterType="string" >
+        update <include refid="table"/> set user_status = 88 ,user_modifyTime = now() where user_id = #{_parameter}
+    </update>
+    <update id="recoverById" parameterType="string" >
+        update <include refid="table"/> set user_status = 1 ,user_modifyTime = now() where user_id = #{_parameter}
+    </update>
+
+
+</mapper>

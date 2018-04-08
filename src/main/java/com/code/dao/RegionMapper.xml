@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.code.dao.RegionMapper">
+    <cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+    <resultMap type="com.code.domain.Region" id="ClassResultMap">
+        <result property="id" column="region_id" />
+        <result property="code" column="region_code"/>
+        <result property="name" column="region_name"/>
+        <result property="parentid" column="region_parentid"/>
+        <result property="level" column="region_level"/>
+        <result property="nameen" column="region_nameen"/>
+        <result property="shortnameen" column="region_shortnameen"/>
+
+    </resultMap>
+    <!-- 数据库字段 -->
+    <sql id="sql">
+    region_id,
+    region_code,
+    region_name,
+    region_parentid,
+    region_level,
+    region_nameen,
+    region_shortnameen
+    </sql>
+    <sql id="insertSql">
+        #{id},
+        #{code},
+        #{name},
+        #{parentid},
+        #{level},
+        #{nameen},
+        #{shortnameen}
+    </sql>
+    <sql id="updateSql">
+        region_code=#{code},
+        region_name=#{name},
+        region_parentid=#{parentid},
+        region_level=#{level},
+        region_nameen=#{nameen},
+        region_shortnameen=#{shortnameen}
+    </sql>
+    <sql id="updateWhere">
+        region_id=#{id}
+    </sql>
+    <!-- 查询条件 -->
+    <sql id="where">
+        1=1
+        <if test="id != null">
+            and region_id = #{id}
+        </if>
+        <if test="name != null">
+            and region_name = #{name}
+        </if>
+        <if test="parentid != null">
+            and region_parentid = #{parentid}
+        </if>
+        <if test="level != null">
+            and region_level = #{level}
+        </if>
+        <if test="search != null">
+            and (
+                    region_name like CONCAT(CONCAT('%', #{search,jdbcType=VARCHAR}),'%')
+                  or
+                    region_code like CONCAT(CONCAT('%', #{search,jdbcType=VARCHAR}),'%')
+            )
+        </if>
+    </sql>
+    <!--表名字 -->
+    <sql id="table">
+        t_region
+    </sql>
+
+    <!--查询全部信息 -->
+    <select id="query"  resultMap="ClassResultMap" parameterType="map">
+        select <include refid="sql"/>
+        from <include refid="table"/>
+        <where>
+            <include refid="where"/>
+        </where>
+    </select>
+
+    <!-- 查找单个 -->
+    <select id="findByID"  resultMap="ClassResultMap" parameterType="long" >
+        select <include refid="sql"/>
+        from <include refid="table"/>
+        where
+        <if test="_parameter != null" >
+            admin_id = #{_parameter}
+        </if>
+
+    </select>
+
+
+
+    <!-- 插入的代码 -->
+    <insert id="insert"  parameterType="com.code.domain.Region">
+        insert <include refid="table"/>(<include refid="sql"/>) VALUES (<include refid="insertSql" />)
+    </insert>
+
+    <update id="update" parameterType="com.code.domain.Region">
+        update <include refid="table"/> set <include refid="updateSql"/> where <include refid="updateWhere"/>
+    </update>
+
+
+</mapper>

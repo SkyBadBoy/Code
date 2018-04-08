@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.code.dao.AdminMapper">
+    <cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+    <resultMap type="com.code.domain.Admin" id="ClassResultMap">
+        <result property="id" column="admin_id" />
+        <result property="name" column="admin_name"/>
+        <result property="level" column="admin_level"/>
+        <result property="createTime" column="admin_createTime"/>
+        <result property="modifyTime" column="admin_modifyTime"/>
+        <result property="status" column="admin_status"/>
+        <result property="headimg" column="admin_headimg"/>
+        <result property="username" column="admin_username"/>
+        <result property="password" column="admin_password"/>
+
+    </resultMap>
+    <!-- 数据库字段 -->
+    <sql id="sql">
+        admin_id,
+        admin_name,
+        admin_level,
+        admin_createTime,
+        admin_modifyTime,
+        admin_status,
+        admin_headimg,
+        admin_username,
+        admin_password
+    </sql>
+    <sql id="insertSql">
+        #{id},
+        #{name},
+        #{level},
+        now(),
+        now(),
+        #{status},
+        #{headimg},
+        #{username},
+        #{password}
+    </sql>
+    <sql id="updateSql">
+        admin_name=#{name},
+        admin_level=#{level},
+        admin_modifyTime=now(),
+        admin_status=#{status},
+        admin_headimg=#{headimg},
+        admin_username=#{username},
+        admin_password=#{password}
+    </sql>
+    <sql id="updateWhere">
+        admin_id=#{id}
+    </sql>
+    <!-- 查询条件 -->
+    <sql id="where">
+        1=1
+        <if test="id != null">
+            and admin_id = #{id}
+        </if>
+        <if test="username != null">
+            and admin_username = #{username}
+        </if>
+        <if test="password != null">
+            and admin_password = #{password}
+        </if>
+        <if test="status == null">
+            and admin_status = 1
+        </if>
+        <if test="status != null">
+            and admin_status = #{status}
+        </if>
+
+    </sql>
+    <!--表名字 -->
+    <sql id="table">
+        t_admin
+    </sql>
+
+    <!--查询全部信息 -->
+    <select id="query"  resultMap="ClassResultMap" parameterType="map">
+        select <include refid="sql"/>
+        from <include refid="table"/>
+        <where>
+            <include refid="where"/>
+        </where>
+    </select>
+
+    <!-- 查找单个 -->
+    <select id="find"  resultMap="ClassResultMap" parameterType="long" >
+        select <include refid="sql"/>
+        from <include refid="table"/>
+        where
+        <if test="_parameter != null" >
+            admin_id = #{_parameter}
+        </if>
+
+    </select>
+
+
+
+    <!-- 插入的代码 -->
+    <insert id="insert"  parameterType="com.code.domain.Admin">
+        insert <include refid="table"/>(<include refid="sql"/>) VALUES (<include refid="insertSql" />)
+    </insert>
+
+    <update id="update" parameterType="com.code.domain.Admin">
+        update <include refid="table"/> set <include refid="updateSql"/> where <include refid="updateWhere"/>
+    </update>
+
+
+</mapper>

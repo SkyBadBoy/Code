@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>杭州互办网络科技有限公司 - 登录</title>
+    <meta name="keywords" content="杭州互办网络科技有限公司">
+    <meta name="description" content="杭州互办网络科技有限公司">
+    <link rel="shortcut icon" href="favicon.ico"> <link href="css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+    <link href="css/animate.css" rel="stylesheet">
+    <link href="css/style.css?v=4.1.0" rel="stylesheet">
+   <style>
+       #overlay {
+           background: #000;
+           filter: alpha(opacity=50); /* IE的透明度 */
+           opacity: 0.5;  /* 透明度 */
+           display: none;
+           position: absolute;
+           top: 0px;
+           left: 0px;
+           width: 100%;
+           height: 100%;
+           z-index: 100; /* 此处的图层要大于页面 */
+           display:none;
+       }
+   </style>
+
+
+</head>
+
+<body class="gray-bg">
+
+    <div id="huban" class="middle-box text-center loginscreen  animated fadeInDown">
+        <div>
+            <div>
+
+                <h1 class="logo-name">福!</h1>
+            </div>
+            <h3>福来了</h3>
+                <div class="form-group">
+                    <input type="text" class="form-control" v-model="username" placeholder="用户名" required="">
+                </div>
+                <div class="form-group">
+                    <input type="password" class="form-control" v-model="password" placeholder="密码" required="">
+                </div>
+                <button @click="login" class="btn btn-primary block full-width m-b">登 录</button>
+                <div class="pull-center" v-html="foot"></div>
+        </div>
+
+
+
+    </div>
+
+    <div id="overlay">
+            <div class="sk-spinner sk-spinner-double-bounce" style="margin-top: 300px;">
+                <div class="sk-double-bounce1"></div>
+                <div class="sk-double-bounce2"></div>
+            </div>
+    </div>
+
+    <!-- 全局js -->
+    <script src="js/jquery.min.js?v=2.1.4"></script>
+    <script src="js/bootstrap.min.js?v=3.3.6"></script>
+    <script src="js/vue.js"></script>
+    <!-- Sweet alert -->
+    <script src="js/plugins/sweetalert/sweetalert.min.js"></script>
+    <!-- 自定义工具类 -->
+    <script src="js/web/commonUrl.js"></script>
+    <script src="js/web/commonUtil.js"></script>
+
+    <!-- md5 -->
+    <script src="js/web/md5.js"></script>
+
+    <script>
+        var app=new Vue({
+            el:"#huban",
+            data:{
+                title:"福来了",
+                username:"",
+                password:"",
+                foot:getFootInfo(),
+            },
+            methods:{
+                login:function(){
+                    login(this);
+                }
+            }
+        })
+    </script>
+    <script>
+        function login(that){
+            if(that._data.username=="" || that._data.password==""){
+                error("用户名和密码为空");
+            }else{
+                $("#overlay").show()
+                var data={
+                    username:that._data.username,
+                    password:hex_md5(that._data.password).toLocaleUpperCase()
+                }
+                $.ajax({
+                    url:loginUrl(),
+                    type:"POST",
+                    data:{data:JSON.stringify(data)},
+                    success:function (json) {
+                        $("#overlay").hide()
+                        if(json.code==0){
+                            sessionStorage.setItem('Login',1);
+                            sessionStorage.setItem('User',JSON.stringify(json.data));
+                            location.href=indexUrlView();
+                        }else{
+                            error(json.message);
+                        }
+                    },
+                    error: function(){ $("#overlay").hide(); error("网络异常哦,请稍后重试");}
+                })
+            }
+        }
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.code.dao.WeChatInfoMapper">
+    <cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+    <resultMap type="com.code.domain.WeChatInfo" id="ClassResultMap">
+        <result property="id" column="Info_ID"/>
+        <result property="name" column="Info_Name"/>
+        <result property="appid" column="Info_AppID"/>
+        <result property="appsecret" column="Info_Appsecret"/>
+        <result property="createTime" column="Info_CreateTime"/>
+        <result property="status" column="Info_Status" />
+        <result property="uid" column="Info_UID"/>
+        <result property="wid" column="Info_WeChaiID"/>
+        <result property="accesstoken" column="Info_AccessToken"/>
+        <result property="attime" column="Info_ATTime"/>
+        <result property="ticket" column="Info_Ticket"/>
+        <result property="tktime" column="Info_TKTime"/>
+        <result property="mchid" column="Info_MchID"/>
+        <result property="apikey" column="Info_ApiKey"/>
+    </resultMap>
+    <!-- 数据库字段 -->
+    <sql id="sql">
+        Info_ID,
+        Info_Name,
+        Info_AppID,
+        Info_Appsecret,
+        Info_CreateTime,
+        Info_Status,
+        Info_UID,
+        Info_WeChaiID,
+        Info_AccessToken,
+        Info_ATTime,
+        Info_Ticket,
+        Info_TKTime,
+        Info_MchID,
+        Info_ApiKey
+    </sql>
+    <sql id="insertSql">
+        #{id},
+        #{name},
+        #{appid},
+        #{appsecret},
+        now(),
+        #{status},
+        #{uid},
+        #{wid},
+        #{accesstoken},
+        #{attime},
+        #{ticket},
+        #{tktime},
+        #{mchid},
+        #{apikey}
+    </sql>
+    <sql id="updateSql">
+        Info_Name=#{name},
+        Info_AppID=#{appid},
+        Info_Appsecret=#{appsecret},
+        Info_Status=#{status},
+        Info_UID=#{uid},
+        Info_WeChaiID=#{wid},
+        Info_AccessToken=#{accesstoken},
+        Info_ATTime=#{attime},
+        Info_Ticket=#{ticket},
+        Info_TKTime=#{tktime},
+        Info_MchID=#{mchid},
+        Info_ApiKey=#{apikey}
+    </sql>
+    <sql id="updateWhere">
+        Info_ID=#{id}
+    </sql>
+    <!-- 查询条件 -->
+    <sql id="where">
+        1=1
+        <if test="id != null">
+            and Info_ID = #{id}
+        </if>
+        <if test="name != null">
+            and user_name = #{name}
+        </if>
+        <if test="openid != null">
+            and user_openid = #{openid}
+        </if>
+        <if test="status != null">
+            and user_status = #{status}
+        </if>
+        <if test="status == null">
+            and user_status = 1
+        </if>
+        <if test="blessCount != null">
+            and user_blessCount = #{blessCount}
+        </if>
+    </sql>
+    <!--表名字 -->
+    <sql id="table">
+        t_wechatinfo
+    </sql>
+
+    <!--查询全部信息 -->
+    <select id="query"  resultMap="ClassResultMap" parameterType="map">
+        select <include refid="sql"/>
+        from <include refid="table"/>
+        <where>
+            <include refid="where"/>
+        </where>
+    </select>
+
+    <!-- 查找单个 -->
+    <select id="find"  resultMap="ClassResultMap" parameterType="long" >
+        select <include refid="sql"/>
+        from <include refid="table"/>
+        where
+        <if test="_parameter != null" >
+            Info_ID = #{_parameter}
+        </if>
+
+    </select>
+
+
+
+    <!-- 插入的代码 -->
+    <insert id="insert"  parameterType="com.code.domain.WeChatInfo">
+        insert <include refid="table"/>(<include refid="sql"/>) VALUES (<include refid="insertSql" />)
+    </insert>
+
+    <update id="update" parameterType="com.code.domain.WeChatInfo">
+        update <include refid="table"/> set <include refid="updateSql"/> where <include refid="updateWhere"/>
+    </update>
+
+
+</mapper>
