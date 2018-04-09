@@ -103,7 +103,6 @@ public class MybatisConfigurationRead {
         //将要执行的sql进行日志打印(不想拦截，就把这方法注释掉)
         @Bean
         public SqlPrintInterceptor sqlPrintInterceptor(){
-            System.out.print("从只读数据库读数据");
             return new SqlPrintInterceptor();
         }
 

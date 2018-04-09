@@ -8,6 +8,7 @@ import com.code.domain.Box;
 import com.code.dao.write.BoxMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -31,6 +32,7 @@ public class BoxService {
 	// 因为必须要有返回值，才能保存到数据库中，如果保存的对象的某些字段是需要数据库生成的，
    //那保存对象进数据库的时候，就没必要放到缓存了
 	@CachePut(key="#p0.id")  //#p0表示第一个参数
+	@CacheEvict(value = "ReadBoxCache",allEntries = true)
 	//必须要有返回值，否则没数据放到缓存中
 	public Box insert(Box b){
 		this.boxMapper.insert(b);

@@ -32,9 +32,11 @@ public class RedisConfiguration extends CachingConfigurerSupport{
         return new KeyGenerator() {
             @Override
             public Object generate(Object target, Method method, Object... params) {
+                System.out.print("keyGenerator");
                 StringBuilder sb = new StringBuilder();
                 //类名+方法名
                 sb.append(target.getClass().getName());
+                sb.append(".");
                 sb.append(method.getName());
                 for (Object obj : params) {
                     sb.append(obj.toString());
@@ -49,6 +51,7 @@ public class RedisConfiguration extends CachingConfigurerSupport{
     @SuppressWarnings("rawtypes")
     @Bean
     public CacheManager cacheManager(RedisTemplate redisTemplate) {
+        System.out.print("cacheManager");
         RedisCacheManager rcm = new RedisCacheManager(redisTemplate);
         //设置缓存过期时间
       //  rcm.setDefaultExpiration(60);//秒，便于测试
@@ -58,6 +61,7 @@ public class RedisConfiguration extends CachingConfigurerSupport{
 
     @Bean
     public RedisTemplate<String, String> redisTemplate(RedisConnectionFactory factory) {
+        System.out.print("redisTemplate");
         StringRedisTemplate template = new StringRedisTemplate(factory);
         Jackson2JsonRedisSerializer jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer(Object.class);
         ObjectMapper om = new ObjectMapper();
