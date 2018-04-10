@@ -123,16 +123,16 @@
 			<artifactId>mybatis-ehcache</artifactId>
 			<version>1.0.3</version>
 		</dependency>
+
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>1.14.4</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>
-		<!--<plugins>-->
-			<!--<plugin>-->
-				<!--<groupId>org.springframework.boot</groupId>-->
-				<!--<artifactId>spring-boot-maven-plugin</artifactId>-->
-			<!--</plugin>-->
-		<!--</plugins>-->
-
 		<sourceDirectory>src</sourceDirectory>
 		<plugins>
 			<plugin>
