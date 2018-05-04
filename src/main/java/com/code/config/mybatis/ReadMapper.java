@@ -14,4 +14,9 @@ public interface ReadMapper<T> {
 
 
     List<T> query(Map<String, Object> queryMap);
+
+
+    T findById(String id);
+
+    int queryCount(Map<String, Object> queryMap);
 }

@@ -42,20 +42,7 @@ public class ReadBoxService {
 		return page.toPageInfo();
 	}
 
-	public String getAllMoney(){
-		return this.boxMapper.getAllMoney();
-	}
-	public int getAllCount(){
-		return this.boxMapper.getAllCount();
-	}
 
-	public int getAllCountDay(){
-		return this.boxMapper.getAllCountDay();
-	}
-
-	public List<Box> queryCountDay(){
-		return this.boxMapper.queryCountDay();
-	}
 
 
 

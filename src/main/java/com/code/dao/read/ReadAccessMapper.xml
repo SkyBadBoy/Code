@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.code.dao.read.ReadAccessMapper">
+	<!-- 返回的map -->
+	<resultMap id="access" type="com.code.domain.Access">
+		<result property="ID" column="Access_ID" />
+		<result property="CreateTime" column="Access_CreateTime" />
+		<result property="ModifyTime" column="Access_ModifyTime" />
+		<result property="Status" column="Access_Status" />
+		<result property="RequestURL" column="Access_RequestURL" />
+		<result property="Method" column="Access_Method" />
+		<result property="RemoteAddr" column="Access_RemoteAddr" />
+		<result property="ClassName" column="Access_ClassName" />
+		<result property="Args" column="Access_Args" />
+		<result property="Time" column="Access_Time" />
+	</resultMap>
+	<!-- sql查询语句-->
+	<sql id="sql">
+		Access_ID,Access_CreateTime,Access_ModifyTime,Access_Status,Access_RequestURL,Access_Method,Access_RemoteAddr,Access_ClassName,Access_Args,Access_Time
+	</sql>
+	<!-- sql查询条件-->
+	<sql id="where">
+		1=1 
+		<if test="ID!=null">
+				 and Access_ID = #{ID}
+</if>
+<if test="CreateTime!=null">
+				 and Access_CreateTime = #{CreateTime}
+</if>
+<if test="ModifyTime!=null">
+				 and Access_ModifyTime = #{ModifyTime}
+</if>
+<if test="Status!=null">
+				 and Access_Status = #{Status}
+</if>
+<if test="RequestURL!=null">
+				 and Access_RequestURL = #{RequestURL}
+</if>
+<if test="Method!=null">
+				 and Access_Method = #{Method}
+</if>
+<if test="RemoteAddr!=null">
+				 and Access_RemoteAddr = #{RemoteAddr}
+</if>
+<if test="ClassName!=null">
+				 and Access_ClassName = #{ClassName}
+</if>
+<if test="Time!=null">
+				 and Access_Time = #{Time}
+</if>
+
+	</sql>
+	<!-- 根据ID 查找-->
+	<select id="findById" resultMap="access" parameterType="long">
+		SELECT
+		<include refid="sql"></include>
+		FROM t_Access
+		<where>
+			Access_ID = #{_parameter} 
+		</where>
+	</select>
+	<!-- 根据条件 查找-->
+	<select id="query"  resultMap="access"
+		parameterType="java.util.Map">
+		SELECT
+		<include refid="sql"></include>
+		FROM t_Access
+		<where>
+			<include refid="where"></include>
+		</where>
+	
+	</select>
+	<!-- 根据条件总数-->
+	<select id="queryCount" parameterType="map" resultType="int">
+		SELECT
+			Count(1)
+			FROM t_Access
+			<where>
+				<include refid="where"></include>
+			</where>
+	</select>
+
+
+
+</mapper>

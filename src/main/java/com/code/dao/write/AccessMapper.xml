@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.code.dao.write.AccessMapper">
+	<sql id="sql">
+		Access_ID,Access_CreateTime,Access_ModifyTime,Access_Status,Access_RequestURL,Access_Method,Access_RemoteAddr,Access_ClassName,Access_Args,Access_Time
+	</sql>
+	<sql id="where">
+		1=1 
+		<if test="ID!=null">
+				 and Access_ID = #{ID}
+</if>
+<if test="CreateTime!=null">
+				 and Access_CreateTime = #{CreateTime}
+</if>
+<if test="ModifyTime!=null">
+				 and Access_ModifyTime = #{ModifyTime}
+</if>
+<if test="Status!=null">
+				 and Access_Status = #{Status}
+</if>
+<if test="RequestURL!=null">
+				 and Access_RequestURL = #{RequestURL}
+</if>
+<if test="Method!=null">
+				 and Access_Method = #{Method}
+</if>
+<if test="RemoteAddr!=null">
+				 and Access_RemoteAddr = #{RemoteAddr}
+</if>
+<if test="ClassName!=null">
+				 and Access_ClassName = #{ClassName}
+</if>
+<if test="Time!=null">
+				 and Access_Time = #{Time}
+</if>
+
+	</sql>
+
+	<!-- 插入数据 -->
+	<insert id="insert" parameterType="com.code.domain.Access"  useGeneratedKeys="true">
+		insert into t_Access( <include refid="sql"></include> )
+		values(
+				#{ID},
+now(),
+now(),
+#{Status},
+#{RequestURL},
+#{Method},
+#{RemoteAddr},
+#{ClassName},
+#{Args},
+#{Time}
+				)
+	</insert>
+	<update id="update" parameterType="com.code.domain.Access">
+		update t_Access set Access_ModifyTime = now(),Access_Status = #{Status},Access_RequestURL = #{RequestURL},Access_Method = #{Method},Access_RemoteAddr = #{RemoteAddr},Access_ClassName = #{ClassName},Access_Args = #{Args},Access_Time = #{Time}
+		<where>
+			Access_ID= #{ID} 
+		</where>
+	</update>
+
+
+	<!-- 根据编号删除 by majian-->
+	<update id="deleteById" parameterType="com.code.domain.Access">
+		update t_Access set Access_Status=88 where Access_ID = #{_parameter} 
+	</update>
+
+	<!-- 根据编号恢复 by majian-->
+	<update id="recoverByID" parameterType="com.code.domain.Access">
+		update t_Access set Access_Status=1 where Access_ID = #{_parameter} 
+	</update>
+
+	<!-- 根据条件删除 by majian-->
+	<update id="deleteByCondition" parameterType="com.code.domain.Access">
+		update t_Access set Access_Status=88 
+		<where>
+			<include refid="where"></include>
+		</where>
+	</update>
+
+	<!-- 根据条件恢复 by majian-->
+	<update id="recoverByCondition" parameterType="com.code.domain.Access">
+		update t_Access set Access_Status=1 
+		<where>
+			<include refid="where"></include>
+		</where>
+	</update>
+
+
+</mapper>

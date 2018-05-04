@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.code.dao.write.ErrorMapper">
+	<sql id="sql">
+		Error_ID,Error_UserID,Error_Name,Error_CreateTime,Error_Message,Error_ClassName,Error_Status
+	</sql>
+	<sql id="where">
+		1=1 
+		<if test="ID!=null">
+				 and Error_ID = #{ID}
+</if>
+<if test="UserID!=null">
+				 and Error_UserID = #{UserID}
+</if>
+<if test="Name!=null">
+				 and Error_Name = #{Name}
+</if>
+<if test="CreateTime!=null">
+				 and Error_CreateTime = #{CreateTime}
+</if>
+<if test="Message!=null">
+				 and Error_Message = #{Message}
+</if>
+<if test="ClassName!=null">
+				 and Error_ClassName = #{ClassName}
+</if>
+<if test="Status!=null">
+				 and Error_Status = #{Status}
+</if>
+
+	</sql>
+
+	<!-- 插入数据 -->
+	<insert id="insert" parameterType="com.code.domain.Error"  useGeneratedKeys="true">
+		insert into t_Error( <include refid="sql"></include> )
+		values(
+				#{ID},
+#{UserID},
+#{Name},
+now(),
+#{Message},
+#{ClassName},
+#{Status}
+				)
+	</insert>
+	<update id="update" parameterType="com.code.domain.Error">
+		update t_Error set Error_UserID = #{UserID},Error_Name = #{Name},Error_Message = #{Message},Error_ClassName = #{ClassName},Error_Status = #{Status}
+		<where>
+			Error_ID= #{ID} 
+		</where>
+	</update>
+
+
+	<!-- 根据编号删除 by majian-->
+	<update id="deleteById" parameterType="com.code.domain.Error">
+		update t_Error set Error_Status=88 where Error_ID = #{_parameter} 
+	</update>
+
+	<!-- 根据编号恢复 by majian-->
+	<update id="recoverByID" parameterType="com.code.domain.Error">
+		update t_Error set Error_Status=1 where Error_ID = #{_parameter} 
+	</update>
+
+	<!-- 根据条件删除 by majian-->
+	<update id="deleteByCondition" parameterType="com.code.domain.Error">
+		update t_Error set Error_Status=88 
+		<where>
+			<include refid="where"></include>
+		</where>
+	</update>
+
+	<!-- 根据条件恢复 by majian-->
+	<update id="recoverByCondition" parameterType="com.code.domain.Error">
+		update t_Error set Error_Status=1 
+		<where>
+			<include refid="where"></include>
+		</where>
+	</update>
+
+
+</mapper>

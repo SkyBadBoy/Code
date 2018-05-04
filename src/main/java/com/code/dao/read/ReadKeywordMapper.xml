@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.code.dao.read.ReadKeywordMapper">
+  <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 -->
+
+	<!-- search result -->
+	<resultMap id="keyword" type="com.code.domain.Keyword">
+		<result property="ID" column="KeyWord_ID" />
+		<result property="KeyWord" column="KeyWord_KeyWord" />
+		<result property="CreateTime" column="KeyWord_CreateTime" />
+		<result property="ModifyTime" column="KeyWord_ModifyTime" />
+		<result property="Status" column="KeyWord_Status" />
+	</resultMap>
+	
+	
+	<sql id="sql">
+		KeyWord_ID,KeyWord_KeyWord,KeyWord_CreateTime,KeyWord_ModifyTime,KeyWord_Status
+	</sql>
+	<sql id="where">
+		1=1 
+		<if test="ID!=null">
+				 and KeyWord_ID = #{ID}
+		</if>
+		<if test="KeyWord!=null">
+						 and KeyWord_KeyWord = #{KeyWord}
+		</if>
+		<if test="CreateTime!=null">
+						 and KeyWord_CreateTime = #{CreateTime}
+		</if>
+		<if test="ModifyTime!=null">
+						 and KeyWord_ModifyTime = #{ModifyTime}
+		</if>
+		<if test="Status!=null">
+						 and KeyWord_Status = #{Status}
+		</if>
+		<!-- 自行完善 -->
+		<if test="search != null">
+			and (
+				KeyWord_KeyWord like CONCAT(CONCAT('%', #{search,jdbcType=VARCHAR}),'%') or 1!=1
+			)
+		</if>
+	</sql>
+	
+
+	<select id="findById" resultMap="keyword" parameterType="long">
+		SELECT
+		<include refid="sql"></include>
+		FROM t_KeyWord
+		<where>
+			KeyWord_ID = #{_parameter} 
+		</where>
+	</select>
+
+	<select id="query"  resultMap="keyword"
+		parameterType="java.util.Map">
+		SELECT
+		<include refid="sql"></include>
+		FROM t_KeyWord
+		<where>
+			<include refid="where"></include>
+		</where>
+	
+	</select>
+
+	<select id="queryCount" parameterType="map" resultType="int">
+		SELECT
+			Count(1)
+			FROM t_KeyWord
+			<where>
+				<include refid="where"></include>
+			</where>
+	</select>
+
+	<select id="getKeywordSet" resultType="string">
+		SELECT KeyWord_KeyWord FROM wtb_keywords WHERE KeyWord_Status = 1
+	</select>
+
+</mapper>

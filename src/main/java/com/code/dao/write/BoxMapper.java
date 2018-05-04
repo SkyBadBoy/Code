@@ -1,13 +1,14 @@
 package com.code.dao.write;
 
-import com.code.config.mybatis.*;
+
+import com.code.config.mybatis.MyMapper;
 import com.code.domain.Box;
-import org.apache.ibatis.annotations.*;
+import java.util.*;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
-import java.util.List;
-import java.util.Map;
-
-public interface BoxMapper extends com.code.config.mybatis.Mapper<Box>{
+public interface BoxMapper extends MyMapper<Box> {
 
 	@Update("update t_box set box_status = 88 ,box_modifyTime = now()  where box_id=#{id} ")
 	void delete(@Param("id") String id);

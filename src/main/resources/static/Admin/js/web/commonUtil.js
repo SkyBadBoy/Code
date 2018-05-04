@@ -69,15 +69,21 @@ function getRecordIDS(obj){
     return wids;
 }
 
+/*获取记录ID*/
+function getRecordIDForFastJson(obj){
+    var wid = obj.bootstrapTable("getSelections");
+    var wids = "";
+
+    for ( var idobj = 0; idobj < wid.length; idobj++) {
+        wids += "," + wid[idobj].iD
+    }
+    if(wids!=""){
+        wids=wids.substr(1);
+    }
+    return wids;
+}
 function getUrlKey(name){
     return decodeURIComponent((new RegExp('[?|&]'+name+'='+'([^&;]+?)(&|#|;|$)').exec(location.href)||[,""])[1].replace(/\+/g,'%20'))||null;
 }
 
-function getFootInfo(){
-    var date=new Date;
-    var year=date.getFullYear();
-    var str="";
-    str+="&copy 2015-"+year.toString()+" 杭州互办网络科技有限公司";
-    return str;
-}
 

@@ -17,7 +17,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
  *
  * @author majian
  *
- * 访问路径  项目名+swagger-ui.html  比如:http://writing.whohelp.cc/HuBan/swagger-ui.html
+ * 访问路径  项目名+swagger-ui.html  比如:ip:端口/项目名/swagger-ui.html
  *
  * http://blog.csdn.net/xupeng874395012/article/details/68946676  注解说明
  *
@@ -63,7 +63,7 @@ public class Swagger2 {
     public Docket createRestApi() {
 
         ApiInfo apiInfo = new ApiInfoBuilder()
-                .title("项目接口文档")
+                .title("接口文档")
                 .description("项目文档")
                 .version("1.0")
                 .build();

@@ -1,5 +1,6 @@
 package com.code.dao.read;
 
+import com.code.config.mybatis.ReadMapper;
 import com.code.domain.Box;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -7,7 +8,7 @@ import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
 
-public interface ReadBoxMapper extends com.code.config.mybatis.ReadMapper<Box>{
+public interface ReadBoxMapper extends ReadMapper<Box> {
 
 	@Update("update t_box set box_status = 88 ,box_modifyTime = now()  where box_id=#{id} ")
 	void delete(@Param("id") String id);

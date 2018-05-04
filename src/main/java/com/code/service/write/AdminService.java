@@ -48,14 +48,14 @@ public class AdminService {
 
 //	@CacheEvict(key="#p0")  //删除缓存名称为userCache,key等于指定的id对应的缓存
 //	public void deleteById(String id){
-//		this.Mapper.delete(id);
+//		this.MyMapper.delete(id);
 //	}
 //
 //	//清空缓存名称为userCache（看类名上的注解)下的所有缓存
 //	//如果数据失败了，缓存时不会清除的
 //	@CacheEvict(allEntries = true)
 //	public void deleteAll(){
-//		this.Mapper.deleteAll();
+//		this.MyMapper.deleteAll();
 //	}
 
 

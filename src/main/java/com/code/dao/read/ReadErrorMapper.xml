@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.code.dao.read.ReadErrorMapper">
+  <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 -->
+
+	<!-- search result -->
+	<resultMap id="error" type="com.code.domain.Error">
+		<result property="ID" column="Error_ID" />
+		<result property="UserID" column="Error_UserID" />
+		<result property="Name" column="Error_Name" />
+		<result property="CreateTime" column="Error_CreateTime" />
+		<result property="Message" column="Error_Message" />
+		<result property="ClassName" column="Error_ClassName" />
+		<result property="Status" column="Error_Status" />
+	</resultMap>
+	
+	
+	<sql id="sql">
+		Error_ID,Error_UserID,Error_Name,Error_CreateTime,Error_Message,Error_ClassName,Error_Status
+	</sql>
+	<sql id="where">
+		1=1 
+		<if test="ID!=null">
+				 and Error_ID = #{ID}
+</if>
+<if test="UserID!=null">
+				 and Error_UserID = #{UserID}
+</if>
+<if test="Name!=null">
+				 and Error_Name = #{Name}
+</if>
+<if test="CreateTime!=null">
+				 and Error_CreateTime = #{CreateTime}
+</if>
+<if test="Message!=null">
+				 and Error_Message = #{Message}
+</if>
+<if test="ClassName!=null">
+				 and Error_ClassName = #{ClassName}
+</if>
+<if test="Status!=null">
+				 and Error_Status = #{Status}
+</if>
+
+	</sql>
+	
+
+	<select id="findById" resultMap="error" parameterType="long">
+		SELECT
+		<include refid="sql"></include>
+		FROM t_Error
+		<where>
+			Error_ID = #{_parameter} 
+		</where>
+	</select>
+
+	<select id="query"  resultMap="error"
+		parameterType="java.util.Map">
+		SELECT
+		<include refid="sql"></include>
+		FROM t_Error
+		<where>
+			<include refid="where"></include>
+		</where>
+	
+	</select>
+
+	<select id="queryCount" parameterType="map" resultType="int">
+		SELECT
+			Count(1)
+			FROM t_Error
+			<where>
+				<include refid="where"></include>
+			</where>
+	</select>
+
+
+
+</mapper>

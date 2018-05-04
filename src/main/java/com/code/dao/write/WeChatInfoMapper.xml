@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.code.dao.write.WeChatInfoMapper">
-    <cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+    <!--<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />-->
     <resultMap type="com.code.domain.WeChatInfo" id="ClassResultMap">
         <result property="id" column="Info_ID"/>
         <result property="name" column="Info_Name"/>

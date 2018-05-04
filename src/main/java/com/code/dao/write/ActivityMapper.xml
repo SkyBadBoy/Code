@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.code.dao.write.ActivityMapper">
+	<!--mybatis ehcache缓存配置 -->
+	<!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 -->
+
+	<sql id="sql">
+		Activity_ID,Activity_Title,Activity_Content,Activity_ImageID,Activity_CreateTime,Activity_ModifyTime,Activity_Status,Activity_Hot,Activity_Weight,Activity_WeChatID,Activity_Praise,Activity_EndTime,Activity_Sponsor,Activity_SBrief,Activity_SImage,Activity_ApplyCount,Activity_ApplyLimit,Activity_ApplyMoney,Activity_PayType
+	</sql>
+	<sql id="where">
+		1=1
+		<if test="ID!=null">
+			and Activity_ID = #{ID}
+		</if>
+		<if test="Title!=null">
+			and Activity_Title = #{Title}
+		</if>
+		<if test="Content!=null">
+			and Activity_Content = #{Content}
+		</if>
+		<if test="ImageID!=null">
+			and Activity_ImageID = #{ImageID}
+		</if>
+		<if test="CreateTime!=null">
+			and Activity_CreateTime = #{CreateTime}
+		</if>
+		<if test="ModifyTime!=null">
+			and Activity_ModifyTime = #{ModifyTime}
+		</if>
+		<if test="Status!=null">
+			and Activity_Status = #{Status}
+		</if>
+		<if test="Hot!=null">
+			and Activity_Hot = #{Hot}
+		</if>
+		<if test="Weight!=null">
+			and Activity_Weight = #{Weight}
+		</if>
+		<if test="WeChatID!=null">
+			and Activity_WeChatID = #{WeChatID}
+		</if>
+		<if test="Praise!=null">
+			and Activity_Praise = #{Praise}
+		</if>
+		<if test="EndTime!=null">
+			and Activity_EndTime = #{EndTime}
+		</if>
+		<if test="Sponsor!=null">
+			and Activity_Sponsor = #{Sponsor}
+		</if>
+		<if test="SBrief!=null">
+			and Activity_SBrief = #{SBrief}
+		</if>
+		<if test="SImage!=null">
+			and Activity_SImage = #{SImage}
+		</if>
+		<if test="ApplyCount!=null">
+			and Activity_ApplyCount = #{ApplyCount}
+		</if>
+		<if test="ApplyLimit!=null">
+			and Activity_ApplyLimit = #{ApplyLimit}
+		</if>
+		<if test="ApplyMoney!=null">
+			and Activity_ApplyMoney = #{ApplyMoney}
+		</if>
+		<if test="PayType!=null">
+			and Activity_PayType = #{PayType}
+		</if>
+
+	</sql>
+
+	<!-- 插入数据 -->
+	<insert id="insert" parameterType="com.code.domain.Activity"  useGeneratedKeys="true">
+		insert into t_Activity( <include refid="sql"></include> )
+		values(
+		#{ID},
+		#{Title},
+		#{Content},
+		#{ImageID},
+		now(),
+		now(),
+		#{Status},
+		#{Hot},
+		#{Weight},
+		#{WeChatID},
+		#{Praise},
+		#{EndTime},
+		#{Sponsor},
+		#{SBrief},
+		#{SImage},
+		#{ApplyCount},
+		#{ApplyLimit},
+		#{ApplyMoney},
+		#{PayType}
+		)
+	</insert>
+
+
+	<update id="update" parameterType="com.code.domain.Activity">
+		update t_Activity set Activity_Title = #{Title},Activity_Content = #{Content},Activity_ImageID = #{ImageID},Activity_ModifyTime = now(),Activity_Status = #{Status},Activity_Hot = #{Hot},Activity_Weight = #{Weight},Activity_WeChatID = #{WeChatID},Activity_Praise = #{Praise},Activity_EndTime = #{EndTime},Activity_Sponsor = #{Sponsor},Activity_SBrief = #{SBrief},Activity_SImage = #{SImage},Activity_ApplyCount = #{ApplyCount},Activity_ApplyLimit = #{ApplyLimit},Activity_ApplyMoney = #{ApplyMoney},Activity_PayType = #{PayType}
+		<where>
+			Activity_ID= #{ID}
+		</where>
+	</update>
+
+
+	<!-- 根据编号删除 by majian-->
+	<update id="deleteById" parameterType="com.code.domain.Activity">
+		update t_Activity set Activity_Status=88 where Activity_ID = #{_parameter}
+	</update>
+
+	<!-- 根据编号恢复 by majian-->
+	<update id="recoverByID" parameterType="com.code.domain.Activity">
+		update t_Activity set Activity_Status=1 where Activity_ID = #{_parameter}
+	</update>
+
+	<!-- 根据条件删除 by majian-->
+	<update id="deleteByCondition" parameterType="com.code.domain.Activity">
+		update t_Activity set Activity_Status=88
+		<where>
+			<include refid="where"></include>
+		</where>
+	</update>
+
+	<!-- 根据条件恢复 by majian-->
+	<update id="recoverByCondition" parameterType="com.code.domain.Activity">
+		update t_Activity set Activity_Status=1
+		<where>
+			<include refid="where"></include>
+		</where>
+	</update>
+
+
+</mapper>

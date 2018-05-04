@@ -1,6 +1,5 @@
 package com.code.dao.write;
 
-import com.code.config.mybatis.Mapper;
 import com.code.domain.Region;
 
 import java.util.List;

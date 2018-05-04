@@ -49,4 +49,15 @@ public class CommonStatus {
         public abstract String getid();
     }
 
+    public enum StatusEnum {
+        /** 删除*/
+        Delete(88),
+        /** 有效*/
+        Ectivity(1);
+        public int seq;
+        StatusEnum(int seq){
+            this.seq = seq;
+        }
+    }
+
 }

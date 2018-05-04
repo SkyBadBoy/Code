@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.code.dao.write.RoleMapper">
+	<sql id="sql">
+		Role_ID,Role_CreateTime,Role_ModifyTime,Role_Status,Role_Name,Role_AdminID
+	</sql>
+	<sql id="where">
+		1=1 
+		<if test="ID!=null">
+				 and Role_ID = #{ID}
+</if>
+<if test="CreateTime!=null">
+				 and Role_CreateTime = #{CreateTime}
+</if>
+<if test="ModifyTime!=null">
+				 and Role_ModifyTime = #{ModifyTime}
+</if>
+<if test="Status!=null">
+				 and Role_Status = #{Status}
+</if>
+<if test="Name!=null">
+				 and Role_Name = #{Name}
+</if>
+<if test="AdminID!=null">
+				 and Role_AdminID = #{AdminID}
+</if>
+
+	</sql>
+
+	<!-- 插入数据 -->
+	<insert id="insert" parameterType="com.code.domain.Role"  useGeneratedKeys="true">
+		insert into t_Role( <include refid="sql"></include> )
+		values(
+				#{ID},
+now(),
+now(),
+#{Status},
+#{Name},
+#{AdminID}
+				)
+	</insert>
+	<update id="update" parameterType="com.code.domain.Role">
+		update t_Role set Role_ModifyTime = now(),Role_Status = #{Status},Role_Name = #{Name},Role_AdminID = #{AdminID}
+		<where>
+			Role_ID= #{ID} 
+		</where>
+	</update>
+
+
+	<!-- 根据编号删除 by majian-->
+	<update id="deleteById" parameterType="com.code.domain.Role">
+		update t_Role set Role_Status=88 where Role_ID = #{_parameter} 
+	</update>
+
+	<!-- 根据编号恢复 by majian-->
+	<update id="recoverByID" parameterType="com.code.domain.Role">
+		update t_Role set Role_Status=1 where Role_ID = #{_parameter} 
+	</update>
+
+	<!-- 根据条件删除 by majian-->
+	<update id="deleteByCondition" parameterType="com.code.domain.Role">
+		update t_Role set Role_Status=88 
+		<where>
+			<include refid="where"></include>
+		</where>
+	</update>
+
+	<!-- 根据条件恢复 by majian-->
+	<update id="recoverByCondition" parameterType="com.code.domain.Role">
+		update t_Role set Role_Status=1 
+		<where>
+			<include refid="where"></include>
+		</where>
+	</update>
+
+
+</mapper>

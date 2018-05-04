@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.code.dao.write.KeywordMapper">
+	<sql id="sql">
+		KeyWord_ID,KeyWord_KeyWord,KeyWord_CreateTime,KeyWord_ModifyTime,KeyWord_Status
+	</sql>
+	<sql id="where">
+		1=1 
+		<if test="ID!=null">
+				 and KeyWord_ID = #{ID}
+</if>
+<if test="KeyWord!=null">
+				 and KeyWord_KeyWord = #{KeyWord}
+</if>
+<if test="CreateTime!=null">
+				 and KeyWord_CreateTime = #{CreateTime}
+</if>
+<if test="ModifyTime!=null">
+				 and KeyWord_ModifyTime = #{ModifyTime}
+</if>
+<if test="Status!=null">
+				 and KeyWord_Status = #{Status}
+</if>
+
+	</sql>
+
+	<!-- 插入数据 -->
+	<insert id="insert" parameterType="com.code.domain.Keyword"  useGeneratedKeys="true">
+		insert into t_KeyWord( <include refid="sql"></include> )
+		values(
+				#{ID},
+#{KeyWord},
+now(),
+now(),
+#{Status}
+				)
+	</insert>
+	<update id="update" parameterType="com.code.domain.Keyword">
+		update t_KeyWord set KeyWord_KeyWord = #{KeyWord},KeyWord_ModifyTime = now(),KeyWord_Status = #{Status}
+		<where>
+			KeyWord_ID= #{ID} 
+		</where>
+	</update>
+
+
+	<!-- 根据编号删除 by majian-->
+	<update id="deleteById" parameterType="com.code.domain.Keyword">
+		update t_KeyWord set KeyWord_Status=88 where KeyWord_ID = #{_parameter} 
+	</update>
+
+	<!-- 根据编号恢复 by majian-->
+	<update id="recoverByID" parameterType="com.code.domain.Keyword">
+		update t_KeyWord set KeyWord_Status=1 where KeyWord_ID = #{_parameter} 
+	</update>
+
+	<!-- 根据条件删除 by majian-->
+	<update id="deleteByCondition" parameterType="com.code.domain.Keyword">
+		update t_KeyWord set KeyWord_Status=88 
+		<where>
+			<include refid="where"></include>
+		</where>
+	</update>
+
+	<!-- 根据条件恢复 by majian-->
+	<update id="recoverByCondition" parameterType="com.code.domain.Keyword">
+		update t_KeyWord set KeyWord_Status=1 
+		<where>
+			<include refid="where"></include>
+		</where>
+	</update>
+
+
+</mapper>
