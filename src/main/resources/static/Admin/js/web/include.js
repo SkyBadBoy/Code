@@ -30,6 +30,7 @@ linkScriptDOMLoaded([
     "js/plugins/bootstrap-table/bootstrap-table.min.js",
     "js/plugins/bootstrap-table/bootstrap-table-mobile.min.js",
     "js/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js",
+    "js/plugins/bootstrap-table/bootstraptable-treeview.js",
     "js/plugins/fancybox/jquery.fancybox.js",
     "js/plugins/sweetalert/sweetalert.min.js",
     "js/vue.js",

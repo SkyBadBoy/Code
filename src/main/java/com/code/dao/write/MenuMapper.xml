@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.code.dao.write.MenuMapper">
+	<sql id="sql">
+		Menu_ID,Menu_CreateTime,Menu_ModifyTime,Menu_Status,Menu_Name,Menu_Memo,Menu_Type,Menu_ParentID,Menu_Logo,Menu_Url,Menu_Order,Menu_AdminID,Menu_End,Menu_UrlType
+	</sql>
+	<sql id="where">
+		1=1 
+		<if test="ID!=null">
+				 and Menu_ID = #{ID}
+</if>
+<if test="CreateTime!=null">
+				 and Menu_CreateTime = #{CreateTime}
+</if>
+<if test="ModifyTime!=null">
+				 and Menu_ModifyTime = #{ModifyTime}
+</if>
+<if test="Status!=null">
+				 and Menu_Status = #{Status}
+</if>
+<if test="Name!=null">
+				 and Menu_Name = #{Name}
+</if>
+<if test="Memo!=null">
+				 and Menu_Memo = #{Memo}
+</if>
+<if test="Type!=null">
+				 and Menu_Type = #{Type}
+</if>
+<if test="ParentID!=null">
+				 and Menu_ParentID = #{ParentID}
+</if>
+<if test="Logo!=null">
+				 and Menu_Logo = #{Logo}
+</if>
+<if test="Url!=null">
+				 and Menu_Url = #{Url}
+</if>
+<if test="Order!=null">
+				 and Menu_Order = #{Order}
+</if>
+<if test="AdminID!=null">
+				 and Menu_AdminID = #{AdminID}
+</if>
+<if test="End!=null">
+				 and Menu_End = #{End}
+</if>
+<if test="UrlType!=null">
+				 and Menu_UrlType = #{UrlType}
+</if>
+
+	</sql>
+
+	<!-- 插入数据 -->
+	<insert id="insert" parameterType="com.code.domain.Menu"  useGeneratedKeys="true">
+		insert into t_Menu( <include refid="sql"></include> )
+		values(
+				#{ID},
+now(),
+now(),
+#{Status},
+#{Name},
+#{Memo},
+#{Type},
+#{ParentID},
+#{Logo},
+#{Url},
+#{Order},
+#{AdminID},
+#{End},
+#{UrlType}
+				)
+	</insert>
+	<update id="update" parameterType="com.code.domain.Menu">
+		update t_Menu set Menu_ModifyTime = now(),Menu_Status = #{Status},Menu_Name = #{Name},Menu_Memo = #{Memo},Menu_Type = #{Type},Menu_ParentID = #{ParentID},Menu_Logo = #{Logo},Menu_Url = #{Url},Menu_Order = #{Order},Menu_AdminID = #{AdminID},Menu_End = #{End},Menu_UrlType = #{UrlType}
+		<where>
+			Menu_ID= #{ID} 
+		</where>
+	</update>
+
+
+	<!-- 根据编号删除 by majian-->
+	<update id="deleteById" parameterType="com.code.domain.Menu">
+		update t_Menu set Menu_Status=88 where Menu_ID = #{_parameter} 
+	</update>
+
+	<!-- 根据编号恢复 by majian-->
+	<update id="recoverByID" parameterType="com.code.domain.Menu">
+		update t_Menu set Menu_Status=1 where Menu_ID = #{_parameter} 
+	</update>
+
+	<!-- 根据条件删除 by majian-->
+	<update id="deleteByCondition" parameterType="com.code.domain.Menu">
+		update t_Menu set Menu_Status=88 
+		<where>
+			<include refid="where"></include>
+		</where>
+	</update>
+
+	<!-- 根据条件恢复 by majian-->
+	<update id="recoverByCondition" parameterType="com.code.domain.Menu">
+		update t_Menu set Menu_Status=1 
+		<where>
+			<include refid="where"></include>
+		</where>
+	</update>
+
+
+</mapper>

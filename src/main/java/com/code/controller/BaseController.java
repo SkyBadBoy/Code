@@ -42,6 +42,8 @@ public class BaseController {
 	protected AccessService AccessService;
 	@Autowired
 	protected RoleService RoleService;
+	@Autowired
+	protected MenuService MenuService;
 
 	@Autowired
 	protected ReadBoxService ReadBoxService;
@@ -57,6 +59,8 @@ public class BaseController {
 	protected ReadAccessService ReadAccessService;
 	@Autowired
 	protected ReadRoleService ReadRoleService;
+	@Autowired
+	protected ReadMenuService ReadMenuService;
 
 
 	@ExceptionHandler

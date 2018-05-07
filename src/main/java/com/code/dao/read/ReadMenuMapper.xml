@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.code.dao.read.ReadMenuMapper">
+	<!-- 返回的map -->
+	<resultMap id="menu" type="com.code.domain.Menu">
+		<result property="ID" column="Menu_ID" />
+		<result property="CreateTime" column="Menu_CreateTime" />
+		<result property="ModifyTime" column="Menu_ModifyTime" />
+		<result property="Status" column="Menu_Status" />
+		<result property="Name" column="Menu_Name" />
+		<result property="Memo" column="Menu_Memo" />
+		<result property="Type" column="Menu_Type" />
+		<result property="ParentID" column="Menu_ParentID" />
+		<result property="Logo" column="Menu_Logo" />
+		<result property="Url" column="Menu_Url" />
+		<result property="Order" column="Menu_Order" />
+		<result property="AdminID" column="Menu_AdminID" />
+		<result property="End" column="Menu_End" />
+		<result property="UrlType" column="Menu_UrlType" />
+	</resultMap>
+	<!-- sql查询语句-->
+	<sql id="sql">
+		Menu_ID,Menu_CreateTime,Menu_ModifyTime,Menu_Status,Menu_Name,Menu_Memo,Menu_Type,Menu_ParentID,Menu_Logo,Menu_Url,Menu_Order,Menu_AdminID,Menu_End,Menu_UrlType
+	</sql>
+	<!-- sql查询条件-->
+	<sql id="where">
+		1=1 
+		<if test="ID!=null">
+				 and Menu_ID = #{ID}
+</if>
+<if test="CreateTime!=null">
+				 and Menu_CreateTime = #{CreateTime}
+</if>
+<if test="ModifyTime!=null">
+				 and Menu_ModifyTime = #{ModifyTime}
+</if>
+<if test="Status!=null">
+				 and Menu_Status = #{Status}
+</if>
+<if test="Name!=null">
+				 and Menu_Name = #{Name}
+</if>
+<if test="Memo!=null">
+				 and Menu_Memo = #{Memo}
+</if>
+<if test="Type!=null">
+				 and Menu_Type = #{Type}
+</if>
+<if test="ParentID!=null">
+				 and Menu_ParentID = #{ParentID}
+</if>
+<if test="Logo!=null">
+				 and Menu_Logo = #{Logo}
+</if>
+<if test="Url!=null">
+				 and Menu_Url = #{Url}
+</if>
+<if test="Order!=null">
+				 and Menu_Order = #{Order}
+</if>
+<if test="AdminID!=null">
+				 and Menu_AdminID = #{AdminID}
+</if>
+<if test="End!=null">
+				 and Menu_End = #{End}
+</if>
+<if test="UrlType!=null">
+				 and Menu_UrlType = #{UrlType}
+</if>
+
+	</sql>
+	<!-- 根据ID 查找-->
+	<select id="findById" resultMap="menu" parameterType="long">
+		SELECT
+		<include refid="sql"></include>
+		FROM t_Menu
+		<where>
+			Menu_ID = #{_parameter} 
+		</where>
+	</select>
+	<!-- 根据条件 查找-->
+	<select id="query"  resultMap="menu"
+		parameterType="java.util.Map">
+		SELECT
+		<include refid="sql"></include>
+		FROM t_Menu
+		<where>
+			<include refid="where"></include>
+		</where>
+	
+	</select>
+	<!-- 根据条件总数-->
+	<select id="queryCount" parameterType="map" resultType="int">
+		SELECT
+			Count(1)
+			FROM t_Menu
+			<where>
+				<include refid="where"></include>
+			</where>
+	</select>
+
+
+
+</mapper>

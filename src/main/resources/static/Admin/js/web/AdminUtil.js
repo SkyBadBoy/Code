@@ -233,7 +233,7 @@ function getDataTable(obj,url,columns,queryParams){
         clickToSelect:true,//设置 true 将在点击行时，自动选择 rediobox 和 checkbox。
         height:window.screen.availHeight-34*4-40-100,//自动识别高度
         paginationPreText:"上一页",
-        paginationNextText:"下一页"
+        paginationNextText:"下一页",
 
 
     });

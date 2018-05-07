@@ -64,7 +64,7 @@
                         if(checkIsSelection()){return};
                         url+= "id="+getRecordIDForFastJson($('#exampleTableEvents'));
                     }
-                    modifyShow(this,url,"100%","100%","Role");
+                    modifyShow(this,url,"500px","300px","角色管理");
                 },
             },
             mounted: function () {
@@ -91,6 +91,11 @@
                         field: 'iD',
                     },
                     {
+                        title: '角色名字',
+                        align: 'center',
+                        field: 'name',
+                    },
+                    {
                         title: '创建时间',
                         align: 'center',
                         field: 'createTime',
@@ -108,7 +113,7 @@
                         formatter: statusFormatter
                     },
                 ];
-                getDataTable($('#exampleTableEvents'),"../Role/queryRolePage",columns,queryParams);
+                getDataTable($('#exampleTableEvents'),"../Role/queryRolePage",columns,queryParams,false);
             })();
             function queryParams(params) {
                 var temp={}
