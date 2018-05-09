@@ -86,6 +86,16 @@ function statusFormatter(value) {
         return '<small class="label label-primary"> 正常</small>'
     }
 }
+
+/**
+ * 状态格式
+ * @param val
+ */
+function headImgFormatter(value) {
+    if(chechIsUnll(value)){
+        return "<image src='"+value+"' style='height:100px;width: 100px;'>";
+    }
+}
 /**
  * 行样式
  * @param val
@@ -234,7 +244,9 @@ function getDataTable(obj,url,columns,queryParams){
         height:window.screen.availHeight-34*4-40-100,//自动识别高度
         paginationPreText:"上一页",
         paginationNextText:"下一页",
-
+        onLoadSuccess: function(){  //加载成功时执行
+            bindImgError()
+        },
 
     });
     obj.on('click-row.bs.table', function(e, row, $element) {
@@ -302,4 +314,15 @@ function savaData(that,url) {
             error("网络异常哦,请稍后重试");
         }
     })
+}
+
+/**
+ * 默认图片
+ */
+function bindImgError(){
+    $('img').each(function() {
+        if (!this.complete || typeof this.naturalWidth == "undefined" || this.naturalWidth == 0) {
+            this.src = "img/errorpic.jpg";
+        }
+    });
 }

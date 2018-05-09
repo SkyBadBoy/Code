@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.code.dao.write.ScreenMapper">
+	<sql id="sql">
+		Screen_ID,Screen_Title,Screen_Url,Screen_Type,Screen_StartTime,Screen_EndTime,Screen_CreateTime,Screen_ModifyTime,Screen_Status,Screen_AdminID,Screen_ClickUrl
+	</sql>
+	<sql id="where">
+		1=1 
+		<if test="ID!=null">
+				 and Screen_ID = #{ID}
+</if>
+<if test="Title!=null">
+				 and Screen_Title = #{Title}
+</if>
+<if test="Url!=null">
+				 and Screen_Url = #{Url}
+</if>
+<if test="Type!=null">
+				 and Screen_Type = #{Type}
+</if>
+<if test="StartTime!=null">
+				 and Screen_StartTime = #{StartTime}
+</if>
+<if test="EndTime!=null">
+				 and Screen_EndTime = #{EndTime}
+</if>
+<if test="CreateTime!=null">
+				 and Screen_CreateTime = #{CreateTime}
+</if>
+<if test="ModifyTime!=null">
+				 and Screen_ModifyTime = #{ModifyTime}
+</if>
+<if test="Status!=null">
+				 and Screen_Status = #{Status}
+</if>
+<if test="AdminID!=null">
+				 and Screen_AdminID = #{AdminID}
+</if>
+<if test="ClickUrl!=null">
+				 and Screen_ClickUrl = #{ClickUrl}
+</if>
+
+	</sql>
+
+	<!-- 插入数据 -->
+	<insert id="insert" parameterType="com.code.domain.Screen"  useGeneratedKeys="true">
+		insert into t_Screen( <include refid="sql"></include> )
+		values(
+				#{ID},
+#{Title},
+#{Url},
+#{Type},
+#{StartTime},
+#{EndTime},
+now(),
+now(),
+#{Status},
+#{AdminID},
+#{ClickUrl}
+				)
+	</insert>
+	<update id="update" parameterType="com.code.domain.Screen">
+		update t_Screen set Screen_Title = #{Title},Screen_Url = #{Url},Screen_Type = #{Type},Screen_StartTime = #{StartTime},Screen_EndTime = #{EndTime},Screen_ModifyTime = now(),Screen_Status = #{Status},Screen_AdminID = #{AdminID},Screen_ClickUrl = #{ClickUrl}
+		<where>
+			Screen_ID= #{ID} 
+		</where>
+	</update>
+
+
+	<!-- 根据编号删除 by majian-->
+	<update id="deleteById" parameterType="com.code.domain.Screen">
+		update t_Screen set Screen_Status=88 where Screen_ID = #{_parameter} 
+	</update>
+
+	<!-- 根据编号恢复 by majian-->
+	<update id="recoverByID" parameterType="com.code.domain.Screen">
+		update t_Screen set Screen_Status=1 where Screen_ID = #{_parameter} 
+	</update>
+
+	<!-- 根据条件删除 by majian-->
+	<update id="deleteByCondition" parameterType="com.code.domain.Screen">
+		update t_Screen set Screen_Status=88 
+		<where>
+			<include refid="where"></include>
+		</where>
+	</update>
+
+	<!-- 根据条件恢复 by majian-->
+	<update id="recoverByCondition" parameterType="com.code.domain.Screen">
+		update t_Screen set Screen_Status=1 
+		<where>
+			<include refid="where"></include>
+		</where>
+	</update>
+
+
+</mapper>

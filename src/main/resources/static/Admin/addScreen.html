@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>代码生成工具- majian</title>
+    <meta name="keywords" content="马健">
+    <meta name="description" content="马健">
+    <script src="js/web/include.js?v=1.0.5"></script>
+</head>
+<body class="gray-bg">
+<div class="wrapper wrapper-content" id="app">
+    <!-- Panel Other -->
+    <div class="ibox float-e-margins">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-content">
+                        <div class="form-horizontal">
+
+														    <div class="hr-line-dashed" ></div>
+	                            <div class="form-group">
+	                                <label class="col-sm-2 control-label" >title</label>
+	                                <div class="col-sm-10">
+	                                    <input type="text" v-model="data.title" class="form-control">
+	                            </div>
+                            </div>
+							    <div class="hr-line-dashed" ></div>
+	                            <div class="form-group">
+	                                <label class="col-sm-2 control-label" >url</label>
+	                                <div class="col-sm-10">
+	                                    <input type="text" v-model="data.url" class="form-control">
+	                            </div>
+                            </div>
+							    <div class="hr-line-dashed" ></div>
+	                            <div class="form-group">
+	                                <label class="col-sm-2 control-label" >type</label>
+	                                <div class="col-sm-10">
+	                                    <input type="text" v-model="data.type" class="form-control">
+	                            </div>
+                            </div>
+							    <div class="hr-line-dashed" ></div>
+	                            <div class="form-group">
+	                                <label class="col-sm-2 control-label" >status</label>
+	                                <div class="col-sm-10">
+	                                    <input type="text" v-model="data.status" class="form-control">
+	                            </div>
+                            </div>
+							    <div class="hr-line-dashed" ></div>
+	                            <div class="form-group">
+	                                <label class="col-sm-2 control-label" >adminID</label>
+	                                <div class="col-sm-10">
+	                                    <input type="text" v-model="data.adminID" class="form-control">
+	                            </div>
+                            </div>
+							    <div class="hr-line-dashed" ></div>
+	                            <div class="form-group">
+	                                <label class="col-sm-2 control-label" >clickUrl</label>
+	                                <div class="col-sm-10">
+	                                    <input type="text" v-model="data.clickUrl" class="form-control">
+	                            </div>
+                            </div>
+                          
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <div class="col-sm-4 col-sm-offset-2">
+                                    <button class="btn btn-primary" @click="save" type="submit">保存内容</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    window.onload=function () {
+        var app = new Vue({
+            el: "#app",
+            data: {
+                data:{
+                    iD:getUrlKey("id"),
+                    	title:0,
+                    	url:0,
+                    	type:0,
+                    	status:0,
+                    	adminID:0,
+                    	clickUrl:0,
+                }
+            },
+            methods: {
+                save: function () {
+                    savaData(this,"../Screen/modifyScreen")
+                }
+            },
+            mounted: function () {
+                if(this.data.iD!=0){
+                    findByID(this,this.data.iD,"../Screen/findScreen/")
+                }
+            }
+        })
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.code.dao.read.ReadScreenMapper">
+	<!-- 返回的map -->
+	<resultMap id="screen" type="com.code.domain.Screen">
+		<result property="ID" column="Screen_ID" />
+		<result property="Title" column="Screen_Title" />
+		<result property="Url" column="Screen_Url" />
+		<result property="Type" column="Screen_Type" />
+		<result property="StartTime" column="Screen_StartTime" />
+		<result property="EndTime" column="Screen_EndTime" />
+		<result property="CreateTime" column="Screen_CreateTime" />
+		<result property="ModifyTime" column="Screen_ModifyTime" />
+		<result property="Status" column="Screen_Status" />
+		<result property="AdminID" column="Screen_AdminID" />
+		<result property="ClickUrl" column="Screen_ClickUrl" />
+	</resultMap>
+	<!-- sql查询语句-->
+	<sql id="sql">
+		Screen_ID,Screen_Title,Screen_Url,Screen_Type,Screen_StartTime,Screen_EndTime,Screen_CreateTime,Screen_ModifyTime,Screen_Status,Screen_AdminID,Screen_ClickUrl
+	</sql>
+	<!-- sql查询条件-->
+	<sql id="where">
+		1=1 
+		<if test="ID!=null">
+				 and Screen_ID = #{ID}
+</if>
+<if test="Title!=null">
+				 and Screen_Title = #{Title}
+</if>
+<if test="Url!=null">
+				 and Screen_Url = #{Url}
+</if>
+<if test="Type!=null">
+				 and Screen_Type = #{Type}
+</if>
+<if test="StartTime!=null">
+				 and Screen_StartTime = #{StartTime}
+</if>
+<if test="EndTime!=null">
+				 and Screen_EndTime = #{EndTime}
+</if>
+<if test="CreateTime!=null">
+				 and Screen_CreateTime = #{CreateTime}
+</if>
+<if test="ModifyTime!=null">
+				 and Screen_ModifyTime = #{ModifyTime}
+</if>
+<if test="Status!=null">
+				 and Screen_Status = #{Status}
+</if>
+<if test="AdminID!=null">
+				 and Screen_AdminID = #{AdminID}
+</if>
+<if test="ClickUrl!=null">
+				 and Screen_ClickUrl = #{ClickUrl}
+</if>
+
+	</sql>
+	<!-- 根据ID 查找-->
+	<select id="findById" resultMap="screen" parameterType="long">
+		SELECT
+		<include refid="sql"></include>
+		FROM t_Screen
+		<where>
+			Screen_ID = #{_parameter} 
+		</where>
+	</select>
+	<!-- 根据条件 查找-->
+	<select id="query"  resultMap="screen"
+		parameterType="java.util.Map">
+		SELECT
+		<include refid="sql"></include>
+		FROM t_Screen
+		<where>
+			<include refid="where"></include>
+		</where>
+	
+	</select>
+	<!-- 根据条件总数-->
+	<select id="queryCount" parameterType="map" resultType="int">
+		SELECT
+			Count(1)
+			FROM t_Screen
+			<where>
+				<include refid="where"></include>
+			</where>
+	</select>
+
+
+
+</mapper>
