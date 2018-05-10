@@ -33,8 +33,6 @@ public class BaseController {
 	@Autowired
 	protected WeChatInfoService weChatInfoService;
 	@Autowired
-	protected RegionService regionService;
-	@Autowired
 	protected ErrorService ErrorService;
 	@Autowired
 	protected KeywordService KeywordService;
@@ -46,6 +44,8 @@ public class BaseController {
 	protected MenuService MenuService;
 	@Autowired
 	protected ScreenService ScreenService;
+	@Autowired
+	protected RegionService RegionService;
 
 	@Autowired
 	protected ReadBoxService ReadBoxService;
@@ -65,6 +65,9 @@ public class BaseController {
 	protected ReadMenuService ReadMenuService;
 	@Autowired
 	protected ReadScreenService ReadScreenService;
+	@Autowired
+	protected ReadRegionService ReadRegionService;
+
 
 
 	@ExceptionHandler

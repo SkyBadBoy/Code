@@ -8,6 +8,7 @@
 var PictureBase64="http://www.jnrrxc.com/FileSystem/Code/UploadBase64";//图片路径 /{Project}/UploadBase64
 
 var basePath="../";
+var viewPath=""
 function loginUrl(){//后台登录接口
     return basePath+"admin/login";
 }
@@ -39,28 +40,29 @@ function boxRecordStatus(){
 }
 
 
+function loginUrlView(){//登录地址
+    return viewPath+"Admin/login.html";
+}
 
 function homeUrlView(){//首页地址
-    return basePath+"Admin/home.html";
+    return viewPath+"Admin/home.html";
 }
 function indexUrlView(){//主页地址
-    return basePath+"Admin/index.html";
+    return viewPath+"index.html";
 }
-function loginUrlView(){//登录地址
-    return basePath+"Admin/login.html";
-}
+
 function userUrlView(){//用户视图
-    return basePath+"Admin/user.html";
+    return viewPath+"Admin/user.html";
 }
 function adminUrlView(){//管理员视图
-    return basePath+"Admin/admin.html";
+    return viewPath+"Admin/admin.html";
 }
 function boxUrlView(){//盒子视图
-    return basePath+"Admin/box.html";
+    return viewPath+"Admin/box.html";
 }
 function boxrecordUrlView(){//盒子记录视图
-    return basePath+"Admin/boxrecord.html";
+    return viewPath+"Admin/boxrecord.html";
 }
 function addressUrlView(){//盒子记录视图
-    return basePath+"Admin/region.html";
+    return viewPath+"Admin/region.html";
 }

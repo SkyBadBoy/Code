@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.code.dao.read.ReadRegionMapper">
+	<!-- 返回的map -->
+	<resultMap id="region" type="com.code.domain.Region">
+		<result property="ID" column="Region_ID" />
+		<result property="Code" column="Region_Code" />
+		<result property="Name" column="Region_Name" />
+		<result property="ParentID" column="Region_ParentID" />
+		<result property="Level" column="Region_Level" />
+		<result property="Order" column="Region_Order" />
+		<result property="NameEn" column="Region_NameEn" />
+		<result property="ShortNameEn" column="Region_ShortNameEn" />
+		<result property="ProvinceID" column="Region_ProvinceID" />
+		<result property="ProvinceName" column="Region_ProvinceName" />
+		<result property="CityID" column="Region_CityID" />
+		<result property="CityName" column="Region_CityName" />
+		<result property="AreaID" column="Region_AreaID" />
+		<result property="AreaName" column="Region_AreaName" />
+		<result property="Status" column="Region_Status" />
+
+	</resultMap>
+	<!-- sql查询语句-->
+	<sql id="sql">
+		Region_ID,Region_Code,Region_Name,Region_ParentID,Region_Level,Region_Order,Region_NameEn,Region_ShortNameEn,Region_ProvinceID,Region_ProvinceName,Region_CityID,Region_CityName,Region_AreaID,Region_AreaName,Region_Status
+	</sql>
+	<!-- sql查询条件-->
+	<sql id="where">
+		1=1 
+		<if test="ID!=null">
+				 and Region_ID = #{ID}
+</if>
+<if test="Code!=null">
+				 and Region_Code = #{Code}
+</if>
+<if test="Name!=null">
+				 and Region_Name = #{Name}
+</if>
+<if test="ParentID!=null">
+				 and Region_ParentID = #{ParentID}
+</if>
+<if test="Level!=null">
+				 and Region_Level = #{Level}
+</if>
+<if test="Order!=null">
+				 and Region_Order = #{Order}
+</if>
+<if test="NameEn!=null">
+				 and Region_NameEn = #{NameEn}
+</if>
+<if test="ShortNameEn!=null">
+				 and Region_ShortNameEn = #{ShortNameEn}
+</if>
+<if test="ProvinceID!=null">
+				 and Region_ProvinceID = #{ProvinceID}
+</if>
+<if test="ProvinceName!=null">
+				 and Region_ProvinceName = #{ProvinceName}
+</if>
+<if test="CityID!=null">
+				 and Region_CityID = #{CityID}
+</if>
+<if test="CityName!=null">
+				 and Region_CityName = #{CityName}
+</if>
+<if test="AreaID!=null">
+				 and Region_AreaID = #{AreaID}
+</if>
+<if test="AreaName!=null">
+				 and Region_AreaName = #{AreaName}
+</if>
+		<if test="Status!=null">
+			and Region_Status = #{Status}
+		</if>
+	</sql>
+	<!-- 根据ID 查找-->
+	<select id="findById" resultMap="region" parameterType="long">
+		SELECT
+		<include refid="sql"></include>
+		FROM t_Region
+		<where>
+			Region_ID = #{_parameter} 
+		</where>
+	</select>
+	<!-- 根据条件 查找-->
+	<select id="query"  resultMap="region"
+		parameterType="java.util.Map">
+		SELECT
+		<include refid="sql"></include>
+		FROM t_Region
+		<where>
+			<include refid="where"></include>
+		</where>
+	
+	</select>
+	<!-- 根据条件总数-->
+	<select id="queryCount" parameterType="map" resultType="int">
+		SELECT
+			Count(1)
+			FROM t_Region
+			<where>
+				<include refid="where"></include>
+			</where>
+	</select>
+
+
+
+</mapper>

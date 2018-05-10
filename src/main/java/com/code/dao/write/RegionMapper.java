@@ -1,23 +1,15 @@
-package com.code.dao.write;
 
+package com.code.dao.write;
+import java.util.*;
+import com.code.config.mybatis.MyMapper;
 import com.code.domain.Region;
 
-import java.util.List;
-import java.util.Map;
-
-public interface RegionMapper {
-
-	void insert(Region o);
-
-
-	void update(Region o);
-
-
-	Region findByID(String id);
-
-
-	//注：方法名和要UserMapper.xml中的id一致
-	List<Region> query(Map<String, Object> queryMap);
-	
+/**
+ * <p> Mapper Class</p>
+ *
+ * @author majian
+ * 
+ */
+public interface RegionMapper extends MyMapper<Region>{
 
 }

@@ -1,106 +1,114 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.code.dao.write.RegionMapper">
-    <!--<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />-->
-    <resultMap type="com.code.domain.Region" id="ClassResultMap">
-        <result property="id" column="region_id" />
-        <result property="code" column="region_code"/>
-        <result property="name" column="region_name"/>
-        <result property="parentid" column="region_parentid"/>
-        <result property="level" column="region_level"/>
-        <result property="nameen" column="region_nameen"/>
-        <result property="shortnameen" column="region_shortnameen"/>
+	<sql id="sql">
+		Region_ID,Region_Code,Region_Name,Region_ParentID,Region_Level,Region_Order,Region_NameEn,Region_ShortNameEn,Region_ProvinceID,Region_ProvinceName,Region_CityID,Region_CityName,Region_AreaID,Region_AreaName,Region_Status
+	</sql>
+	<sql id="where">
+		1=1 
+		<if test="ID!=null">
+				 and Region_ID = #{ID}
+</if>
+<if test="Code!=null">
+				 and Region_Code = #{Code}
+</if>
+<if test="Name!=null">
+				 and Region_Name = #{Name}
+</if>
+<if test="ParentID!=null">
+				 and Region_ParentID = #{ParentID}
+</if>
+<if test="Level!=null">
+				 and Region_Level = #{Level}
+</if>
+<if test="Order!=null">
+				 and Region_Order = #{Order}
+</if>
+<if test="NameEn!=null">
+				 and Region_NameEn = #{NameEn}
+</if>
+<if test="ShortNameEn!=null">
+				 and Region_ShortNameEn = #{ShortNameEn}
+</if>
+<if test="ProvinceID!=null">
+				 and Region_ProvinceID = #{ProvinceID}
+</if>
+<if test="ProvinceName!=null">
+				 and Region_ProvinceName = #{ProvinceName}
+</if>
+<if test="CityID!=null">
+				 and Region_CityID = #{CityID}
+</if>
+<if test="CityName!=null">
+				 and Region_CityName = #{CityName}
+</if>
+<if test="AreaID!=null">
+				 and Region_AreaID = #{AreaID}
+</if>
+<if test="AreaName!=null">
+				 and Region_AreaName = #{AreaName}
+</if>
+		<if test="Status!=null">
+			and Region_Status = #{Status}
+		</if>
 
-    </resultMap>
-    <!-- 数据库字段 -->
-    <sql id="sql">
-    region_id,
-    region_code,
-    region_name,
-    region_parentid,
-    region_level,
-    region_nameen,
-    region_shortnameen
-    </sql>
-    <sql id="insertSql">
-        #{id},
-        #{code},
-        #{name},
-        #{parentid},
-        #{level},
-        #{nameen},
-        #{shortnameen}
-    </sql>
-    <sql id="updateSql">
-        region_code=#{code},
-        region_name=#{name},
-        region_parentid=#{parentid},
-        region_level=#{level},
-        region_nameen=#{nameen},
-        region_shortnameen=#{shortnameen}
-    </sql>
-    <sql id="updateWhere">
-        region_id=#{id}
-    </sql>
-    <!-- 查询条件 -->
-    <sql id="where">
-        1=1
-        <if test="id != null">
-            and region_id = #{id}
-        </if>
-        <if test="name != null">
-            and region_name = #{name}
-        </if>
-        <if test="parentid != null">
-            and region_parentid = #{parentid}
-        </if>
-        <if test="level != null">
-            and region_level = #{level}
-        </if>
-        <if test="search != null">
-            and (
-                    region_name like CONCAT(CONCAT('%', #{search,jdbcType=VARCHAR}),'%')
-                  or
-                    region_code like CONCAT(CONCAT('%', #{search,jdbcType=VARCHAR}),'%')
-            )
-        </if>
-    </sql>
-    <!--表名字 -->
-    <sql id="table">
-        t_region
-    </sql>
+	</sql>
 
-    <!--查询全部信息 -->
-    <select id="query"  resultMap="ClassResultMap" parameterType="map">
-        select <include refid="sql"/>
-        from <include refid="table"/>
-        <where>
-            <include refid="where"/>
-        </where>
-    </select>
-
-    <!-- 查找单个 -->
-    <select id="findByID"  resultMap="ClassResultMap" parameterType="long" >
-        select <include refid="sql"/>
-        from <include refid="table"/>
-        where
-        <if test="_parameter != null" >
-            admin_id = #{_parameter}
-        </if>
-
-    </select>
+	<!-- 插入数据 -->
+	<insert id="insert" parameterType="com.code.domain.Region"  useGeneratedKeys="true">
+		insert into t_Region( <include refid="sql"></include> )
+		values(
+				#{ID},
+#{Code},
+#{Name},
+#{ParentID},
+#{Level},
+#{Order},
+#{NameEn},
+#{ShortNameEn},
+#{ProvinceID},
+#{ProvinceName},
+#{CityID},
+#{CityName},
+#{AreaID},
+#{AreaName},
+#{Status}
+				)
+	</insert>
+	<update id="update" parameterType="com.code.domain.Region">
+		update t_Region set Region_Code = #{Code},Region_Name = #{Name},Region_ParentID = #{ParentID},Region_Level = #{Level},Region_Order = #{Order},Region_NameEn = #{NameEn},Region_ShortNameEn = #{ShortNameEn},Region_ProvinceID = #{ProvinceID},Region_ProvinceName = #{ProvinceName},Region_CityID = #{CityID},Region_CityName = #{CityName},Region_AreaID = #{AreaID},Region_AreaName = #{AreaName},Region_Status = #{Status}
+		<where>
+			Region_ID= #{ID} 
+		</where>
+	</update>
 
 
+	<!-- 根据编号删除 by majian-->
+	<update id="deleteById" parameterType="com.code.domain.Region">
+		update t_Region set Region_Status=88 where Region_ID = #{_parameter}
+	</update>
 
-    <!-- 插入的代码 -->
-    <insert id="insert"  parameterType="com.code.domain.Region">
-        insert <include refid="table"/>(<include refid="sql"/>) VALUES (<include refid="insertSql" />)
-    </insert>
+	<!-- 根据编号恢复 by majian-->
+	<update id="recoverByID" parameterType="com.code.domain.Region">
+		update t_Region set Region_Status=1 where Region_ID = #{_parameter}
+	</update>
 
-    <update id="update" parameterType="com.code.domain.Region">
-        update <include refid="table"/> set <include refid="updateSql"/> where <include refid="updateWhere"/>
-    </update>
+	<!-- 根据条件删除 by majian-->
+	<update id="deleteByCondition" parameterType="com.code.domain.Region">
+		update t_Region set Region_Status =88
+		<where>
+			<include refid="where"></include>
+		</where>
+	</update>
+
+	<!-- 根据条件恢复 by majian-->
+	<update id="recoverByCondition" parameterType="com.code.domain.Region">
+		update t_Region set Region_Status =1
+		<where>
+			<include refid="where"></include>
+		</where>
+	</update>
 
 
 </mapper>

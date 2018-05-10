@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>代码生成工具- majian</title>
+    <meta name="keywords" content="马健">
+    <meta name="description" content="马健">
+    <script src="js/web/include.js?v=1.0.5"></script>
+</head>
+<body class="gray-bg">
+<div class="wrapper wrapper-content" id="app">
+    <!-- Panel Other -->
+    <div class="ibox float-e-margins">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-content">
+                        <div class="form-horizontal">
+
+														    <div class="hr-line-dashed" ></div>
+	                            <div class="form-group">
+	                                <label class="col-sm-2 control-label" >code</label>
+	                                <div class="col-sm-10">
+	                                    <input type="text" v-model="data.code" class="form-control">
+	                            </div>
+                            </div>
+							    <div class="hr-line-dashed" ></div>
+	                            <div class="form-group">
+	                                <label class="col-sm-2 control-label" >name</label>
+	                                <div class="col-sm-10">
+	                                    <input type="text" v-model="data.name" class="form-control">
+	                            </div>
+                            </div>
+							    <div class="hr-line-dashed" ></div>
+	                            <div class="form-group">
+	                                <label class="col-sm-2 control-label" >parentID</label>
+	                                <div class="col-sm-10">
+	                                    <input type="text" v-model="data.parentID" class="form-control">
+	                            </div>
+                            </div>
+							    <div class="hr-line-dashed" ></div>
+	                            <div class="form-group">
+	                                <label class="col-sm-2 control-label" >level</label>
+	                                <div class="col-sm-10">
+	                                    <input type="text" v-model="data.level" class="form-control">
+	                            </div>
+                            </div>
+							    <div class="hr-line-dashed" ></div>
+	                            <div class="form-group">
+	                                <label class="col-sm-2 control-label" >order</label>
+	                                <div class="col-sm-10">
+	                                    <input type="text" v-model="data.order" class="form-control">
+	                            </div>
+                            </div>
+							    <div class="hr-line-dashed" ></div>
+	                            <div class="form-group">
+	                                <label class="col-sm-2 control-label" >nameEn</label>
+	                                <div class="col-sm-10">
+	                                    <input type="text" v-model="data.nameEn" class="form-control">
+	                            </div>
+                            </div>
+							    <div class="hr-line-dashed" ></div>
+	                            <div class="form-group">
+	                                <label class="col-sm-2 control-label" >shortNameEn</label>
+	                                <div class="col-sm-10">
+	                                    <input type="text" v-model="data.shortNameEn" class="form-control">
+	                            </div>
+                            </div>
+							    <div class="hr-line-dashed" ></div>
+	                            <div class="form-group">
+	                                <label class="col-sm-2 control-label" >provinceID</label>
+	                                <div class="col-sm-10">
+	                                    <input type="text" v-model="data.provinceID" class="form-control">
+	                            </div>
+                            </div>
+							    <div class="hr-line-dashed" ></div>
+	                            <div class="form-group">
+	                                <label class="col-sm-2 control-label" >provinceName</label>
+	                                <div class="col-sm-10">
+	                                    <input type="text" v-model="data.provinceName" class="form-control">
+	                            </div>
+                            </div>
+							    <div class="hr-line-dashed" ></div>
+	                            <div class="form-group">
+	                                <label class="col-sm-2 control-label" >cityID</label>
+	                                <div class="col-sm-10">
+	                                    <input type="text" v-model="data.cityID" class="form-control">
+	                            </div>
+                            </div>
+							    <div class="hr-line-dashed" ></div>
+	                            <div class="form-group">
+	                                <label class="col-sm-2 control-label" >cityName</label>
+	                                <div class="col-sm-10">
+	                                    <input type="text" v-model="data.cityName" class="form-control">
+	                            </div>
+                            </div>
+							    <div class="hr-line-dashed" ></div>
+	                            <div class="form-group">
+	                                <label class="col-sm-2 control-label" >areaID</label>
+	                                <div class="col-sm-10">
+	                                    <input type="text" v-model="data.areaID" class="form-control">
+	                            </div>
+                            </div>
+							    <div class="hr-line-dashed" ></div>
+	                            <div class="form-group">
+	                                <label class="col-sm-2 control-label" >areaName</label>
+	                                <div class="col-sm-10">
+	                                    <input type="text" v-model="data.areaName" class="form-control">
+	                            </div>
+                            </div>
+                          
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <div class="col-sm-4 col-sm-offset-2">
+                                    <button class="btn btn-primary" @click="save" type="submit">保存内容</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    window.onload=function () {
+        var app = new Vue({
+            el: "#app",
+            data: {
+                data:{
+                    iD:getUrlKey("id"),
+                    	code:0,
+                    	name:0,
+                    	parentID:0,
+                    	level:0,
+                    	order:0,
+                    	nameEn:0,
+                    	shortNameEn:0,
+                    	provinceID:0,
+                    	provinceName:0,
+                    	cityID:0,
+                    	cityName:0,
+                    	areaID:0,
+                    	areaName:0,
+                }
+            },
+            methods: {
+                save: function () {
+                    savaData(this,"../Region/modifyRegion")
+                }
+            },
+            mounted: function () {
+                if(this.data.iD!=0){
+                    findByID(this,this.data.iD,"../Region/findRegion/")
+                }
+                bindImgError()
+            }
+        })
+    }
+</script>
+</body>
+</html>
