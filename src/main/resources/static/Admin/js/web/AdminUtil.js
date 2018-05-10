@@ -88,6 +88,16 @@ function statusFormatter(value) {
 }
 
 /**
+ * 点击的链接
+ * @param value
+ * @returns {string}
+ */
+function clickUrlFormatter(value) {
+    if(chechIsUnll(value)) {
+        return '<a href="'+value+'" target="_blank" >'+value+'</a>'
+    }
+}
+/**
  * 状态格式
  * @param val
  */
@@ -253,6 +263,9 @@ function getDataTable(obj,url,columns,queryParams){
        //$($element).find("input[type='checkbox']").click()
     })
 }
+function tableRefresh(){
+    $('.bootstrap-table [name=refresh]').click()
+}
 /**
  * layer 关闭方法
  * @param message
@@ -320,9 +333,12 @@ function savaData(that,url) {
  * 默认图片
  */
 function bindImgError(){
-    $('img').each(function() {
-        if (!this.complete || typeof this.naturalWidth == "undefined" || this.naturalWidth == 0) {
-            this.src = "img/errorpic.jpg";
-        }
-    });
+    setTimeout(function(){
+        $('img').each(function() {
+            if (!this.complete || typeof this.naturalWidth == "undefined" || this.naturalWidth == 0) {
+                this.src = "img/errorpic.jpg";
+            }
+        })
+    },500);
+
 }

@@ -50,7 +50,8 @@
             el: "#app",
             data: {
                 status: -1,
-                index:0
+                index:0,
+                type:-1,
             },
             methods: {
                 recover: function (val) {
@@ -64,7 +65,7 @@
                         if(checkIsSelection()){return};
                         url+= "id="+getRecordIDForFastJson($('#exampleTableEvents'));
                     }
-                    modifyShow(this,url,"100%","100%","Screen");
+                    modifyShow(this,url,"100%","100%","设置启动图");
                 },
             },
             mounted: function () {
@@ -105,6 +106,7 @@
                         title: '点击地址',
                         align: 'center',
                         field: 'clickUrl',
+                        formatter:clickUrlFormatter
                     },
                     {
                         title: '创建时间',
@@ -117,9 +119,10 @@
                         field: 'modifyTime',
                     },
                     {
-                        title: '类型',
+                        title: getType(),
                         align: 'center',
                         field: 'type',
+                        formatter: typeFormatter
                     },
                     {
                         title: getStatus(),
@@ -137,10 +140,50 @@
                 temp.pageNumber=params.offset/params.limit+1;
                 temp.search=params.search;
                 temp.status=app.status;
+                temp.type=app.type;
                 return temp;
             }
-
+            //0是PC  1是App的启动  2是微信端   3是所有平台的启动 ['active', 'success', 'info', 'warning', 'danger']
+            function typeFormatter(value) {
+                if(value==0) {
+                    return '<small class="label label-warning">电脑端</small>'
+                }else if(value==1){
+                    return '<small class="label label-info">APP</small>'
+                }else if(value==2){
+                    return '<small class="label label-success">微信</small>'
+                }else if(value==3){
+                    return '<small class="label label-active">ALL</small>'
+                }
+            }
+            function getType(){
+                var  html='<div class="dropdown profile-element">' +
+                        '<a data-toggle="dropdown" class="dropdown-toggle" href="#">' +
+                        '<span class="text-muted text-xs block">类型<b class="caret"></b></span>' +
+                        ' </span>' +
+                        '</a>' +
+                        '<ul class="dropdown-menu  m-t-xs">' +
+                        '<li><a class="J_menuItem" onclick="changType(0)">电脑</a>' +
+                        ' </li>' +
+                        ' <li><a class="J_menuItem" onclick="changType(1)">APP</a>' +
+                        '</li>' +
+                        ' </li>' +
+                        ' <li><a class="J_menuItem" onclick="changType(2)">微信</a>' +
+                        '</li>' +
+                        ' </li>' +
+                        ' <li><a class="J_menuItem" onclick="changType(3)">所有平台</a>' +
+                        '</li>' +
+                        '<li class="divider"></li>' +
+                        '<li><a  class="J_menuItem" onclick="changType(-1)">全部</a>' +
+                        '</li>' +
+                        ' </ul>' +
+                        '</div>'
+                return html;
+            }
         })(document, window, jQuery);
+    }
+    function changType(val){
+        tempApp.type=val;
+        tableRefresh();
     }
 </script>
 </body>

@@ -17,45 +17,36 @@
                 <div class="ibox float-e-margins">
                     <div class="ibox-content">
                         <div class="form-horizontal">
-
-														    <div class="hr-line-dashed" ></div>
 	                            <div class="form-group">
-	                                <label class="col-sm-2 control-label" >title</label>
+	                                <label class="col-sm-2 control-label" >标题</label>
 	                                <div class="col-sm-10">
 	                                    <input type="text" v-model="data.title" class="form-control">
 	                            </div>
                             </div>
 							    <div class="hr-line-dashed" ></div>
-	                            <div class="form-group">
-	                                <label class="col-sm-2 control-label" >url</label>
+                            <div class="form-group">
+	                                <label class="col-sm-2 control-label" >地址</label>
 	                                <div class="col-sm-10">
-	                                    <input type="text" v-model="data.url" class="form-control">
-	                            </div>
+                                        <div class="input-group col-sm-12">
+                                            <input type="text" v-model="data.url" class="form-control">
+                                            <span class="input-group-btn"> <button type="button" class="btn btn-primary" @click="addImage">选择图片 </button></span>
+                                        </div>
+                                        <img :src="data.url" style="width: 150px;height: 150px;">
+	                               </div>
                             </div>
 							    <div class="hr-line-dashed" ></div>
 	                            <div class="form-group">
-	                                <label class="col-sm-2 control-label" >type</label>
+	                                <label class="col-sm-2 control-label" >类型</label>
 	                                <div class="col-sm-10">
-	                                    <input type="text" v-model="data.type" class="form-control">
-	                            </div>
+                                        <select class="form-control m-b" v-model="data.type" name="account">
+                                            <option value="0">请选择类型</option>
+                                            <option v-for="item in typeList" :value="item.id" v-text="item.title"></option>
+                                        </select>
+	                                </div>
                             </div>
 							    <div class="hr-line-dashed" ></div>
 	                            <div class="form-group">
-	                                <label class="col-sm-2 control-label" >status</label>
-	                                <div class="col-sm-10">
-	                                    <input type="text" v-model="data.status" class="form-control">
-	                            </div>
-                            </div>
-							    <div class="hr-line-dashed" ></div>
-	                            <div class="form-group">
-	                                <label class="col-sm-2 control-label" >adminID</label>
-	                                <div class="col-sm-10">
-	                                    <input type="text" v-model="data.adminID" class="form-control">
-	                            </div>
-                            </div>
-							    <div class="hr-line-dashed" ></div>
-	                            <div class="form-group">
-	                                <label class="col-sm-2 control-label" >clickUrl</label>
+	                                <label class="col-sm-2 control-label" >网页地址</label>
 	                                <div class="col-sm-10">
 	                                    <input type="text" v-model="data.clickUrl" class="form-control">
 	                            </div>
@@ -75,31 +66,43 @@
     </div>
 </div>
 <script>
+    var tempApp="";
     window.onload=function () {
         var app = new Vue({
             el: "#app",
             data: {
+                //0是PC  1是App的启动  2是微信端   3是所有平台的启动
+                typeList:[{"id":0,"title":"电脑端"},{"id":1,"title":"APP"},{"id":2,"title":"微信端"},{"id":3,"title":"所有平台"}],
+                index:0,
                 data:{
                     iD:getUrlKey("id"),
-                    	title:0,
-                    	url:0,
+                    	title:"",
+                    	url:"",
                     	type:0,
-                    	status:0,
-                    	adminID:0,
-                    	clickUrl:0,
+                    	clickUrl:"",
                 }
             },
             methods: {
                 save: function () {
                     savaData(this,"../Screen/modifyScreen")
+                },
+                addImage:function(){
+                    var url = "../Admin/addPicture.html?type=1&url=" +  this.data.url;
+                    modifyShow(this,url,"1000px","420px","选择图片");
                 }
             },
             mounted: function () {
+                tempApp=this;
                 if(this.data.iD!=0){
                     findByID(this,this.data.iD,"../Screen/findScreen/")
                 }
+                bindImgError();
             }
         })
+    }
+    function saveImage(type,url){
+        closes("上传成功");
+        tempApp.data.url=url;
     }
 </script>
 </body>

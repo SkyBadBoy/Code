@@ -44,7 +44,6 @@ public class CodeApplication extends SpringBootServletInitializer {
 		fastJsonConfig.setSerializerFeatures(SerializerFeature.DisableCircularReferenceDetect);
 		//返回null的值
 		fastJsonConfig.setSerializerFeatures(SerializerFeature.WriteMapNullValue);
-
 		// 3、在convert 中添加配置信息
 		fastConverter.setFastJsonConfig(fastJsonConfig);
 		// 4、将convert 添加到converters当中

@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <title>杭州互办网络科技有限公司 - 主页</title>
+
+    <meta name="keywords" content="杭州互办网络科技有限公司">
+    <meta name="description" content="杭州互办网络科技有限公司">
+    <script src="js/web/include.js?v=1.0.5"></script>
+</head>
+
+<body class="gray-bg">
+<div class="wrapper wrapper-content" id="app">
+    <!-- Panel Other -->
+    <div class="ibox float-e-margins">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-content">
+                        <div class="form-horizontal">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">图片上传</label>
+                                <div class="col-sm-10">
+                                    <div class="col-md-6">
+                                        <div class="image-crop">
+                                            <img :src="url" style="max-height: 300px;max-width: 300px;" >
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <h4>图片预览： <label style="color: red " id="status">(还未上传)</label></h4>
+                                        <div class="img-preview img-preview-sm"></div>
+
+                                        <div class="btn-group" style="margin: 10px;">
+                                            <label title="上传图片" for="inputImage" class="btn btn-primary">
+                                                <input type="file" accept="image/*" name="file" id="inputImage" class="hide"> 选择新图片
+                                            </label>
+                                            <label title="保存图片" id="saveImg" onclick="saveImg()" class="btn btn-primary">保存图片</label>
+
+                                        </div>
+                                        <h4>其他操作：</h4>
+
+                                        <div class="btn-group">
+                                            <button class="btn btn-white" id="zoomIn" type="button">放大</button>
+                                            <button class="btn btn-white" id="zoomOut" type="button">缩小</button>
+                                            <button class="btn btn-white" id="rotateLeft" type="button">左旋转</button>
+                                            <button class="btn btn-white" id="rotateRight" type="button">右旋转</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+        function saveImg() {
+            $(".image-crop > img").cropper("setDragMode", "crop");
+            var base64 = $(".image-crop > img").cropper("getDataURL");
+            var formData = new FormData();
+            formData.append('data', base64);
+            $.ajax({
+                url: PictureBase64,
+                type: 'POST',
+                data: formData,
+                async: true,
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function (returndata) {
+                    console.log(returndata)
+                    if (returndata.code == 0) {
+                        tempApp.headImg = returndata.data.url;
+                        $("#status").html("("+returndata.message+")");
+                        parent.saveImage(tempApp.type, returndata.data.url);
+
+                    } else {
+                        $("#status").html("("+returndata.message+")");
+                    }
+                },
+                error: function (returndata) {
+                }
+            });
+        }
+        function initImage() {
+            var $image = $(".image-crop > img")
+            $($image).cropper({
+                //aspectRatio: 1.618,
+                preview: ".img-preview",
+                done: function (data) {
+                    // 输出结果
+                }
+            });
+            var $inputImage = $("#inputImage");
+            if (window.FileReader) {
+                $inputImage.change(function () {
+                    var fileReader = new FileReader(),
+                            files = this.files,
+                            file;
+
+                    if (!files.length) {
+                        return;
+                    }
+
+                    file = files[0];
+
+                    if (/^image\/\w+$/.test(file.type)) {
+                        fileReader.readAsDataURL(file);
+                        fileReader.onload = function () {
+                            $inputImage.val("");
+                            $image.cropper("reset", true).cropper("replace", this.result);
+                        };
+                    } else {
+                        showMessage("请选择图片文件");
+                    }
+                });
+            } else {
+                $inputImage.addClass("hide");
+            }
+
+            $("#download").click(function () {
+                window.open($image.cropper("getDataURL"));
+            });
+
+            $("#zoomIn").click(function () {
+                $image.cropper("zoom", 0.1);
+            });
+
+            $("#zoomOut").click(function () {
+                $image.cropper("zoom", -0.1);
+            });
+
+            $("#rotateLeft").click(function () {
+                $image.cropper("rotate", 45);
+            });
+
+            $("#rotateRight").click(function () {
+                $image.cropper("rotate", -45);
+            });
+        }
+</script>
+
+<script>
+    var tempApp=""
+    window.onload=function () {
+        var app = new Vue({
+            el: "#app",
+            data: {
+                headImgShow: '',
+                headImg: '',
+                url: getUrlKey("url"),
+                type: getUrlKey("type")
+            },
+            methods: {
+                save: function () {
+                    savaData(this)
+                }
+            },
+            mounted: function () {
+                    tempApp = this;
+                    initImage();
+                    bindImgError()
+            }
+        })
+
+    }
+
+</script>
+
+
+
+</body>
+
+</html>

@@ -42,7 +42,6 @@ linkScriptDOMLoaded([
     "js/plugins/summernote/summernote-zh-CN.js",
     "js/plugins/iCheck/icheck.min.js",
     "js/plugins/toastr/toastr.min.js",
-    "js/plugins/treeview/bootstrap-treeview.js",
     "js/plugins/suggest/bootstrap-suggest.min.js",
     "js/plugins/iCheck/icheck.min.js",
     "js/plugins/clockpicker/clockpicker.js",

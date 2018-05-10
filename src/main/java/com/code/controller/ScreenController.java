@@ -26,12 +26,15 @@ public class ScreenController extends BaseController {
 
     @GetMapping("/queryScreenPage")
     @ApiOperation(value = "获取列表")
-    public Map queryScreenPage(int status,String search,int pageNumber, int pageSize,HttpServletRequest request) {
+    public Map queryScreenPage(int status,int type,String search,int pageNumber, int pageSize,HttpServletRequest request) {
         Map<String, Object> returnMap = new HashMap<>(2);
         Map<String, Object> queryMap = new HashMap<>(3);
         queryMap.put("search", search);
         if(status!=-1){
             queryMap.put("Status", status);
+        }
+        if(type!=-1){
+            queryMap.put("Type", type);
         }
         PageInfo<Screen> page = this.ReadScreenService.queryPage(queryMap, pageNumber, pageSize);
         returnMap.put("rows", page.getList());

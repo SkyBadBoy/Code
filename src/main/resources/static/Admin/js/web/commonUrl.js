@@ -4,6 +4,9 @@
  * view 代表视图  其他的代表接口
  */
 
+
+var PictureBase64="http://www.jnrrxc.com/FileSystem/Code/UploadBase64";//图片路径 /{Project}/UploadBase64
+
 var basePath="../";
 function loginUrl(){//后台登录接口
     return basePath+"admin/login";
