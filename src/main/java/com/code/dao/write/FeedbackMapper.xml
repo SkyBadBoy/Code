@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.code.dao.write.FeedbackMapper">
+	<sql id="sql">
+		FeedBack_ID,FeedBack_CreateTime,FeedBack_ModifyTime,FeedBack_Status,FeedBack_UserID,FeedBack_Anonymity,FeedBack_Content
+	</sql>
+	<sql id="where">
+		1=1 
+		<if test="ID!=null">
+				 and FeedBack_ID = #{ID}
+</if>
+<if test="CreateTime!=null">
+				 and FeedBack_CreateTime = #{CreateTime}
+</if>
+<if test="ModifyTime!=null">
+				 and FeedBack_ModifyTime = #{ModifyTime}
+</if>
+<if test="Status!=null">
+				 and FeedBack_Status = #{Status}
+</if>
+<if test="UserID!=null">
+				 and FeedBack_UserID = #{UserID}
+</if>
+<if test="Anonymity!=null">
+				 and FeedBack_Anonymity = #{Anonymity}
+</if>
+<if test="Content!=null">
+				 and FeedBack_Content = #{Content}
+</if>
+
+	</sql>
+
+	<!-- 插入数据 -->
+	<insert id="insert" parameterType="com.code.domain.Feedback"  useGeneratedKeys="true">
+		insert into t_FeedBack( <include refid="sql"></include> )
+		values(
+				#{ID},
+now(),
+now(),
+#{Status},
+#{UserID},
+#{Anonymity},
+#{Content}
+				)
+	</insert>
+	<update id="update" parameterType="com.code.domain.Feedback">
+		update t_FeedBack set FeedBack_ModifyTime = now(),FeedBack_Status = #{Status},FeedBack_UserID = #{UserID},FeedBack_Anonymity = #{Anonymity},FeedBack_Content = #{Content}
+		<where>
+			FeedBack_ID= #{ID} 
+		</where>
+	</update>
+
+
+	<!-- 根据编号删除 by majian-->
+	<update id="deleteById" parameterType="com.code.domain.Feedback">
+		update t_FeedBack set FeedBack_Status=88 where FeedBack_ID = #{_parameter} 
+	</update>
+
+	<!-- 根据编号恢复 by majian-->
+	<update id="recoverByID" parameterType="com.code.domain.Feedback">
+		update t_FeedBack set FeedBack_Status=1 where FeedBack_ID = #{_parameter} 
+	</update>
+
+	<!-- 根据条件删除 by majian-->
+	<update id="deleteByCondition" parameterType="com.code.domain.Feedback">
+		update t_FeedBack set FeedBack_Status=88 
+		<where>
+			<include refid="where"></include>
+		</where>
+	</update>
+
+	<!-- 根据条件恢复 by majian-->
+	<update id="recoverByCondition" parameterType="com.code.domain.Feedback">
+		update t_FeedBack set FeedBack_Status=1 
+		<where>
+			<include refid="where"></include>
+		</where>
+	</update>
+
+
+</mapper>

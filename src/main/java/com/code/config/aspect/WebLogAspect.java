@@ -77,14 +77,14 @@ public class WebLogAspect {
     public void doAfterReturning(Object ret) throws Throwable {
         // 处理完请求，返回内容
         // 记录下请求内容
-        logger.info("Url地址 : " + RequestURL);
-        logger.info("请求方式 : " + Method);
-        logger.info("IP地址: " + RemoteAddr);
-        logger.info("类名 : " + ClassName);
-        logger.info("参数 : " + Args);
-
-        logger.info("返回值 : " + ret);
-        logger.info("处理时间 : " + (System.currentTimeMillis() - startTime.get()));
+//        logger.info("Url地址 : " + RequestURL);
+//        logger.info("请求方式 : " + Method);
+//        logger.info("IP地址: " + RemoteAddr);
+//        logger.info("类名 : " + ClassName);
+//        logger.info("参数 : " + Args);
+//
+//        logger.info("返回值 : " + ret);
+//        logger.info("处理时间 : " + (System.currentTimeMillis() - startTime.get()));
         /** 目前参数和返回值还没有记录 */
         if(accessService!=null) {
             accessService.insert(Access.getAccess(RequestURL, Method, RemoteAddr, ClassName, Args, (System.currentTimeMillis() - startTime.get())));

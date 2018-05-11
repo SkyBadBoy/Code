@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>代码生成工具- majian</title>
+    <meta name="keywords" content="马健">
+    <meta name="description" content="马健">
+    <script src="js/web/include.js?v=1.0.5"></script>
+</head>
+<body class="gray-bg">
+<div class="wrapper wrapper-content" id="app">
+    <!-- loading 固定格式不要删除-->
+    <div id="overlay" style="background:#000;filter:alpha(opacity=50);opacity:0.5;display:none;position:absolute;top:0px;left:0px;width:100%;height:100%;z-index:100;display:none;"><div class="sk-spinner sk-spinner-double-bounce" style="margin-top: 300px;"><div class="sk-double-bounce1"></div> <div class="sk-double-bounce2"></div></div></div>
+    <!-- Panel Other -->
+        <div class="ibox-content">
+            <div class="row row-lg">
+                <div class="col-sm-12">
+                    <div class="example-wrap">
+                        <h4 class="example-title"></h4>
+                        <div class="example">
+                            <div class="btn-group hidden-xs" id="exampleTableEventsToolbar" role="group">
+                                <!--<button type="button"   @click="modify(0)" class="btn btn-primary ">-->
+                                    <!--<i class="glyphicon glyphicon-plus" aria-hidden="true">新增</i>-->
+                                <!--</button>-->
+                                <!--<button type="button"  @click="modify(1)" class="btn btn-success ">-->
+                                    <!--<i class="glyphicon glyphicon-pencil" aria-hidden="true">修改</i>-->
+                                <!--</button>-->
+                                <button type="button" @click="recover(88)" class="btn  btn-danger">
+                                    <i class="glyphicon glyphicon-trash" aria-hidden="true">删除</i>
+                                </button>
+                                <button type="button"  @click="recover(1)" class="btn btn-primary ">
+                                    <i class="glyphicon glyphicon-play" aria-hidden="true">恢复</i>
+                                </button>
+                            </div>
+                            <table id="exampleTableEvents" >
+                            </table>
+                        </div>
+                    </div>
+                    <!-- End Example Events -->
+                </div>
+            </div>
+        </div>
+</div>
+<script>
+    var tempApp="";//一定要写这个 ,约定
+    window.onload=function () {
+        /**初始化VUE */
+        var app = new Vue({
+            el: "#app",
+            data: {
+                status: -1,
+                index:0,
+                type:-1,
+                anonymity:-1,
+
+            },
+            methods: {
+                recover: function (val) {
+                    setStatus(this,val)
+                },
+                modify: function (flag) {
+                    var url = "../Admin/addReport.html?";
+                    if(flag==0){//新增
+                        url+= "id=0";
+                    }else{//修改
+                        if(checkIsSelection()){return};
+                        url+= "id="+getRecordIDForFastJson($('#exampleTableEvents'));
+                    }
+                    modifyShow(this,url,"100%","100%","Report");
+                },
+            },
+            mounted: function () {
+                bindImgError()
+                tempApp=this;
+            }
+
+        })
+        /** 固定写法 by majian*/
+        function setStatus(that,status) {
+            setAdminStatus(that,status,"../Report/setReportStatus")
+        }
+        /** 初始化表格*/
+        (function(document, window, $) {
+            'use strict';
+            (function() {
+                var columns=[
+                    {
+                        field: 'state',
+                        checkbox:true
+                    },
+                    {
+                        title: '编号',
+                        align: 'center',
+                        field: 'iD',
+                        width:"16%"
+                    },
+                    {
+                        title: '举报说明',
+                        align: 'center',
+                        field: 'content',
+                        width:"16%"
+                    },
+                    {
+                        title: '举报内容',
+                        align: 'center',
+                        field: 'srcID',
+                        width:"16%"
+                    },
+                    {
+                        title: getType(),
+                        align: 'center',
+                        field: 'type',
+                        width:"16%",
+                        // //【用户：0   新闻资讯：1    评论：2   】
+                        formatter:function(val){
+                            if(val==0 || val=="0") {
+                                return '<small class="label label-danger">用户</small>'
+                            }else if(val==1 || val=="1") {
+                                return '<small class="label label-primary">新闻资讯</small>'
+                            }else {
+                                return '<small class="label label-primary">评论</small>'
+                            }
+                        }
+                    },
+                    {
+                        title: '用户',
+                        align: 'center',
+                        field: 'userID',
+                        width:"16%"
+                    },
+                    {
+                        title: getAnonymity(),
+                        align: 'center',
+                        field: 'anonymity',
+                        width:"16%",
+                        formatter:function(val){
+
+                            if(val==1 || val=="1") {
+                                return '<small class="label label-danger">匿名</small>'
+                            }else{
+                                return '<small class="label label-primary">正常</small>'
+                            }
+                        }
+                    },
+                    {
+                        title: '创建时间',
+                        align: 'center',
+                        field: 'createTime',
+                        width:"16%"
+                    },
+                    {
+                        title: getStatus(),
+                        align: 'center',
+                        field: 'status',
+                        titleTooltip : "",
+                        formatter: statusFormatter,
+                        width:"16%"
+                    },
+                ];
+                getDataTable($('#exampleTableEvents'),"../Report/queryReportPage",columns,queryParams,false);
+            })();
+            function queryParams(params) {
+                var temp={}
+                temp.pageSize=params.limit;
+                temp.pageNumber=params.offset/params.limit+1;
+                temp.search=params.search;
+                temp.status=app.status;
+                temp.type=app.type;
+                temp.anonymity=app.anonymity;
+                return temp;
+            }
+
+        })(document, window, jQuery);
+    }
+    function getAnonymity(){
+        var  html='<div class="dropdown profile-element">' +
+                '<a data-toggle="dropdown" class="dropdown-toggle" href="#">' +
+                '<span class="text-muted text-xs block">匿名<b class="caret"></b></span>' +
+                ' </span>' +
+                '</a>' +
+                '<ul class="dropdown-menu  m-t-xs">' +
+                '<li><a class="J_menuItem" onclick="changAnonymity(1)">匿名</a>' +
+                ' </li>' +
+                ' <li><a class="J_menuItem" onclick="changAnonymity(0)">正常</a>' +
+                '</li>' +
+                '<li class="divider"></li>' +
+                '<li><a  class="J_menuItem" onclick="changAnonymity(-1)">全部</a>' +
+                '</li>' +
+                ' </ul>' +
+                '</div>'
+        return html;
+    }
+    function getType(){
+        var  html='<div class="dropdown profile-element">' +
+                '<a data-toggle="dropdown" class="dropdown-toggle" href="#">' +
+                '<span class="text-muted text-xs block">类型<b class="caret"></b></span>' +
+                ' </span>' +
+                '</a>' +
+                '<ul class="dropdown-menu  m-t-xs">' +
+                '<li><a class="J_menuItem" onclick="changType(0)">用户</a>' +
+                ' </li>' +
+                ' <li><a class="J_menuItem" onclick="changType(1)">新闻资讯</a>' +
+                '</li>' +
+                ' <li><a class="J_menuItem" onclick="changType(2)">评论</a>' +
+                '</li>' +
+                '<li class="divider"></li>' +
+                '<li><a  class="J_menuItem" onclick="changType(-1)">全部</a>' +
+                '</li>' +
+                ' </ul>' +
+                '</div>'
+        return html;
+    }
+    function changAnonymity(val){
+        tempApp.anonymity=val;
+        tableRefresh();
+    }
+</script>
+</body>
+</html>

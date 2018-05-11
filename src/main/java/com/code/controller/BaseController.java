@@ -46,6 +46,10 @@ public class BaseController {
 	protected ScreenService ScreenService;
 	@Autowired
 	protected RegionService RegionService;
+	@Autowired
+	protected ReportService ReportService;
+	@Autowired
+	protected FeedbackService FeedbackService;
 
 	@Autowired
 	protected ReadBoxService ReadBoxService;
@@ -67,6 +71,10 @@ public class BaseController {
 	protected ReadScreenService ReadScreenService;
 	@Autowired
 	protected ReadRegionService ReadRegionService;
+	@Autowired
+	protected ReadReportService ReadReportService;
+	@Autowired
+	protected ReadFeedbackService ReadFeedbackService;
 
 
 

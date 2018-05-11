@@ -33,7 +33,7 @@ public class CustomFilter implements Filter{
             this.request = (HttpServletRequest) servletRequest;
             this.response = (HttpServletResponse) servletResponse;
             String url=this.request.getRequestURI();
-            log.info("url:"+url);
+            //log.info("url:"+url);
         } catch (Exception e) {
 
         } finally {

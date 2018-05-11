@@ -132,6 +132,14 @@ function changStatus(val){
     tempApp.status=val;
     $('.bootstrap-table [name=refresh]').click()
 }
+/**
+ * 状态类型
+ * @param val
+ */
+function changType(val){
+    tempApp.type=val;
+    tableRefresh();
+}
 /*表格相关操作*/
 var geticons=
 {

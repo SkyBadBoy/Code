@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.code.dao.write.ReportMapper">
+	<sql id="sql">
+		Report_ID,Report_CreateTime,Report_ModifyTime,Report_Status,Report_UserID,Report_Anonymity,Report_Content,Report_SrcID,Report_Type
+	</sql>
+	<sql id="where">
+		1=1 
+		<if test="ID!=null">
+				 and Report_ID = #{ID}
+</if>
+<if test="CreateTime!=null">
+				 and Report_CreateTime = #{CreateTime}
+</if>
+<if test="ModifyTime!=null">
+				 and Report_ModifyTime = #{ModifyTime}
+</if>
+<if test="Status!=null">
+				 and Report_Status = #{Status}
+</if>
+<if test="UserID!=null">
+				 and Report_UserID = #{UserID}
+</if>
+<if test="Anonymity!=null">
+				 and Report_Anonymity = #{Anonymity}
+</if>
+<if test="Content!=null">
+				 and Report_Content = #{Content}
+</if>
+<if test="SrcID!=null">
+				 and Report_SrcID = #{SrcID}
+</if>
+<if test="Type!=null">
+				 and Report_Type = #{Type}
+</if>
+
+	</sql>
+
+	<!-- 插入数据 -->
+	<insert id="insert" parameterType="com.code.domain.Report"  useGeneratedKeys="true">
+		insert into t_Report( <include refid="sql"></include> )
+		values(
+				#{ID},
+now(),
+now(),
+#{Status},
+#{UserID},
+#{Anonymity},
+#{Content},
+#{SrcID},
+#{Type}
+				)
+	</insert>
+	<update id="update" parameterType="com.code.domain.Report">
+		update t_Report set Report_ModifyTime = now(),Report_Status = #{Status},Report_UserID = #{UserID},Report_Anonymity = #{Anonymity},Report_Content = #{Content},Report_SrcID = #{SrcID},Report_Type = #{Type}
+		<where>
+			Report_ID= #{ID} 
+		</where>
+	</update>
+
+
+	<!-- 根据编号删除 by majian-->
+	<update id="deleteById" parameterType="com.code.domain.Report">
+		update t_Report set Report_Status=88 where Report_ID = #{_parameter} 
+	</update>
+
+	<!-- 根据编号恢复 by majian-->
+	<update id="recoverByID" parameterType="com.code.domain.Report">
+		update t_Report set Report_Status=1 where Report_ID = #{_parameter} 
+	</update>
+
+	<!-- 根据条件删除 by majian-->
+	<update id="deleteByCondition" parameterType="com.code.domain.Report">
+		update t_Report set Report_Status=88 
+		<where>
+			<include refid="where"></include>
+		</where>
+	</update>
+
+	<!-- 根据条件恢复 by majian-->
+	<update id="recoverByCondition" parameterType="com.code.domain.Report">
+		update t_Report set Report_Status=1 
+		<where>
+			<include refid="where"></include>
+		</where>
+	</update>
+
+
+</mapper>

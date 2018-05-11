@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.code.dao.read.ReadReportMapper">
+	<!-- 返回的map -->
+	<resultMap id="report" type="com.code.domain.Report">
+		<result property="ID" column="Report_ID" />
+		<result property="CreateTime" column="Report_CreateTime" />
+		<result property="ModifyTime" column="Report_ModifyTime" />
+		<result property="Status" column="Report_Status" />
+		<result property="UserID" column="Report_UserID" />
+		<result property="Anonymity" column="Report_Anonymity" />
+		<result property="Content" column="Report_Content" typeHandler="com.code.until.expression.MyBlobTypeHandler" />
+		<result property="SrcID" column="Report_SrcID" />
+		<result property="Type" column="Report_Type" />
+	</resultMap>
+	<!-- sql查询语句-->
+	<sql id="sql">
+		Report_ID,Report_CreateTime,Report_ModifyTime,Report_Status,Report_UserID,Report_Anonymity,Report_Content,Report_SrcID,Report_Type
+	</sql>
+	<!-- sql查询条件-->
+	<sql id="where">
+		1=1 
+		<if test="ID!=null">
+				 and Report_ID = #{ID}
+</if>
+<if test="CreateTime!=null">
+				 and Report_CreateTime = #{CreateTime}
+</if>
+<if test="ModifyTime!=null">
+				 and Report_ModifyTime = #{ModifyTime}
+</if>
+<if test="Status!=null">
+				 and Report_Status = #{Status}
+</if>
+<if test="UserID!=null">
+				 and Report_UserID = #{UserID}
+</if>
+<if test="Anonymity!=null">
+				 and Report_Anonymity = #{Anonymity}
+</if>
+<if test="Content!=null">
+				 and Report_Content = #{Content}
+</if>
+<if test="SrcID!=null">
+				 and Report_SrcID = #{SrcID}
+</if>
+<if test="Type!=null">
+				 and Report_Type = #{Type}
+</if>
+
+	</sql>
+	<!-- 根据ID 查找-->
+	<select id="findById" resultMap="report" parameterType="long">
+		SELECT
+		<include refid="sql"></include>
+		FROM t_Report
+		<where>
+			Report_ID = #{_parameter} 
+		</where>
+	</select>
+	<!-- 根据条件 查找-->
+	<select id="query"  resultMap="report"
+		parameterType="java.util.Map">
+		SELECT
+		<include refid="sql"></include>
+		FROM t_Report
+		<where>
+			<include refid="where"></include>
+		</where>
+	
+	</select>
+	<!-- 根据条件总数-->
+	<select id="queryCount" parameterType="map" resultType="int">
+		SELECT
+			Count(1)
+			FROM t_Report
+			<where>
+				<include refid="where"></include>
+			</where>
+	</select>
+
+
+
+</mapper>

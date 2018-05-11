@@ -6,7 +6,7 @@
     <title>代码生成工具- majian</title>
     <meta name="keywords" content="马健">
     <meta name="description" content="马健">
-    <script src="js/web/include.js?v=1.0.5"></script>
+    <script src="js/web/include.js?v=1.0.6"></script>
 </head>
 <body class="gray-bg">
 <div class="wrapper wrapper-content" id="app">
@@ -20,12 +20,12 @@
                         <h4 class="example-title"></h4>
                         <div class="example">
                             <div class="btn-group hidden-xs" id="exampleTableEventsToolbar" role="group">
-                                <button type="button"   @click="modify(0)" class="btn btn-primary ">
-                                    <i class="glyphicon glyphicon-plus" aria-hidden="true">新增</i>
-                                </button>
-                                <button type="button"  @click="modify(1)" class="btn btn-success ">
-                                    <i class="glyphicon glyphicon-pencil" aria-hidden="true">修改</i>
-                                </button>
+                                <!--<button type="button"   @click="modify(0)" class="btn btn-primary ">-->
+                                    <!--<i class="glyphicon glyphicon-plus" aria-hidden="true">新增</i>-->
+                                <!--</button>-->
+                                <!--<button type="button"  @click="modify(1)" class="btn btn-success ">-->
+                                    <!--<i class="glyphicon glyphicon-pencil" aria-hidden="true">修改</i>-->
+                                <!--</button>-->
                                 <button type="button" @click="recover(88)" class="btn  btn-danger">
                                     <i class="glyphicon glyphicon-trash" aria-hidden="true">删除</i>
                                 </button>
@@ -51,31 +51,32 @@
             data: {
                 status: -1,
                 index:0,
-                type:-1,
+                anonymity:-1
             },
             methods: {
                 recover: function (val) {
                     setStatus(this,val)
                 },
                 modify: function (flag) {
-                    var url = "../Admin/addScreen.html?";
+                    var url = "../Admin/addFeedback.html?";
                     if(flag==0){//新增
                         url+= "id=0";
                     }else{//修改
                         if(checkIsSelection()){return};
                         url+= "id="+getRecordIDForFastJson($('#exampleTableEvents'));
                     }
-                    modifyShow(this,url,"100%","100%","设置启动图");
+                    modifyShow(this,url,"100%","100%","Feedback");
                 },
             },
             mounted: function () {
+                bindImgError()
                 tempApp=this;
             }
 
         })
         /** 固定写法 by majian*/
         function setStatus(that,status) {
-            setAdminStatus(that,status,"../Screen/setScreenStatus")
+            setAdminStatus(that,status,"../Feedback/setFeedbackStatus")
         }
         /** 初始化表格*/
         (function(document, window, $) {
@@ -90,49 +91,49 @@
                         title: '编号',
                         align: 'center',
                         field: 'iD',
+                        width:"16%"
                     },
                     {
-                        title: '标题',
+                        title: '反馈内容',
                         align: 'center',
-                        field: 'title',
+                        field: 'content',
+                        width:"16%"
                     },
                     {
-                        title: '图片',
+                        title: '用户',
                         align: 'center',
-                        field: 'url',
-                        formatter: headImgFormatter
+                        field: 'userID',
+                        width:"16%"
                     },
                     {
-                        title: '点击地址',
+                        title: getAnonymity(),
                         align: 'center',
-                        field: 'clickUrl',
-                        formatter:clickUrlFormatter
+                        field: 'anonymity',
+                        width:"16%",
+                        formatter:function(val){
+                            if(val==1 || val=="1") {
+                                return '<small class="label label-danger">匿名</small>'
+                            }else{
+                                return '<small class="label label-primary">正常</small>'
+                            }
+                        }
                     },
                     {
                         title: '创建时间',
                         align: 'center',
                         field: 'createTime',
-                    },
-                    {
-                        title: '修改时间',
-                        align: 'center',
-                        field: 'modifyTime',
-                    },
-                    {
-                        title: getType(),
-                        align: 'center',
-                        field: 'type',
-                        formatter: typeFormatter
+                        width:"16%"
                     },
                     {
                         title: getStatus(),
                         align: 'center',
                         field: 'status',
                         titleTooltip : "",
-                        formatter: statusFormatter
+                        formatter: statusFormatter,
+                        width:"16%"
                     },
                 ];
-                getDataTable($('#exampleTableEvents'),"../Screen/queryScreenPage",columns,queryParams,false);
+                getDataTable($('#exampleTableEvents'),"../Feedback/queryFeedbackPage",columns,queryParams,false);
             })();
             function queryParams(params) {
                 var temp={}
@@ -140,48 +141,34 @@
                 temp.pageNumber=params.offset/params.limit+1;
                 temp.search=params.search;
                 temp.status=app.status;
-                temp.type=app.type;
+                temp.anonymity=app.anonymity;
                 return temp;
             }
-            //0是PC  1是App的启动  2是微信端   3是所有平台的启动 ['active', 'success', 'info', 'warning', 'danger']
-            function typeFormatter(value) {
-                if(value==0) {
-                    return '<small class="label label-warning">电脑端</small>'
-                }else if(value==1){
-                    return '<small class="label label-info">APP</small>'
-                }else if(value==2){
-                    return '<small class="label label-success">微信</small>'
-                }else if(value==3){
-                    return '<small class="label label-active">ALL</small>'
-                }
-            }
-            function getType(){
-                var  html='<div class="dropdown profile-element">' +
-                        '<a data-toggle="dropdown" class="dropdown-toggle" href="#">' +
-                        '<span class="text-muted text-xs block">类型<b class="caret"></b></span>' +
-                        ' </span>' +
-                        '</a>' +
-                        '<ul class="dropdown-menu  m-t-xs">' +
-                        '<li><a class="J_menuItem" onclick="changType(0)">电脑</a>' +
-                        ' </li>' +
-                        ' <li><a class="J_menuItem" onclick="changType(1)">APP</a>' +
-                        '</li>' +
-                        ' </li>' +
-                        ' <li><a class="J_menuItem" onclick="changType(2)">微信</a>' +
-                        '</li>' +
-                        ' </li>' +
-                        ' <li><a class="J_menuItem" onclick="changType(3)">所有平台</a>' +
-                        '</li>' +
-                        '<li class="divider"></li>' +
-                        '<li><a  class="J_menuItem" onclick="changType(-1)">全部</a>' +
-                        '</li>' +
-                        ' </ul>' +
-                        '</div>'
-                return html;
-            }
+
         })(document, window, jQuery);
     }
-
+    function getAnonymity(){
+        var  html='<div class="dropdown profile-element">' +
+                '<a data-toggle="dropdown" class="dropdown-toggle" href="#">' +
+                '<span class="text-muted text-xs block">状态<b class="caret"></b></span>' +
+                ' </span>' +
+                '</a>' +
+                '<ul class="dropdown-menu  m-t-xs">' +
+                '<li><a class="J_menuItem" onclick="changAnonymity(1)">匿名</a>' +
+                ' </li>' +
+                ' <li><a class="J_menuItem" onclick="changAnonymity(0)">正常</a>' +
+                '</li>' +
+                '<li class="divider"></li>' +
+                '<li><a  class="J_menuItem" onclick="changAnonymity(-1)">全部</a>' +
+                '</li>' +
+                ' </ul>' +
+                '</div>'
+        return html;
+    }
+    function changAnonymity(val){
+        tempApp.anonymity=val;
+        tableRefresh();
+    }
 </script>
 </body>
 </html>

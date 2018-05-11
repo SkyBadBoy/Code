@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.code.dao.read.ReadFeedbackMapper">
+	<!-- 返回的map -->
+	<resultMap id="feedback" type="com.code.domain.Feedback">
+		<result property="ID" column="FeedBack_ID" />
+		<result property="CreateTime" column="FeedBack_CreateTime" />
+		<result property="ModifyTime" column="FeedBack_ModifyTime" />
+		<result property="Status" column="FeedBack_Status" />
+		<result property="UserID" column="FeedBack_UserID" />
+		<result property="Anonymity" column="FeedBack_Anonymity" />
+		<result property="Content" column="FeedBack_Content" typeHandler="com.code.until.expression.MyBlobTypeHandler"/>
+	</resultMap>
+	<!-- sql查询语句-->
+	<sql id="sql">
+		FeedBack_ID,FeedBack_CreateTime,FeedBack_ModifyTime,FeedBack_Status,FeedBack_UserID,FeedBack_Anonymity,FeedBack_Content
+	</sql>
+	<!-- sql查询条件-->
+	<sql id="where">
+		1=1 
+		<if test="ID!=null">
+				 and FeedBack_ID = #{ID}
+</if>
+<if test="CreateTime!=null">
+				 and FeedBack_CreateTime = #{CreateTime}
+</if>
+<if test="ModifyTime!=null">
+				 and FeedBack_ModifyTime = #{ModifyTime}
+</if>
+<if test="Status!=null">
+				 and FeedBack_Status = #{Status}
+</if>
+<if test="UserID!=null">
+				 and FeedBack_UserID = #{UserID}
+</if>
+<if test="Anonymity!=null">
+				 and FeedBack_Anonymity = #{Anonymity}
+</if>
+<if test="Content!=null">
+				 and FeedBack_Content = #{Content}
+</if>
+
+	</sql>
+	<!-- 根据ID 查找-->
+	<select id="findById" resultMap="feedback" parameterType="long">
+		SELECT
+		<include refid="sql"></include>
+		FROM t_FeedBack
+		<where>
+			FeedBack_ID = #{_parameter} 
+		</where>
+	</select>
+	<!-- 根据条件 查找-->
+	<select id="query"  resultMap="feedback"
+		parameterType="java.util.Map">
+		SELECT
+		<include refid="sql"></include>
+		FROM t_FeedBack
+		<where>
+			<include refid="where"></include>
+		</where>
+	
+	</select>
+	<!-- 根据条件总数-->
+	<select id="queryCount" parameterType="map" resultType="int">
+		SELECT
+			Count(1)
+			FROM t_FeedBack
+			<where>
+				<include refid="where"></include>
+			</where>
+	</select>
+
+
+
+</mapper>
