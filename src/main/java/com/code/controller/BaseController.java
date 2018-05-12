@@ -25,10 +25,6 @@ public class BaseController {
 	@Autowired
 	protected AdminService adminService;
 	@Autowired
-	protected UserService userService;
-	@Autowired
-	protected BoxService boxService;
-	@Autowired
 	protected RecordService recordService;
 	@Autowired
 	protected WeChatInfoService weChatInfoService;
@@ -50,13 +46,12 @@ public class BaseController {
 	protected ReportService ReportService;
 	@Autowired
 	protected FeedbackService FeedbackService;
+	@Autowired
+	protected CrimeService CrimeService;
+	@Autowired
+	protected UserService UserService;
 
-	@Autowired
-	protected ReadBoxService ReadBoxService;
-	@Autowired
-	protected ReadActivityService ReadActivityService;
-	@Autowired
-	protected ActivityService ActivityService;
+
 	@Autowired
 	protected ReadErrorService ReadErrorService;
 	@Autowired
@@ -75,6 +70,10 @@ public class BaseController {
 	protected ReadReportService ReadReportService;
 	@Autowired
 	protected ReadFeedbackService ReadFeedbackService;
+	@Autowired
+	protected ReadCrimeService ReadCrimeService;
+	@Autowired
+	protected ReadUserService ReadUserService;
 
 
 

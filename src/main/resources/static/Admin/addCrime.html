@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>代码生成工具- majian</title>
+    <meta name="keywords" content="马健">
+    <meta name="description" content="马健">
+    <script src="js/web/include.js?v=1.0.6"></script>
+</head>
+<body class="gray-bg">
+<div class="wrapper wrapper-content" id="app">
+    <!-- Panel Other -->
+    <div class="ibox float-e-margins">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-content">
+                        <div class="form-horizontal">
+
+							<div class="form-group">
+	                                <label class="col-sm-2 control-label" >处罚类型</label>
+	                                <div class="col-sm-10">
+											<div class="radio radio-primary col-sm-2">
+												<input type="radio" name="type" id="type1"  checked="" @change="changeType(0)">
+												<label for="type1">
+													提醒
+												</label>
+											</div>
+											<div class="radio radio-warning col-sm-2">
+												<input type="radio" name="type" id="type2"  @change="changeType(1)">
+												<label for="type2">
+													警告
+												</label>
+											</div>
+											<div class="radio radio-danger col-sm-2">
+												<input type="radio" name="type" id="type3"  @change="changeType(2)">
+												<label for="type3">
+													禁止/下架
+												</label>
+											</div>
+	                            </div>
+                            </div>
+							<div class="hr-line-dashed" v-show="data.type==2"></div>
+							<div class="form-group" v-show="data.type==2">
+	                                <label class="col-sm-2 control-label" >时效</label>
+	                                <div class="col-sm-10">
+										<input type="checkbox" class="js-switch" checked v-model="time" />
+									</div>
+                            </div>
+							<div class="hr-line-dashed" v-show="data.type==2 && time"></div>
+	                            <div class="form-group" v-show="data.type==2 && time">
+	                                <label class="col-sm-2 control-label" >禁用/下架时间</label>
+	                                <div class="col-sm-10">
+										<div class="input-daterange input-group col-sm-6" id="datepicker">
+											<input type="text" class="input-sm form-control" name="startTime" :value="data.startTime" />
+											<span class="input-group-addon">到</span>
+											<input type="text" class="input-sm form-control" name="endTime" :value="data.endTime" />
+										</div>
+	                            	</div>
+                            </div>
+							    <div class="hr-line-dashed" ></div>
+	                            <div class="form-group">
+	                                <label class="col-sm-2 control-label" >原因</label>
+	                                <div class="col-sm-10">
+	                                    <input type="text" v-model="data.content" class="form-control">
+	                            	</div>
+                            </div>
+
+                          
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <div class="col-sm-4 col-sm-offset-2">
+                                    <button class="btn btn-primary" @click="save" type="submit">保存内容</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+	var tempApp="";
+    window.onload=function () {
+        var app = new Vue({
+            el: "#app",
+            data: {
+				time:false,
+                data:{
+                    iD:0,
+					userID:getUrlKey("userID"),
+					adminID:0,
+					content:"",
+					srcType:getUrlKey("srcType"),
+					srcID:getUrlKey("srcID"),
+					time:0,
+					startTime:fmtDate2Data(new Date()),
+					endTime:fmtDate2Data(laterTime(10)),
+					type:0,
+                }
+            },
+            methods: {
+                save: function () {
+					this.data.time=this.time?1:0;
+                    savaData(this,"../Crime/modifyCrime")
+                },
+				changeType:function(val){
+					this.data.type=val;
+				}
+            },
+            mounted: function () {
+				tempApp=this;
+                bindImgError()
+				initSwitch();
+				initDatepicker();
+
+
+            }
+        })
+    }
+</script>
+</body>
+</html>

@@ -7,7 +7,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
-import com.code.domain.User;
+import com.code.domain.Crime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,50 +18,39 @@ import com.code.until.CommonUntil;
  *
  * @author majian 自动构建脚本
  */
-@Api("User")
+@Api("Crime")
 @RestController
-@RequestMapping("/User")
-public class UserController extends BaseController {
+@RequestMapping("/Crime")
+public class CrimeController extends BaseController {
 
-    @GetMapping("/queryUserPage")
+
+    @GetMapping("/queryCrimePage")
     @ApiOperation(value = "获取列表")
-    public Map queryUserPage(int status,int sex,long ProvinceID,long CityID,long AreaID,String search,int pageNumber, int pageSize,HttpServletRequest request) {
+    public Map queryCrimePage(int status,String search,int pageNumber, int pageSize,HttpServletRequest request) {
         Map<String, Object> returnMap = new HashMap<>(2);
         Map<String, Object> queryMap = new HashMap<>(3);
         queryMap.put("search", search);
         if(status!=-1){
             queryMap.put("Status", status);
         }
-        if(sex!=-1){
-            queryMap.put("Sex", sex);
-        }
-        if(ProvinceID!=0){
-            queryMap.put("ProvinceID", ProvinceID);
-        }
-        if(CityID!=0){
-            queryMap.put("CityID", CityID);
-        }
-        if(AreaID!=0){
-            queryMap.put("AreaID", AreaID);
-        }
-        PageInfo<User> page = this.ReadUserService.queryPage(queryMap, pageNumber, pageSize);
+        PageInfo<Crime> page = this.ReadCrimeService.queryPage(queryMap, pageNumber, pageSize);
         returnMap.put("rows", page.getList());
         returnMap.put("total", page.getTotal());
         return returnMap;
     }
 
-    @PostMapping("/setUserStatus")
+    @PostMapping("/setCrimeStatus")
     @ApiOperation(value = "设置状态")
-    public Map setUserStatus(String data){
+    public Map setCrimeStatus(String data){
         Map<String,Object> returnMap=new HashMap<>(2);
         Map<String,Object> queryMap=new HashMap<>(1);
-        User temp=JSON.parseObject(data,User.class);
+        Crime temp=JSON.parseObject(data,Crime.class);
         String[] ids=temp.getID().split(",");
         for (String id : ids){
             if(temp.getStatus()==Integer.parseInt(CommonStatus.Status.Ectivity.getid())){
-                UserService.recoverByID(id);
+                CrimeService.recoverByID(id);
             }else{
-                UserService.deleteById(id);
+                CrimeService.deleteById(id);
             }
             queryMap.clear();
         }
@@ -70,12 +59,12 @@ public class UserController extends BaseController {
         return returnMap;
     }
 
-    @GetMapping("/findUser/{id}")
+    @GetMapping("/findCrime/{id}")
     @ApiOperation(value = "根据编号查询内容")
-    public Map findUser(@PathVariable("id") String id){
+    public Map findCrime(@PathVariable("id") String id){
         Map<String,Object> returnMap=new HashMap<>(2);
         Map<String,Object> queryMap=new HashMap<>(1);
-        User temp=ReadUserService.findById(id);
+        Crime temp=ReadCrimeService.findById(id);
         if(temp!=null){
 	   		returnMap.put("code",0);
 	        returnMap.put("data",temp);
@@ -89,54 +78,67 @@ public class UserController extends BaseController {
     }
 
 
-    @PostMapping("/modifyUser")
+    @PostMapping("/modifyCrime")
     @ApiOperation(value = "修改")
-    public Map modifyUser(String data, HttpServletRequest request) {
+    public Map modifyCrime(String data, HttpServletRequest request) {
         Map<String, Object> returnMap = new HashMap<>(2);
-        User temp = JSON.parseObject(data, User.class);
-        User  obj=new User();
+        Crime temp = JSON.parseObject(data, Crime.class);
+        Crime  obj=new Crime();
         boolean isNew=false;
         if("0".equals(temp.getID())){
             isNew=true;
         }else{
-            obj=ReadUserService.findById(String.valueOf(temp.getID()));
+            obj=ReadCrimeService.findById(String.valueOf(temp.getID()));
             if(obj==null){
                 isNew=true;
             }
         }
-
-        obj.setCreateTime(temp.getCreateTime());
         obj.setStatus(temp.getStatus());
-        obj.setLoginName(temp.getLoginName());
-        obj.setPassWord(temp.getPassWord());
-        obj.setHeadImg(temp.getHeadImg());
-        obj.setName(temp.getName());
-        obj.setNikeName(temp.getNikeName());
-        obj.setSignature(temp.getSignature());
-        obj.setSex(temp.getSex());
-        obj.setAge(temp.getAge());
-        obj.setPhone(temp.getPhone());
-        obj.setUnionID(temp.getUnionID());
-        obj.setOpenID(temp.getOpenID());
-        obj.setEmail(temp.getEmail());
-        obj.setProvinceID(temp.getProvinceID());
-        obj.setAreaID(temp.getAreaID());
-        obj.setCityID(temp.getCityID());
-        obj.setLongAddress(temp.getLongAddress());
-        obj.setAddress(temp.getAddress());
-
-
-        User tempObj=null;
+        obj.setUserID(temp.getUserID());
+        obj.setAdminID(temp.getAdminID());
+        obj.setContent(temp.getContent());
+        obj.setSrcType(temp.getSrcType());
+        obj.setSrcID(temp.getSrcID());
+        obj.setTime(temp.getTime());
+        obj.setType(temp.getType());
+        obj.setStartTime(temp.getStartTime());
+        obj.setEndTime(temp.getEndTime());
+        Crime tempObj=null;
         if(isNew){
             obj.setID(CommonUntil.CreateNewID());
             obj.setStatus(Integer.parseInt(CommonStatus.Status.Ectivity.getid()));
-            tempObj=UserService.insert(obj);
+            tempObj=CrimeService.insert(obj);
         }else{
-            tempObj=UserService.update(obj);
+            tempObj=CrimeService.update(obj);
         }
         returnMap.put("code", tempObj!=null?0:-1);
         returnMap.put("message", tempObj!=null?"修改成功":"修改失败");
         return returnMap;
     }
 
+
+
+    @GetMapping("/cancelPunish")
+    @ApiOperation(value = "根据编号查询内容")
+    public Map cancelPunish(String id){
+        Map<String,Object> returnMap=new HashMap<>(2);
+        Map<String,Object> queryMap=new HashMap<>(1);
+        Crime temp=ReadCrimeService.findById(id);
+        if(temp!=null){
+            temp.setType(3);
+            temp=CrimeService.update(temp);
+            if(temp!=null){
+                returnMap.put("code",0);
+                returnMap.put("message","处理成功");
+            }else{
+                returnMap.put("code",-1);
+                returnMap.put("message","处理失败");
+            }
+
+        }else{
+            returnMap.put("code",-1);
+            returnMap.put("message","未查询到该条记录");
+        }
+        return returnMap;
+    }
 }

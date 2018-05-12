@@ -11,9 +11,9 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.Map;
 
-import com.code.domain.Activity;
-import com.code.dao.read.ReadActivityMapper;
-import com.code.dao.write.ActivityMapper;
+import com.code.domain.Crime;
+import com.code.dao.read.ReadCrimeMapper;
+import com.code.dao.write.CrimeMapper;
 
 /**
  * <p>Service class。</p>
@@ -22,52 +22,52 @@ import com.code.dao.write.ActivityMapper;
  * @version 1.00
  */
 @Service
-@CacheConfig(cacheNames="ActivityCache")
+@CacheConfig(cacheNames="CrimeCache") 
 @Transactional(propagation=Propagation.REQUIRED,readOnly=false,rollbackFor=Exception.class)
-public class ActivityService {
+public class CrimeService {
 
+   
+    @Autowired
+	private CrimeMapper WriteMapper;
 
-	@Autowired
-	private ActivityMapper WriteMapper;
+    @Autowired
+	private ReadCrimeMapper ReadMapper;
+ 
 
-	@Autowired
-	private ReadActivityMapper ReadMapper;
-
-
-	@CachePut(key="#p0.ID")
-	@CacheEvict(value = "ReadActivityCache",allEntries = true)
-	public Activity insert(Activity obj){
+	@CachePut(key="#p0.ID")  
+	@CacheEvict(value = "ReadCrimeCache",allEntries = true)
+	public Crime insert(Crime obj){
 		WriteMapper.insert(obj);
 		return ReadMapper.findById(obj.getID());
 	}
 
-	@CachePut(key="#p0.ID")
-	@CacheEvict(value = "ReadActivityCache",allEntries = true)
-	public Activity update(Activity obj){
+	@CachePut(key="#p0.ID")  
+	@CacheEvict(value = "ReadCrimeCache",allEntries = true)
+	public Crime update(Crime obj){
 		WriteMapper.update(obj);
 		return ReadMapper.findById(obj.getID());
 	}
 
-	@CachePut(key="#p0")
-	@CacheEvict(value = "ReadActivityCache",allEntries = true)
-	public Activity deleteById(String id){
+	@CachePut(key="#p0")  
+	@CacheEvict(value = "ReadCrimeCache",allEntries = true)
+	public Crime deleteById(String id){
 		WriteMapper.deleteById(id);
 		return ReadMapper.findById(id);
 	}
 
-	@CachePut(key="#p0")
-	@CacheEvict(value = "ReadActivityCache",allEntries = true)
-	public Activity recoverByID(String id){
+	@CachePut(key="#p0")  
+	@CacheEvict(value = "ReadCrimeCache",allEntries = true)
+	public Crime recoverByID(String id){
 		WriteMapper.recoverByID(id);
 		return ReadMapper.findById(id);
 	}
 
-	@CacheEvict(value = {"ReadActivityCache","ActivityCache"},allEntries = true)
+	@CacheEvict(value = {"ReadCrimeCache","CrimeCache"},allEntries = true)
 	public int deleteByCondition(Map<String,Object> queryMap){
 		return WriteMapper.deleteByCondition(queryMap);
 	}
 
-	@CacheEvict(value = {"ReadActivityCache","ActivityCache"},allEntries = true)
+	@CacheEvict(value = {"ReadCrimeCache","CrimeCache"},allEntries = true)
 	public int recoverByCondition(Map<String,Object> queryMap){
 		return WriteMapper.recoverByCondition(queryMap);
 	}

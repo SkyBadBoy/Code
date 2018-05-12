@@ -13,7 +13,10 @@
 		<result property="Content" column="Report_Content" typeHandler="com.code.until.expression.MyBlobTypeHandler" />
 		<result property="SrcID" column="Report_SrcID" />
 		<result property="Type" column="Report_Type" />
+		<association property="User" column="Report_UserID" select="com.code.dao.read.ReadUserMapper.findById" />
+
 	</resultMap>
+
 	<!-- sql查询语句-->
 	<sql id="sql">
 		Report_ID,Report_CreateTime,Report_ModifyTime,Report_Status,Report_UserID,Report_Anonymity,Report_Content,Report_SrcID,Report_Type

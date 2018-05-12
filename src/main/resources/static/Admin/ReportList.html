@@ -93,25 +93,25 @@
                         title: '编号',
                         align: 'center',
                         field: 'iD',
-                        width:"16%"
+                        width:"14%"
                     },
                     {
                         title: '举报说明',
                         align: 'center',
                         field: 'content',
-                        width:"16%"
+                        width:"14%"
                     },
                     {
-                        title: '举报内容',
+                        title: '举报资源',
                         align: 'center',
                         field: 'srcID',
-                        width:"16%"
+                        width:"14%"
                     },
                     {
                         title: getType(),
                         align: 'center',
                         field: 'type',
-                        width:"16%",
+                        width:"5%",
                         // //【用户：0   新闻资讯：1    评论：2   】
                         formatter:function(val){
                             if(val==0 || val=="0") {
@@ -119,21 +119,37 @@
                             }else if(val==1 || val=="1") {
                                 return '<small class="label label-primary">新闻资讯</small>'
                             }else {
-                                return '<small class="label label-primary">评论</small>'
+                                return '<small class="label label-warning">评论</small>'
                             }
                         }
                     },
                     {
                         title: '用户',
                         align: 'center',
-                        field: 'userID',
-                        width:"16%"
+                        field: 'user',
+                        width:"14%",
+                        formatter:function(val){
+                            if(val!=null){
+                                return val.name
+                            }
+                        }
+                    },
+                    {
+                        title: '手机号',
+                        align: 'center',
+                        field: 'user',
+                        width:"14%",
+                        formatter:function(val){
+                            if(val!=null){
+                                return val.phone
+                            }
+                        }
                     },
                     {
                         title: getAnonymity(),
                         align: 'center',
                         field: 'anonymity',
-                        width:"16%",
+                        width:"5%",
                         formatter:function(val){
 
                             if(val==1 || val=="1") {
@@ -147,7 +163,7 @@
                         title: '创建时间',
                         align: 'center',
                         field: 'createTime',
-                        width:"16%"
+                        width:"14%"
                     },
                     {
                         title: getStatus(),
@@ -155,7 +171,7 @@
                         field: 'status',
                         titleTooltip : "",
                         formatter: statusFormatter,
-                        width:"16%"
+                        width:"5%"
                     },
                 ];
                 getDataTable($('#exampleTableEvents'),"../Report/queryReportPage",columns,queryParams,false);

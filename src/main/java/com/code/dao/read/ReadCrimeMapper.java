@@ -2,7 +2,7 @@
 package com.code.dao.read;
 import java.util.*;
 import com.code.config.mybatis.ReadMapper;
-import com.code.domain.Activity;
+import com.code.domain.Crime;
 import java.util.List;
 
 /**
@@ -11,6 +11,6 @@ import java.util.List;
  * @author majian
  * 
  */
-public interface ReadActivityMapper extends ReadMapper<Activity>{
+public interface ReadCrimeMapper extends ReadMapper<Crime>{
 
 }

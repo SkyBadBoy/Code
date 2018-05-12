@@ -1,82 +1,75 @@
 package com.code.service.write;
 
-import com.code.dao.write.UserMapper;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import java.util.Map;
 
 import com.code.domain.User;
-import com.github.pagehelper.Page;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
+import com.code.dao.read.ReadUserMapper;
+import com.code.dao.write.UserMapper;
 
-import java.util.Map;
-import java.util.List;
-
+/**
+ * <p>Service class。</p>
+ *
+ * @author majian 自动生成器
+ * @version 1.00
+ */
 @Service
-@CacheConfig(cacheNames="userCache")
+@CacheConfig(cacheNames="UserCache") 
 @Transactional(propagation=Propagation.REQUIRED,readOnly=false,rollbackFor=Exception.class)
 public class UserService {
 
-	@Autowired
-	private UserMapper userMapper;
+   
+    @Autowired
+	private UserMapper WriteMapper;
 
-	@CachePut(key="#p0.id")
-	public User insertUser(User u){
-		this.userMapper.insert(u);
-		return this.userMapper.find(u.getId());
-	}
+    @Autowired
+	private ReadUserMapper ReadMapper;
+ 
 
-	@CachePut(key="#p0.id")
-	public User updateUser(User u){
-		this.userMapper.update(u);
-		return this.userMapper.find(u.getId());
-	}
-	
-	@Cacheable(key="#p0")
-	public User findById(String id){
-		System.err.println("根据id=" + id +"获取用户对象，从数据库中获取");
-		return this.userMapper.find(id);
+	@CachePut(key="#p0.ID")  
+	@CacheEvict(value = "ReadUserCache",allEntries = true)
+	public User insert(User obj){
+		WriteMapper.insert(obj);
+		return ReadMapper.findById(obj.getID());
 	}
 
-	@Cacheable(key="#p0")
-	public User findByOpenid(String openid){
-		System.err.println("根据id=" + openid +"获取用户对象，从数据库中获取");
-		return this.userMapper.findByOpenid(openid);
+	@CachePut(key="#p0.ID")  
+	@CacheEvict(value = "ReadUserCache",allEntries = true)
+	public User update(User obj){
+		WriteMapper.update(obj);
+		return ReadMapper.findById(obj.getID());
 	}
-//
-	@CachePut(key="#p0")
+
+	@CachePut(key="#p0")  
+	@CacheEvict(value = "ReadUserCache",allEntries = true)
 	public User deleteById(String id){
-		this.userMapper.delete(id);
-		return this.userMapper.find(id);
+		WriteMapper.deleteById(id);
+		return ReadMapper.findById(id);
 	}
 
-	@CachePut(key="#p0")
-	public User recoverById(String id){
-		this.userMapper.recoverById(id);
-		return this.userMapper.find(id);
+	@CachePut(key="#p0")  
+	@CacheEvict(value = "ReadUserCache",allEntries = true)
+	public User recoverByID(String id){
+		WriteMapper.recoverByID(id);
+		return ReadMapper.findById(id);
 	}
 
-	public List<User> query(Map<String,Object> queryMap){
-		return this.userMapper.query(queryMap);
+	@CacheEvict(value = {"ReadUserCache","UserCache"},allEntries = true)
+	public int deleteByCondition(Map<String,Object> queryMap){
+		return WriteMapper.deleteByCondition(queryMap);
 	}
 
-
-	public PageInfo<User> queryPage(Map<String,Object> queryMap, int pageNum, int pageSize){
-		Page<User> page = PageHelper.startPage(pageNum, pageSize);
-		this.userMapper.query(queryMap);
-		return page.toPageInfo();
+	@CacheEvict(value = {"ReadUserCache","UserCache"},allEntries = true)
+	public int recoverByCondition(Map<String,Object> queryMap){
+		return WriteMapper.recoverByCondition(queryMap);
 	}
 
-	public int getAllCount(){
-		return this.userMapper.getAllCount();
-	}
-	public List<User> queryCountDay(){
-		return this.userMapper.queryCountDay();
-	}
-	
 }

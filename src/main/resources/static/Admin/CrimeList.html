@@ -6,7 +6,7 @@
     <title>代码生成工具- majian</title>
     <meta name="keywords" content="马健">
     <meta name="description" content="马健">
-    <script src="js/web/include.js?v=1.0.6"></script>
+    <script src="js/web/include.js?v=1.0.5"></script>
 </head>
 <body class="gray-bg">
 <div class="wrapper wrapper-content" id="app">
@@ -32,6 +32,9 @@
                                 <button type="button"  @click="recover(1)" class="btn btn-primary ">
                                     <i class="glyphicon glyphicon-play" aria-hidden="true">恢复</i>
                                 </button>
+                                <button type="button"  @click="punish" class="btn btn-warning ">
+                                    <i class="glyphicon glyphicon-remove" aria-hidden="true">取消处罚</i>
+                                </button>
                             </div>
                             <table id="exampleTableEvents" >
                             </table>
@@ -50,23 +53,38 @@
             el: "#app",
             data: {
                 status: -1,
-                index:0,
-                anonymity:-1
+                index:0
             },
             methods: {
                 recover: function (val) {
                     setStatus(this,val)
                 },
                 modify: function (flag) {
-                    var url = "../Admin/addFeedback.html?";
+                    var url = "../Admin/addCrime.html?";
                     if(flag==0){//新增
                         url+= "id=0";
                     }else{//修改
                         if(checkIsSelection()){return};
                         url+= "id="+getRecordIDForFastJson($('#exampleTableEvents'));
                     }
-                    modifyShow(this,url,"100%","100%","Feedback");
+                    modifyShow(this,url,"100%","100%","Crime");
                 },
+                punish:function(){
+                    if(checkIsSelection()){return};
+                    $.ajax({
+                        url:"../Crime/cancelPunish?id="+getRecordIDForFastJson($('#exampleTableEvents')),
+                        Type:"post",
+                        success:function(json){
+                            if(json.code==0){
+                                success(json.message);
+                                tableRefresh();
+                            }else{
+                                error(json.message);
+                            }
+
+                        }
+                    })
+                }
             },
             mounted: function () {
                 bindImgError()
@@ -76,7 +94,7 @@
         })
         /** 固定写法 by majian*/
         function setStatus(that,status) {
-            setAdminStatus(that,status,"../Feedback/setFeedbackStatus")
+            setAdminStatus(that,status,"../Crime/setCrimeStatus")
         }
         /** 初始化表格*/
         (function(document, window, $) {
@@ -85,20 +103,17 @@
                 var columns=[
                     {
                         field: 'state',
-                        checkbox:true,
-                        width:"3%"
+                        checkbox:true
                     },
                     {
                         title: '编号',
                         align: 'center',
                         field: 'iD',
-                        width:"14%"
                     },
                     {
-                        title: '反馈内容',
+                        title: '原因',
                         align: 'center',
                         field: 'content',
-                        width:"14%"
                     },
                     {
                         title: '用户',
@@ -123,34 +138,57 @@
                         }
                     },
                     {
-                        title: getAnonymity(),
+                        title: '创建时间',
                         align: 'center',
-                        field: 'anonymity',
-                        width:"14%",
+                        field: 'createTime',
+                    },
+                    {
+                        title: '处罚类型',
+                        align: 'center',
+                        field: 'type',
                         formatter:function(val){
-                            if(val==1 || val=="1") {
-                                return '<small class="label label-danger">匿名</small>'
-                            }else{
-                                return '<small class="label label-primary">正常</small>'
+                            if(val==0){
+                                return '<small class="label label-primary">提醒</small>'
+                            }else if(val==1){
+                                return '<small class="label label-warning">警告</small>'
+                            }else if(val==2){
+                                return '<small class="label label-danger">禁止/下架</small>'
+                            }else if(val==3){
+                                return '<small class="label label-default">取消处罚</small>'
                             }
                         }
                     },
                     {
-                        title: '创建时间',
+                        title: '时效',
                         align: 'center',
-                        field: 'createTime',
-                        width:"14%"
+                        field: 'time',
+                        formatter:function(val){
+                            if(val==0){
+                                return '<small class="label label-primary">永久</small>'
+                            }else if(val==1){
+                                return '<small class="label label-warning">时效</small>'
+                            }
+                        }
+                    },
+                    {
+                        title: '开始时间',
+                        align: 'center',
+                        field: 'startTime',
+                    },
+                    {
+                        title: '结束时间',
+                        align: 'center',
+                        field: 'endTime',
                     },
                     {
                         title: getStatus(),
                         align: 'center',
                         field: 'status',
                         titleTooltip : "",
-                        formatter: statusFormatter,
-                        width:"14%"
+                        formatter: statusFormatter
                     },
                 ];
-                getDataTable($('#exampleTableEvents'),"../Feedback/queryFeedbackPage",columns,queryParams,false);
+                getDataTable($('#exampleTableEvents'),"../Crime/queryCrimePage",columns,queryParams,false);
             })();
             function queryParams(params) {
                 var temp={}
@@ -158,33 +196,10 @@
                 temp.pageNumber=params.offset/params.limit+1;
                 temp.search=params.search;
                 temp.status=app.status;
-                temp.anonymity=app.anonymity;
                 return temp;
             }
 
         })(document, window, jQuery);
-    }
-    function getAnonymity(){
-        var  html='<div class="dropdown profile-element">' +
-                '<a data-toggle="dropdown" class="dropdown-toggle" href="#">' +
-                '<span class="text-muted text-xs block">状态<b class="caret"></b></span>' +
-                ' </span>' +
-                '</a>' +
-                '<ul class="dropdown-menu  m-t-xs">' +
-                '<li><a class="J_menuItem" onclick="changAnonymity(1)">匿名</a>' +
-                ' </li>' +
-                ' <li><a class="J_menuItem" onclick="changAnonymity(0)">正常</a>' +
-                '</li>' +
-                '<li class="divider"></li>' +
-                '<li><a  class="J_menuItem" onclick="changAnonymity(-1)">全部</a>' +
-                '</li>' +
-                ' </ul>' +
-                '</div>'
-        return html;
-    }
-    function changAnonymity(val){
-        tempApp.anonymity=val;
-        tableRefresh();
     }
 </script>
 </body>

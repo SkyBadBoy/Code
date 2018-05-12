@@ -15,8 +15,8 @@ import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import com.code.domain.Activity;
-import com.code.dao.read.ReadActivityMapper;
+import com.code.domain.Crime;
+import com.code.dao.read.ReadCrimeMapper;
 
 import java.util.List;
 import java.util.Map;
@@ -27,21 +27,21 @@ import java.util.Map;
  * @author majian
  * @version 1.00
  */
-@Service
-@CacheConfig(cacheNames="ReadActivityCache")
-@Transactional(propagation=Propagation.REQUIRED,readOnly=false,rollbackFor=Exception.class)
-public class ReadActivityService {
+ @Service
+ @CacheConfig(cacheNames="ReadCrimeCache") 
+ @Transactional(propagation=Propagation.REQUIRED,readOnly=false,rollbackFor=Exception.class)
+public class ReadCrimeService {
 
-	@Autowired
-	private ReadActivityMapper ReadMapper;
+    @Autowired
+	private ReadCrimeMapper ReadMapper;
 
-	@Cacheable(value = "ActivityCache",key="#p0")
-	public Activity findById(String id){
+	@Cacheable(value = "CrimeCache",key="#p0") 
+	public Crime findById(String id){
 		return ReadMapper.findById(id);
 	}
 
 	@Cacheable(keyGenerator = "keyGenerator")
-	public List<Activity> query(Map<String,Object> queryMap){
+	public List<Crime> query(Map<String,Object> queryMap){
 		return ReadMapper.query(queryMap);
 	}
 
@@ -51,8 +51,9 @@ public class ReadActivityService {
 	}
 
 	@Cacheable(keyGenerator = "keyGenerator")
-	public PageInfo<Activity> queryPage(Map<String,Object> queryMap, int pageNum, int pageSize){
-		Page<Activity> page = PageHelper.startPage(pageNum, pageSize);
+	public PageInfo<Crime> queryPage(Map<String,Object> queryMap, int pageNum, int pageSize){
+		Page<Crime> page = PageHelper.startPage(pageNum, pageSize);
+		page.setOrderBy("Crime_CreateTime desc");
 		ReadMapper.query(queryMap);
 		return page.toPageInfo();
 	}

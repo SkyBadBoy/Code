@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSON;
 
 import com.alibaba.fastjson.JSONObject;
 import com.code.until.CommonStatus;
-import com.code.domain.Box;
 import com.code.until.CommonUntil;
 import org.dom4j.Document;
 import org.dom4j.Element;
@@ -77,15 +76,15 @@ public class WeChatController extends BaseController{
 			data.put("total_fee",total_fee);
 			data.put("appid",AppID);
 
-			Box b= JSON.parseObject(json.getString("attach"),Box.class);
-			b.setId(CommonUntil.CreateNewID());
-			b.setStatus(CommonStatus.Status.Ectivity.getid());
-			b.setType(CommonStatus.Status.Run.getid());
-			int place = new Random().nextInt(Integer.parseInt(b.getNum())) + 1;
-			b.setPlace(place+"");
-			b.setMoney(total_fee);
-			b.setData(JSON.toJSONString(data));
-			Box bo=boxService.insert(b);
+//			Box b= JSON.parseObject(json.getString("attach"),Box.class);
+//			b.setId(CommonUntil.CreateNewID());
+//			b.setStatus(CommonStatus.Status.Ectivity.getid());
+//			b.setType(CommonStatus.Status.Run.getid());
+//			int place = new Random().nextInt(Integer.parseInt(b.getNum())) + 1;
+//			b.setPlace(place+"");
+//			b.setMoney(total_fee);
+//			b.setData(JSON.toJSONString(data));
+//			Box bo=boxService.insert(b);
 
 			// 释放资源
 			inputStream.close();

@@ -23,6 +23,7 @@ linkScriptDOMLoaded([
     "css/plugins/iCheck/custom.css",
     "css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css",
     "css/plugins/clockpicker/clockpicker.css",
+    "css/plugins/datapicker/datepicker3.css",
     "js/plugins/layer/skin/layer.css",
 
     "js/jquery.min.js",
@@ -46,13 +47,13 @@ linkScriptDOMLoaded([
     "js/plugins/iCheck/icheck.min.js",
     "js/plugins/clockpicker/clockpicker.js",
     "js/plugins/datapicker/bootstrap-datepicker.js",
+    "js/plugins/datapicker/bootstrap-datepicker.js",
     "js/plugins/layer/laydate/laydate.js",
     "js/web/commonUrl.js",
     "js/web/commonUtil.js",
     "js/web/AdminUtil.js",
     "js/web/md5.js"
 ])
-
 
 //文件全部加载完成显示DOM
 function linkScriptDOMLoaded(parm){

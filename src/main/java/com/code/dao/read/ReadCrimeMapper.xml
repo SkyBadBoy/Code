@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.code.dao.read.ReadCrimeMapper">
+	<!-- 返回的map -->
+	<resultMap id="crime" type="com.code.domain.Crime">
+		<result property="ID" column="Crime_ID" />
+		<result property="CreateTime" column="Crime_CreateTime" />
+		<result property="ModifyTime" column="Crime_ModifyTime" />
+		<result property="Status" column="Crime_Status" />
+		<result property="UserID" column="Crime_UserID" />
+		<result property="AdminID" column="Crime_AdminID" />
+		<result property="Content" column="Crime_Content" />
+		<result property="SrcType" column="Crime_SrcType" />
+		<result property="SrcID" column="Crime_SrcID" />
+		<result property="Time" column="Crime_Time" />
+		<result property="Type" column="Crime_Type" />
+		<result property="StartTime" column="Crime_StartTime" />
+		<result property="EndTime" column="Crime_EndTime" />
+		<association property="User" column="Crime_UserID" select="com.code.dao.read.ReadUserMapper.findById"/>
+	</resultMap>
+	<!-- sql查询语句-->
+	<sql id="sql">
+		Crime_ID,Crime_CreateTime,Crime_ModifyTime,Crime_Status,Crime_UserID,Crime_AdminID,Crime_Content,Crime_SrcType,Crime_SrcID,Crime_Time,Crime_Type,Crime_StartTime,Crime_EndTime
+	</sql>
+	<!-- sql查询条件-->
+	<sql id="where">
+		1=1 
+		<if test="ID!=null">
+				 and Crime_ID = #{ID}
+</if>
+<if test="CreateTime!=null">
+				 and Crime_CreateTime = #{CreateTime}
+</if>
+<if test="ModifyTime!=null">
+				 and Crime_ModifyTime = #{ModifyTime}
+</if>
+<if test="Status!=null">
+				 and Crime_Status = #{Status}
+</if>
+<if test="UserID!=null">
+				 and Crime_UserID = #{UserID}
+</if>
+<if test="AdminID!=null">
+				 and Crime_AdminID = #{AdminID}
+</if>
+<if test="Content!=null">
+				 and Crime_Content = #{Content}
+</if>
+<if test="SrcType!=null">
+				 and Crime_SrcType = #{SrcType}
+</if>
+<if test="SrcID!=null">
+				 and Crime_SrcID = #{SrcID}
+</if>
+<if test="Time!=null">
+				 and Crime_Time = #{Time}
+</if>
+<if test="Type!=null">
+				 and Crime_Type = #{Type}
+</if>
+<if test="StartTime!=null">
+				 and Crime_StartTime = #{StartTime}
+</if>
+<if test="EndTime!=null">
+				 and Crime_EndTime = #{EndTime}
+</if>
+
+	</sql>
+	<!-- 根据ID 查找-->
+	<select id="findById" resultMap="crime" parameterType="long">
+		SELECT
+		<include refid="sql"></include>
+		FROM t_Crime
+		<where>
+			Crime_ID = #{_parameter} 
+		</where>
+	</select>
+	<!-- 根据条件 查找-->
+	<select id="query"  resultMap="crime"
+		parameterType="java.util.Map">
+		SELECT
+		<include refid="sql"></include>
+		FROM t_Crime
+		<where>
+			<include refid="where"></include>
+		</where>
+	
+	</select>
+	<!-- 根据条件总数-->
+	<select id="queryCount" parameterType="map" resultType="int">
+		SELECT
+			Count(1)
+			FROM t_Crime
+			<where>
+				<include refid="where"></include>
+			</where>
+	</select>
+
+
+
+</mapper>

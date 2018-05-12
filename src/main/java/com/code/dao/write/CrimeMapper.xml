@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.code.dao.write.CrimeMapper">
+	<sql id="sql">
+		Crime_ID,Crime_CreateTime,Crime_ModifyTime,Crime_Status,Crime_UserID,Crime_AdminID,Crime_Content,Crime_SrcType,Crime_SrcID,Crime_Time,Crime_Type,Crime_StartTime,Crime_EndTime
+	</sql>
+	<sql id="where">
+		1=1 
+		<if test="ID!=null">
+				 and Crime_ID = #{ID}
+</if>
+<if test="CreateTime!=null">
+				 and Crime_CreateTime = #{CreateTime}
+</if>
+<if test="ModifyTime!=null">
+				 and Crime_ModifyTime = #{ModifyTime}
+</if>
+<if test="Status!=null">
+				 and Crime_Status = #{Status}
+</if>
+<if test="UserID!=null">
+				 and Crime_UserID = #{UserID}
+</if>
+<if test="AdminID!=null">
+				 and Crime_AdminID = #{AdminID}
+</if>
+<if test="Content!=null">
+				 and Crime_Content = #{Content}
+</if>
+<if test="SrcType!=null">
+				 and Crime_SrcType = #{SrcType}
+</if>
+<if test="SrcID!=null">
+				 and Crime_SrcID = #{SrcID}
+</if>
+<if test="Time!=null">
+				 and Crime_Time = #{Time}
+</if>
+<if test="Type!=null">
+				 and Crime_Type = #{Type}
+</if>
+<if test="StartTime!=null">
+				 and Crime_StartTime = #{StartTime}
+</if>
+<if test="EndTime!=null">
+				 and Crime_EndTime = #{EndTime}
+</if>
+
+	</sql>
+
+	<!-- 插入数据 -->
+	<insert id="insert" parameterType="com.code.domain.Crime"  useGeneratedKeys="true">
+		insert into t_Crime( <include refid="sql"></include> )
+		values(
+				#{ID},
+now(),
+now(),
+#{Status},
+#{UserID},
+#{AdminID},
+#{Content},
+#{SrcType},
+#{SrcID},
+#{Time},
+#{Type},
+#{StartTime},
+#{EndTime}
+				)
+	</insert>
+	<update id="update" parameterType="com.code.domain.Crime">
+		update t_Crime set Crime_ModifyTime = now(),Crime_Status = #{Status},Crime_UserID = #{UserID},Crime_AdminID = #{AdminID},Crime_Content = #{Content},Crime_SrcType = #{SrcType},Crime_SrcID = #{SrcID},Crime_Time = #{Time},Crime_Type = #{Type},Crime_StartTime = #{StartTime},Crime_EndTime = #{EndTime}
+		<where>
+			Crime_ID= #{ID} 
+		</where>
+	</update>
+
+
+	<!-- 根据编号删除 by majian-->
+	<update id="deleteById" parameterType="com.code.domain.Crime">
+		update t_Crime set Crime_Status=88 where Crime_ID = #{_parameter} 
+	</update>
+
+	<!-- 根据编号恢复 by majian-->
+	<update id="recoverByID" parameterType="com.code.domain.Crime">
+		update t_Crime set Crime_Status=1 where Crime_ID = #{_parameter} 
+	</update>
+
+	<!-- 根据条件删除 by majian-->
+	<update id="deleteByCondition" parameterType="com.code.domain.Crime">
+		update t_Crime set Crime_Status=88 
+		<where>
+			<include refid="where"></include>
+		</where>
+	</update>
+
+	<!-- 根据条件恢复 by majian-->
+	<update id="recoverByCondition" parameterType="com.code.domain.Crime">
+		update t_Crime set Crime_Status=1 
+		<where>
+			<include refid="where"></include>
+		</where>
+	</update>
+
+
+</mapper>

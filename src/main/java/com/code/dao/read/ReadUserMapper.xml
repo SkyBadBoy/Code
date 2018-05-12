@@ -1,10 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.code.dao.write.UserMapper">
+<mapper namespace="com.code.dao.read.ReadUserMapper">
+	<!-- 返回的map -->
+	<resultMap id="user" type="com.code.domain.User">
+		<result property="ID" column="User_ID" />
+		<result property="CreateTime" column="User_CreateTime" />
+		<result property="ModifyTime" column="User_ModifyTime" />
+		<result property="Status" column="User_Status" />
+		<result property="LoginName" column="User_LoginName" />
+		<result property="PassWord" column="User_PassWord" />
+		<result property="HeadImg" column="User_HeadImg" />
+		<result property="Name" column="User_Name" />
+		<result property="NikeName" column="User_NikeName" />
+		<result property="Signature" column="User_Signature" />
+		<result property="Sex" column="User_Sex" />
+		<result property="Age" column="User_Age" />
+		<result property="Phone" column="User_Phone" />
+		<result property="UnionID" column="User_UnionID" />
+		<result property="OpenID" column="User_OpenID" />
+		<result property="Email" column="User_Email" />
+		<result property="ProvinceID" column="User_ProvinceID" />
+		<result property="AreaID" column="User_AreaID" />
+		<result property="CityID" column="User_CityID" />
+		<result property="LongAddress" column="User_LongAddress" />
+		<result property="Address" column="User_Address" />
+	</resultMap>
+	<!-- sql查询语句-->
 	<sql id="sql">
 		User_ID,User_CreateTime,User_ModifyTime,User_Status,User_LoginName,User_PassWord,User_HeadImg,User_Name,User_NikeName,User_Signature,User_Sex,User_Age,User_Phone,User_UnionID,User_OpenID,User_Email,User_ProvinceID,User_AreaID,User_CityID,User_LongAddress,User_Address
 	</sql>
+	<!-- sql查询条件-->
 	<sql id="where">
 		1=1 
 		<if test="ID!=null">
@@ -72,67 +98,36 @@
 </if>
 
 	</sql>
-
-	<!-- 插入数据 -->
-	<insert id="insert" parameterType="com.code.domain.User"  useGeneratedKeys="true">
-		insert into t_User( <include refid="sql"></include> )
-		values(
-				#{ID},
-now(),
-now(),
-#{Status},
-#{LoginName},
-#{PassWord},
-#{HeadImg},
-#{Name},
-#{NikeName},
-#{Signature},
-#{Sex},
-#{Age},
-#{Phone},
-#{UnionID},
-#{OpenID},
-#{Email},
-#{ProvinceID},
-#{AreaID},
-#{CityID},
-#{LongAddress},
-#{Address}
-				)
-	</insert>
-	<update id="update" parameterType="com.code.domain.User">
-		update t_User set User_ModifyTime = now(),User_Status = #{Status},User_LoginName = #{LoginName},User_PassWord = #{PassWord},User_HeadImg = #{HeadImg},User_Name = #{Name},User_NikeName = #{NikeName},User_Signature = #{Signature},User_Sex = #{Sex},User_Age = #{Age},User_Phone = #{Phone},User_UnionID = #{UnionID},User_OpenID = #{OpenID},User_Email = #{Email},User_ProvinceID = #{ProvinceID},User_AreaID = #{AreaID},User_CityID = #{CityID},User_LongAddress = #{LongAddress},User_Address = #{Address}
+	<!-- 根据ID 查找-->
+	<select id="findById" resultMap="user" parameterType="long">
+		SELECT
+		<include refid="sql"></include>
+		FROM t_User
 		<where>
-			User_ID= #{ID} 
+			User_ID = #{_parameter} 
 		</where>
-	</update>
-
-
-	<!-- 根据编号删除 by majian-->
-	<update id="deleteById" parameterType="com.code.domain.User">
-		update t_User set User_Status=88 where User_ID = #{_parameter} 
-	</update>
-
-	<!-- 根据编号恢复 by majian-->
-	<update id="recoverByID" parameterType="com.code.domain.User">
-		update t_User set User_Status=1 where User_ID = #{_parameter} 
-	</update>
-
-	<!-- 根据条件删除 by majian-->
-	<update id="deleteByCondition" parameterType="com.code.domain.User">
-		update t_User set User_Status=88 
+	</select>
+	<!-- 根据条件 查找-->
+	<select id="query"  resultMap="user"
+		parameterType="java.util.Map">
+		SELECT
+		<include refid="sql"></include>
+		FROM t_User
 		<where>
 			<include refid="where"></include>
 		</where>
-	</update>
+	
+	</select>
+	<!-- 根据条件总数-->
+	<select id="queryCount" parameterType="map" resultType="int">
+		SELECT
+			Count(1)
+			FROM t_User
+			<where>
+				<include refid="where"></include>
+			</where>
+	</select>
 
-	<!-- 根据条件恢复 by majian-->
-	<update id="recoverByCondition" parameterType="com.code.domain.User">
-		update t_User set User_Status=1 
-		<where>
-			<include refid="where"></include>
-		</where>
-	</update>
 
 
 </mapper>

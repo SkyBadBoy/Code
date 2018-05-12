@@ -11,6 +11,8 @@
 		<result property="UserID" column="FeedBack_UserID" />
 		<result property="Anonymity" column="FeedBack_Anonymity" />
 		<result property="Content" column="FeedBack_Content" typeHandler="com.code.until.expression.MyBlobTypeHandler"/>
+
+		<association property="User" column="FeedBack_UserID" select="com.code.dao.read.ReadUserMapper.findById" />
 	</resultMap>
 	<!-- sql查询语句-->
 	<sql id="sql">

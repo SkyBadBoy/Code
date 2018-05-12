@@ -103,7 +103,7 @@ function clickUrlFormatter(value) {
  */
 function headImgFormatter(value) {
     if(chechIsUnll(value)){
-        return "<image src='"+value+"' style='height:100px;width: 100px;'>";
+        return "<image src='"+value+"' style='height:70px;width: 70px;'>";
     }
 }
 /**
@@ -350,3 +350,73 @@ function bindImgError(){
     },500);
 
 }
+
+function getRegionHead(that,type,ParentID){
+    if(ParentID!=0&&ParentID!="0"){
+        $.ajax({
+            url:"../Region/queryRegionByParentID?ParentID="+ParentID,
+            success:function(json){
+                if(type==1){
+                    that.ProvinceList=json.data;
+                    that.AreaID=0;that.CityID=0;
+                }else if(type==2){
+                    that.CityList=json.data;
+                    that.AreaID=0;that.CityID=0;
+                }else if(type==3){
+                    that.AreaList=json.data;
+                }
+                tableRefresh();
+            }
+        })
+    }else{tableRefresh()}
+}
+function initSwitch(){
+    var elem = document.querySelector('.js-switch');
+    var switchery = new Switchery(elem, {
+        color: '#1AB394'
+    });
+}
+
+function initDatepicker(){
+    $('#datepicker').datepicker({
+        keyboardNavigation: false,
+        forceParse: false,
+        autoclose: true
+    });
+}
+/**
+ * 时间轴格式化  yyyy--mm--dd
+ * @param obj
+ * @returns {string}
+ */
+function fmtDate(obj){
+    var date =  new Date(obj);
+    var y = 1900+date.getYear();
+    var m = "0"+(date.getMonth()+1);
+    var d = "0"+date.getDate();
+    return y+"-"+m.substring(m.length-2,m.length)+"-"+d.substring(d.length-2,d.length);
+}
+/**
+ * 时间格式化  yyyy--mm--dd
+ * @param obj
+ * @returns {string}
+ */
+function fmtDate2Data(obj){
+    var date =  obj;
+    var y = 1900+date.getYear();
+    var m = "0"+(date.getMonth()+1);
+    var d = "0"+date.getDate();
+    return y+"-"+m.substring(m.length-2,m.length)+"-"+d.substring(d.length-2,d.length);
+}
+
+/**
+ * 几天之后的日期
+ * @param time
+ * @returns {Date}
+ */
+function laterTime(time){
+    var myDate=new Date()
+    myDate.setDate(myDate.getDate()+time)
+    return myDate;
+}
+

@@ -50,6 +50,8 @@ public class Feedback implements Serializable {
     @ApiModelProperty("反馈内容")
     private String Content;
 
+    @ApiModelProperty("用户")
+    private User User;
 
 
 

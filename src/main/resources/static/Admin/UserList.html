@@ -53,9 +53,8 @@
                         </div>
                     </div>
                     <!--查询面板结束 -->
-                </div>
-                <div class="col-sm-12" style="margin-top:-20px; ">
                     <div class="example-wrap">
+                        <h4 class="example-title"></h4>
                         <div class="example">
                             <div class="btn-group hidden-xs" id="exampleTableEventsToolbar" role="group">
                                 <!--<button type="button"   @click="modify(0)" class="btn btn-primary ">-->
@@ -69,6 +68,9 @@
                                 </button>
                                 <button type="button"  @click="recover(1)" class="btn btn-primary ">
                                     <i class="glyphicon glyphicon-play" aria-hidden="true">恢复</i>
+                                </button>
+                                <button type="button"  @click="crime" class="btn btn-success ">
+                                    <i class="glyphicon glyphicon-warning-sign" aria-hidden="true">违规处理</i>
                                 </button>
                             </div>
                             <table id="exampleTableEvents" >
@@ -89,6 +91,7 @@
             data: {
                 status: -1,
                 index:0,
+                sex:-1,
                 ProvinceID:0,
                 CityID:0,
                 AreaID:0,
@@ -97,6 +100,7 @@
                 AreaList:[]
             },
             methods: {
+                //** 行政规划开始
                 getProvince:function(){
                     this.getRegion(1,1)
                 },
@@ -112,18 +116,25 @@
                 getRegion:function(type,ParentID){
                     getRegionHead(this,type,ParentID);
                 },
+                //** 行政规划结束
                 recover: function (val) {
                     setStatus(this,val)
                 },
+                crime:function(){
+                    if(checkIsSelection()){return};
+                    var id=getRecordIDForFastJson($('#exampleTableEvents'));
+                    var url = "../Admin/addCrime.html?srcType=1&userID="+id+"&srcID="+id;
+                    modifyShow(this,url,"800px","480px","违规处理");
+                },
                 modify: function (flag) {
-                    var url = "../Admin/addRegion.html?";
+                    var url = "../Admin/addUser.html?";
                     if(flag==0){//新增
                         url+= "id=0";
                     }else{//修改
                         if(checkIsSelection()){return};
                         url+= "id="+getRecordIDForFastJson($('#exampleTableEvents'));
                     }
-                    modifyShow(this,url,"100%","100%","Region");
+                    modifyShow(this,url,"100%","100%","User");
                 },
             },
             mounted: function () {
@@ -135,7 +146,7 @@
         })
         /** 固定写法 by majian*/
         function setStatus(that,status) {
-            setAdminStatus(that,status,"../Region/setRegionStatus")
+            setAdminStatus(that,status,"../User/setUserStatus")
         }
         /** 初始化表格*/
         (function(document, window, $) {
@@ -152,47 +163,49 @@
                         field: 'iD',
                     },
                     {
-                        title: '名字',
+                        title: '头像',
+                        align: 'center',
+                        field: 'headImg',
+                        formatter:headImgFormatter
+                    },
+                    {
+                        title: '用户名',
                         align: 'center',
                         field: 'name',
                     },
                     {
-                        title: '拼音名字',
+                        title: '手机号',
                         align: 'center',
-                        field: 'nameEn',
+                        field: 'phone',
                     },
                     {
-                        title: '省',
+                        title: getSex(),
                         align: 'center',
-                        field: 'provinceName',
-                    },
-                    {
-                        title: '市',
-                        align: 'center',
-                        field: 'cityName',
-                    },
-                    {
-                        title: '区',
-                        align: 'center',
-                        field: 'areaName',
-                    },
-                    {
-                        title: '级别',
-                        align: 'center',
-                        field: 'level',
-                        formatter:function(value){
-                            if(value==0) {
-                                return '<small class="label label-warning">国家</small>'
-                            }else if(value==1){
-                                return '<small class="label label-info">省份</small>'
-                            }else if(value==2){
-                                return '<small class="label label-success">市</small>'
-                            }else if(value==3){
-                                return '<small class="label label-active">区</small>'
-                            }else if(value==4){
-                                return '<small class="label label-active">学校</small>'
+                        field: 'sex',
+                        formatter:function(val){
+                            if(val==0 ) {
+                                return '<small class="label label-warning">保密</small>'
+                            }else if(val==1){
+                                return '<small class="label label-primary"> 男</small>'
+                            }else{
+                                return '<small class="label label-success"> 女</small>'
                             }
                         }
+                    },
+                    {
+                        title: '邮箱',
+                        align: 'center',
+                        field: 'email',
+                    },
+                    {
+                        title: '地址',
+                        align: 'center',
+                        field: 'longAddress',
+                    },
+                    {
+                        title: '创建时间',
+                        align: 'center',
+                        field: 'createTime',
                     },
                     {
                         title: getStatus(),
@@ -202,7 +215,7 @@
                         formatter: statusFormatter
                     },
                 ];
-                getDataTable($('#exampleTableEvents'),"../Region/queryRegionPage",columns,queryParams,false);
+                getDataTable($('#exampleTableEvents'),"../User/queryUserPage",columns,queryParams,false);
             })();
             function queryParams(params) {
                 var temp={}
@@ -210,6 +223,7 @@
                 temp.pageNumber=params.offset/params.limit+1;
                 temp.search=params.search;
                 temp.status=app.status;
+                temp.sex=app.sex;
                 temp.ProvinceID=app.ProvinceID;
                 temp.CityID=app.CityID;
                 temp.AreaID=app.AreaID;
@@ -217,6 +231,30 @@
             }
 
         })(document, window, jQuery);
+    }
+    function getSex(){
+        var  html='<div class="dropdown profile-element">' +
+                '<a data-toggle="dropdown" class="dropdown-toggle" href="#">' +
+                '<span class="text-muted text-xs block">保密<b class="caret"></b></span>' +
+                ' </span>' +
+                '</a>' +
+                '<ul class="dropdown-menu  m-t-xs">' +
+                '<li><a class="J_menuItem" onclick="changSex(0)">保密</a>' +
+                ' </li>' +
+                ' <li><a class="J_menuItem" onclick="changSex(1)">男</a>' +
+                '</li>' +
+                ' <li><a class="J_menuItem" onclick="changSex(2)">女</a>' +
+                '</li>' +
+                '<li class="divider"></li>' +
+                '<li><a  class="J_menuItem" onclick="changSex(-1)">全部</a>' +
+                '</li>' +
+                ' </ul>' +
+                '</div>'
+        return html;
+    }
+    function changSex(val){
+        tempApp.sex=val;
+        tableRefresh();
     }
 </script>
 </body>

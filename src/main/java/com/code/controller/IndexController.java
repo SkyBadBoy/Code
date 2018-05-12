@@ -22,17 +22,6 @@ public class IndexController extends BaseController{
         return "index";
     }
 
-    /**
-     * 主页的数据接口
-     * @return
-     */
-    @GetMapping("/getHomeInfo2")
-    @ResponseBody
-    public Map<String,Object> getHomeInfo2(){
-        Map<String,Object> returnMap=new HashMap<String,Object>();
-        returnMap.put("asd阿d斯d蒂芬sdfjhf", boxService.getAllMoney());
-        return returnMap;
-    }
 
     /**
      * 主页的数据接口
@@ -42,12 +31,12 @@ public class IndexController extends BaseController{
     @ResponseBody
     public Map<String,Object> getHomeInfo(){
         Map<String,Object> returnMap=new HashMap<String,Object>();
-        returnMap.put("boxMoney", boxService.getAllMoney());
-        returnMap.put("boxCount", boxService.getAllCount());
-        returnMap.put("userCount", userService.getAllCount());
-        returnMap.put("boxCountDay", boxService.getAllCountDay());
-        returnMap.put("boxCountByDay", boxService.queryCountDay());
-        returnMap.put("userCountByDay", userService.queryCountDay());
+//        returnMap.put("boxMoney", boxService.getAllMoney());
+//        returnMap.put("boxCount", boxService.getAllCount());
+//        returnMap.put("userCount", userService.getAllCount());
+//        returnMap.put("boxCountDay", boxService.getAllCountDay());
+//        returnMap.put("boxCountByDay", boxService.queryCountDay());
+//        returnMap.put("userCountByDay", userService.queryCountDay());
         return returnMap;
     }
 

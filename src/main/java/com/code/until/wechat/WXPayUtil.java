@@ -50,7 +50,7 @@ public class WXPayUtil {
         queryReq.setParameter("mch_appid",weChatInfo.getAppid());
         queryReq.setParameter("mchid",String.valueOf(weChatInfo.getMchid()));
         queryReq.setParameter("nonce_str",WXUtil.getNonceStr());
-        queryReq.setParameter("openid", user.getOpenid());
+        queryReq.setParameter("openid", user.getOpenID());
         queryReq.setParameter("partner_trade_no",orderNo);
         queryReq.setParameter("re_user_name", user.getName());
         queryReq.setParameter("spbill_create_ip", "114.215.201.156");
