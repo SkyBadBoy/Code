@@ -59,5 +59,17 @@ public class CommonStatus {
             this.seq = seq;
         }
     }
+    public enum AuthorizeType {
+        /** 所有平台*/
+        All(0),
+        /** 后台管理*/
+        Admin(1),
+        /** 接口*/
+        Interface(2) ;
+        public int seq;
+        AuthorizeType(int seq){
+            this.seq = seq;
+        }
+    }
 
 }

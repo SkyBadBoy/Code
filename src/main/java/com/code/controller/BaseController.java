@@ -50,7 +50,10 @@ public class BaseController {
 	protected CrimeService CrimeService;
 	@Autowired
 	protected UserService UserService;
-
+	@Autowired
+	protected OnlineService OnlineService;
+	@Autowired
+	protected AuthorizeService AuthorizeService;
 
 	@Autowired
 	protected ReadErrorService ReadErrorService;
@@ -74,7 +77,10 @@ public class BaseController {
 	protected ReadCrimeService ReadCrimeService;
 	@Autowired
 	protected ReadUserService ReadUserService;
-
+	@Autowired
+	protected ReadOnlineService ReadOnlineService;
+	@Autowired
+	protected ReadAuthorizeService ReadAuthorizeService;
 
 
 	@ExceptionHandler

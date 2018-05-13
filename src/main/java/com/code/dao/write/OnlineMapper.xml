@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.code.dao.write.OnlineMapper">
+	<sql id="sql">
+		OnLine_ID,OnLine_UserID,OnLine_Session,OnLine_CreateTime,OnLine_ModifyTime,OnLine_Version,OnLine_Status,OnLine_Type
+	</sql>
+	<sql id="where">
+		1=1 
+		<if test="ID!=null">
+				 and OnLine_ID = #{ID}
+</if>
+<if test="UserID!=null">
+				 and OnLine_UserID = #{UserID}
+</if>
+<if test="Session!=null">
+				 and OnLine_Session = #{Session}
+</if>
+<if test="CreateTime!=null">
+				 and OnLine_CreateTime = #{CreateTime}
+</if>
+<if test="ModifyTime!=null">
+				 and OnLine_ModifyTime = #{ModifyTime}
+</if>
+<if test="Version!=null">
+				 and OnLine_Version = #{Version}
+</if>
+<if test="Status!=null">
+				 and OnLine_Status = #{Status}
+</if>
+<if test="Type!=null">
+				 and OnLine_Type = #{Type}
+</if>
+
+	</sql>
+
+	<!-- 插入数据 -->
+	<insert id="insert" parameterType="com.code.domain.Online"  useGeneratedKeys="true">
+		insert into t_OnLine( <include refid="sql"></include> )
+		values(
+				#{ID},
+#{UserID},
+#{Session},
+now(),
+now(),
+#{Version},
+#{Status},
+#{Type}
+				)
+	</insert>
+	<update id="update" parameterType="com.code.domain.Online">
+		update t_OnLine set OnLine_UserID = #{UserID},OnLine_Session = #{Session},OnLine_ModifyTime = now(),OnLine_Version = #{Version},OnLine_Status = #{Status},OnLine_Type = #{Type}
+		<where>
+			OnLine_ID= #{ID} 
+		</where>
+	</update>
+
+
+	<!-- 根据编号删除 by majian-->
+	<update id="deleteById" parameterType="com.code.domain.Online">
+		update t_OnLine set OnLine_Status=88 where OnLine_ID = #{_parameter} 
+	</update>
+
+	<!-- 根据编号恢复 by majian-->
+	<update id="recoverByID" parameterType="com.code.domain.Online">
+		update t_OnLine set OnLine_Status=1 where OnLine_ID = #{_parameter} 
+	</update>
+
+	<!-- 根据条件删除 by majian-->
+	<update id="deleteByCondition" parameterType="com.code.domain.Online">
+		update t_OnLine set OnLine_Status=88 
+		<where>
+			<include refid="where"></include>
+		</where>
+	</update>
+
+	<!-- 根据条件恢复 by majian-->
+	<update id="recoverByCondition" parameterType="com.code.domain.Online">
+		update t_OnLine set OnLine_Status=1 
+		<where>
+			<include refid="where"></include>
+		</where>
+	</update>
+
+
+</mapper>

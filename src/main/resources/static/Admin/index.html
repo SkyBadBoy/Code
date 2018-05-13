@@ -53,13 +53,7 @@
 
                         </a>
                     </li>
-                    <li>
-                        <a  class="J_menuItem" href="../Admin/UserList.html">
-                            <i class="fa fa-user"></i>
-                            <span class="nav-label">用户管理</span>
 
-                        </a>
-                    </li>
                     <li>
                         <a href="#">
                             <i class="glyphicon glyphicon-info-sign"></i>
@@ -89,6 +83,21 @@
                     </li>
                     <li>
                         <a href="#">
+                            <i class="fa fa-user"></i>
+                            <span class="nav-label">用户管理</span>
+                            <span class="fa arrow"></span>
+                        </a>
+                        <ul class="nav nav-second-level">
+                            <li>
+                                <a class="J_menuItem" href="../Admin/UserList.html" data-index="0">用户管理</a>
+                            </li>
+                            <li>
+                                <a class="J_menuItem" href="../Admin/OnlineList.html?type=0" data-index="0">登录(会话)管理</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#">
                             <i class="glyphicon glyphicon-map-marker"></i>
                             <span class="nav-label">行政规划管理</span>
                             <span class="fa arrow"></span>
@@ -106,6 +115,9 @@
                             <span class="fa arrow"></span>
                         </a>
                         <ul class="nav nav-second-level">
+                            <li>
+                                <a class="J_menuItem" href="../Admin/AuthorizeList.html" data-index="0">请求(放行)管理</a>
+                            </li>
                             <li>
                                 <a class="J_menuItem" href="../Admin/KeywordList.html" data-index="0">敏感词管理</a>
                             </li>

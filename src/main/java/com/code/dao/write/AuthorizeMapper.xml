@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.code.dao.write.AuthorizeMapper">
+	<sql id="sql">
+		Authorize_ID,Authorize_CreateTime,Authorize_ModifyTime,Authorize_Status,Authorize_Type,Authorize_Title
+	</sql>
+	<sql id="where">
+		1=1 
+		<if test="ID!=null">
+				 and Authorize_ID = #{ID}
+</if>
+<if test="CreateTime!=null">
+				 and Authorize_CreateTime = #{CreateTime}
+</if>
+<if test="ModifyTime!=null">
+				 and Authorize_ModifyTime = #{ModifyTime}
+</if>
+<if test="Status!=null">
+				 and Authorize_Status = #{Status}
+</if>
+<if test="Type!=null">
+				 and Authorize_Type = #{Type}
+</if>
+<if test="Title!=null">
+				 and Authorize_Title = #{Title}
+</if>
+
+	</sql>
+
+	<!-- 插入数据 -->
+	<insert id="insert" parameterType="com.code.domain.Authorize"  useGeneratedKeys="true">
+		insert into t_Authorize( <include refid="sql"></include> )
+		values(
+				#{ID},
+now(),
+now(),
+#{Status},
+#{Type},
+#{Title}
+				)
+	</insert>
+	<update id="update" parameterType="com.code.domain.Authorize">
+		update t_Authorize set Authorize_ModifyTime = now(),Authorize_Status = #{Status},Authorize_Type = #{Type},Authorize_Title = #{Title}
+		<where>
+			Authorize_ID= #{ID} 
+		</where>
+	</update>
+
+
+	<!-- 根据编号删除 by majian-->
+	<update id="deleteById" parameterType="com.code.domain.Authorize">
+		update t_Authorize set Authorize_Status=88 where Authorize_ID = #{_parameter} 
+	</update>
+
+	<!-- 根据编号恢复 by majian-->
+	<update id="recoverByID" parameterType="com.code.domain.Authorize">
+		update t_Authorize set Authorize_Status=1 where Authorize_ID = #{_parameter} 
+	</update>
+
+	<!-- 根据条件删除 by majian-->
+	<update id="deleteByCondition" parameterType="com.code.domain.Authorize">
+		update t_Authorize set Authorize_Status=88 
+		<where>
+			<include refid="where"></include>
+		</where>
+	</update>
+
+	<!-- 根据条件恢复 by majian-->
+	<update id="recoverByCondition" parameterType="com.code.domain.Authorize">
+		update t_Authorize set Authorize_Status=1 
+		<where>
+			<include refid="where"></include>
+		</where>
+	</update>
+
+
+</mapper>

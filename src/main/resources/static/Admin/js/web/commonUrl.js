@@ -48,7 +48,7 @@ function homeUrlView(){//首页地址
     return viewPath+"Admin/home.html";
 }
 function indexUrlView(){//主页地址
-    return viewPath+"index.html";
+    return viewPath+"Admin/index.html";
 }
 
 function userUrlView(){//用户视图

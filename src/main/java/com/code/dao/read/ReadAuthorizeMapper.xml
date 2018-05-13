@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.code.dao.read.ReadAuthorizeMapper">
+	<!-- 返回的map -->
+	<resultMap id="authorize" type="com.code.domain.Authorize">
+		<result property="ID" column="Authorize_ID" />
+		<result property="CreateTime" column="Authorize_CreateTime" />
+		<result property="ModifyTime" column="Authorize_ModifyTime" />
+		<result property="Status" column="Authorize_Status" />
+		<result property="Type" column="Authorize_Type" />
+		<result property="Title" column="Authorize_Title" />
+	</resultMap>
+	<!-- sql查询语句-->
+	<sql id="sql">
+		Authorize_ID,Authorize_CreateTime,Authorize_ModifyTime,Authorize_Status,Authorize_Type,Authorize_Title
+	</sql>
+	<!-- sql查询条件-->
+	<sql id="where">
+		1=1 
+		<if test="ID!=null">
+				 and Authorize_ID = #{ID}
+</if>
+<if test="CreateTime!=null">
+				 and Authorize_CreateTime = #{CreateTime}
+</if>
+<if test="ModifyTime!=null">
+				 and Authorize_ModifyTime = #{ModifyTime}
+</if>
+<if test="Status!=null">
+				 and Authorize_Status = #{Status}
+</if>
+<if test="Type!=null">
+				 and Authorize_Type = #{Type}
+</if>
+<if test="Title!=null">
+				 and Authorize_Title = #{Title}
+</if>
+
+	</sql>
+	<!-- 根据ID 查找-->
+	<select id="findById" resultMap="authorize" parameterType="long">
+		SELECT
+		<include refid="sql"></include>
+		FROM t_Authorize
+		<where>
+			Authorize_ID = #{_parameter} 
+		</where>
+	</select>
+	<!-- 根据条件 查找-->
+	<select id="query"  resultMap="authorize"
+		parameterType="java.util.Map">
+		SELECT
+		<include refid="sql"></include>
+		FROM t_Authorize
+		<where>
+			<include refid="where"></include>
+		</where>
+	
+	</select>
+	<!-- 根据条件总数-->
+	<select id="queryCount" parameterType="map" resultType="int">
+		SELECT
+			Count(1)
+			FROM t_Authorize
+			<where>
+				<include refid="where"></include>
+			</where>
+	</select>
+	<select id="getAuthorizeStringList" parameterType="int" resultType="string">
+		SELECT Authorize_Title FROM t_Authorize WHERE Authorize_Status = 1 and Authorize_Type = #{_parameter}
+	</select>
+
+
+
+</mapper>

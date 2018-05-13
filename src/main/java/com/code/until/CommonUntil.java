@@ -6,15 +6,19 @@ import com.code.domain.WeChatInfo;
 import com.code.service.write.WeChatInfoService;
 import com.code.until.wechat.WXPayUtil;
 import com.code.until.wechat.XMLUtil;
+import lombok.extern.log4j.Log4j;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.Random;
+import java.util.List;
 
 /**
  * Created by MaJian on 18/2/3.
  */
+@Log4j
 public class CommonUntil {
 
     public static Return ReturnMap(int code, String message, Object object){
@@ -77,5 +81,40 @@ public class CommonUntil {
     public String getAbsolutePhth(HttpServletRequest request){
         String path =request.getRealPath("/WEB-INF/classes/");
         return path;
+    }
+    /**
+     * 查看url属于哪个类型的
+     * @param requestUrl
+     * @return
+     */
+    public static int checkAuthorize(String requestUrl){
+        String[] url=requestUrl.split("/");
+        int Authorize=CommonStatus.AuthorizeType.Admin.seq;
+        if(url.length>0){
+            if(url.length>2){
+                String AuthorizeName=url[1];
+                if("Interface".equals(AuthorizeName)){
+                    Authorize=CommonStatus.AuthorizeType.Interface.seq;
+                }else{//自行扩展
+
+                }
+            }
+        }
+        return Authorize ;
+    }
+
+    /**
+     * 模糊放行
+     * @return
+     */
+    public static boolean dimAuthorize(String requestUrl){
+        boolean f=false;
+        List<String> pass= Arrays.asList("js","css","jpg","png","jpeg","ico","mp3","pdf","mp4");
+        if(requestUrl.contains(".")){
+            if(pass.contains(requestUrl.split("\\.")[requestUrl.split("\\.").length-1])){
+                f=true;
+            }
+        }
+        return f;
     }
 }
