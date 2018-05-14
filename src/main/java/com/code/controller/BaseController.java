@@ -23,8 +23,6 @@ import java.io.PrintStream;
 @Controller
 public class BaseController {
 	@Autowired
-	protected AdminService adminService;
-	@Autowired
 	protected RecordService recordService;
 	@Autowired
 	protected WeChatInfoService weChatInfoService;
@@ -54,6 +52,8 @@ public class BaseController {
 	protected OnlineService OnlineService;
 	@Autowired
 	protected AuthorizeService AuthorizeService;
+	@Autowired
+	protected AdminService AdminService;
 
 	@Autowired
 	protected ReadErrorService ReadErrorService;
@@ -81,6 +81,8 @@ public class BaseController {
 	protected ReadOnlineService ReadOnlineService;
 	@Autowired
 	protected ReadAuthorizeService ReadAuthorizeService;
+	@Autowired
+	protected ReadAdminService ReadAdminService;
 
 
 	@ExceptionHandler

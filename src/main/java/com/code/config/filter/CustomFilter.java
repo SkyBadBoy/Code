@@ -1,6 +1,7 @@
 package com.code.config.filter;
 
 import com.code.service.read.ReadAuthorizeService;
+import com.code.service.read.ReadOnlineService;
 import com.code.until.CommonStatus;
 import com.code.until.CommonUntil;
 import lombok.extern.log4j.Log4j;
@@ -34,6 +35,8 @@ public class CustomFilter implements Filter{
 
     @Autowired
     private ReadAuthorizeService ReadAuthorizeService;
+    @Autowired
+    private ReadOnlineService ReadOnlineService;
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -42,10 +45,13 @@ public class CustomFilter implements Filter{
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         //执行操作后必须doFilter
+        boolean Redirect=false;
         try {
             this.request = (HttpServletRequest) servletRequest;
             this.response = (HttpServletResponse) servletResponse;
+
             String requestUrl = this.request.getRequestURI().replace(this.request.getContextPath(), "");
+            log.info("访问地址"+requestUrl);
             //静态文件直接放行
             if(CommonUntil.dimAuthorize(requestUrl)){return;}
 
@@ -55,23 +61,35 @@ public class CustomFilter implements Filter{
 
             //逐个验证
             int Authorize= CommonUntil.checkAuthorize(requestUrl);
-
+            //获取验证信息头部信息
+            String token=request.getHeader("Token");
             //接口验证
             if(Authorize==CommonStatus.AuthorizeType.Interface.seq){
                 authorize=ReadAuthorizeService.getAuthorizeStringList(CommonStatus.AuthorizeType.Interface.seq);
-
+                if(!authorize.contains(requestUrl)){
+                    if(CommonUntil.getInstance().CheckToken(token,request, ReadOnlineService)){
+                        return;
+                    }
+                }
                 return;
             //后台
             }else if(Authorize==CommonStatus.AuthorizeType.Admin.seq){
                 authorize=ReadAuthorizeService.getAuthorizeStringList(CommonStatus.AuthorizeType.Admin.seq);
-
+                if(!authorize.contains(requestUrl)){
+                    if(!CommonUntil.getInstance().CheckToken(token,request, ReadOnlineService)){
+                        response.sendRedirect(request.getContextPath()+"/Error/errorToken");
+                        Redirect=true;
+                        return;
+                    }
+                }
                 return;
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            filterChain.doFilter(servletRequest, servletResponse);
+            if(!Redirect){
+                filterChain.doFilter(servletRequest, servletResponse);
+            }
         }
 
     }

@@ -74,7 +74,11 @@
                     $.ajax({
                         url:"../Crime/cancelPunish?id="+getRecordIDForFastJson($('#exampleTableEvents')),
                         Type:"post",
+                        headers: {Token: getToken()},
                         success:function(json){
+                            if(json.code==1){
+                                top.location.href="../Admin/login.html"
+                            }
                             if(json.code==0){
                                 success(json.message);
                                 tableRefresh();

@@ -1,109 +1,116 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.code.dao.write.AdminMapper">
-    <resultMap type="com.code.domain.Admin" id="ClassResultMap">
-        <result property="id" column="admin_id" />
-        <result property="name" column="admin_name"/>
-        <result property="level" column="admin_level"/>
-        <result property="createTime" column="admin_createTime"/>
-        <result property="modifyTime" column="admin_modifyTime"/>
-        <result property="status" column="admin_status"/>
-        <result property="headimg" column="admin_headimg"/>
-        <result property="username" column="admin_username"/>
-        <result property="password" column="admin_password"/>
-
-    </resultMap>
-    <!-- 数据库字段 -->
-    <sql id="sql">
-        admin_id,
-        admin_name,
-        admin_level,
-        admin_createTime,
-        admin_modifyTime,
-        admin_status,
-        admin_headimg,
-        admin_username,
-        admin_password
-    </sql>
-    <sql id="insertSql">
-        #{id},
-        #{name},
-        #{level},
-        now(),
-        now(),
-        #{status},
-        #{headimg},
-        #{username},
-        #{password}
-    </sql>
-    <sql id="updateSql">
-        admin_name=#{name},
-        admin_level=#{level},
-        admin_modifyTime=now(),
-        admin_status=#{status},
-        admin_headimg=#{headimg},
-        admin_username=#{username},
-        admin_password=#{password}
-    </sql>
-    <sql id="updateWhere">
-        admin_id=#{id}
-    </sql>
-    <!-- 查询条件 -->
-    <sql id="where">
-        1=1
-        <if test="id != null">
-            and admin_id = #{id}
-        </if>
-        <if test="username != null">
-            and admin_username = #{username}
-        </if>
-        <if test="password != null">
-            and admin_password = #{password}
-        </if>
-        <if test="status == null">
-            and admin_status = 1
-        </if>
-        <if test="status != null">
-            and admin_status = #{status}
-        </if>
-
-    </sql>
-    <!--表名字 -->
-    <sql id="table">
-        t_admin
-    </sql>
-
-    <!--查询全部信息 -->
-    <select id="query"  resultMap="ClassResultMap" parameterType="map">
-        select <include refid="sql"/>
-        from <include refid="table"/>
-        <where>
-            <include refid="where"/>
-        </where>
-    </select>
-
-    <!-- 查找单个 -->
-    <select id="find"  resultMap="ClassResultMap" parameterType="long" >
-        select <include refid="sql"/>
-        from <include refid="table"/>
-        where
-        <if test="_parameter != null" >
-            admin_id = #{_parameter}
-        </if>
-
-    </select>
+	<sql id="sql">
+		Admin_ID,Admin_Name,Admin_CreateTime,Admin_ModifyTime,Admin_Status,Admin_HeadImg,Admin_LoginName,Admin_PassWord,Admin_Phone,Admin_ProvinceID,Admin_AreaID,Admin_CityID,Admin_LongAddress,Admin_Address,Admin_RoleID
+	</sql>
+	<sql id="where">
+		1=1 
+		<if test="ID!=null">
+				 and Admin_ID = #{ID}
+</if>
+<if test="Name!=null">
+				 and Admin_Name = #{Name}
+</if>
+<if test="CreateTime!=null">
+				 and Admin_CreateTime = #{CreateTime}
+</if>
+<if test="ModifyTime!=null">
+				 and Admin_ModifyTime = #{ModifyTime}
+</if>
+<if test="Status!=null">
+				 and Admin_Status = #{Status}
+</if>
+<if test="HeadImg!=null">
+				 and Admin_HeadImg = #{HeadImg}
+</if>
+<if test="LoginName!=null">
+				 and Admin_LoginName = #{LoginName}
+</if>
+<if test="PassWord!=null">
+				 and Admin_PassWord = #{PassWord}
+</if>
+<if test="Phone!=null">
+				 and Admin_Phone = #{Phone}
+</if>
+<if test="ProvinceID!=null">
+				 and Admin_ProvinceID = #{ProvinceID}
+</if>
+<if test="AreaID!=null">
+				 and Admin_AreaID = #{AreaID}
+</if>
+<if test="CityID!=null">
+				 and Admin_CityID = #{CityID}
+</if>
+<if test="LongAddress!=null">
+				 and Admin_LongAddress = #{LongAddress}
+</if>
+<if test="Address!=null">
+				 and Admin_Address = #{Address}
+</if>
+		<if test="RoleID!=null">
+			and Admin_RoleID = #{RoleID}
+		</if>
 
 
+	</sql>
 
-    <!-- 插入的代码 -->
-    <insert id="insert"  parameterType="com.code.domain.Admin">
-        insert <include refid="table"/>(<include refid="sql"/>) VALUES (<include refid="insertSql" />)
-    </insert>
+	<!-- 插入数据 -->
+	<insert id="insert" parameterType="com.code.domain.Admin"  useGeneratedKeys="true">
+		insert into t_Admin( <include refid="sql"></include> )
+		values(
+				#{ID},
+#{Name},
+now(),
+now(),
+#{Status},
+#{HeadImg},
+#{LoginName},
+#{PassWord},
+#{Phone},
+#{ProvinceID},
+#{AreaID},
+#{CityID},
+#{LongAddress},
+#{Address},
+#{RoleID}
 
-    <update id="update" parameterType="com.code.domain.Admin">
-        update <include refid="table"/> set <include refid="updateSql"/> where <include refid="updateWhere"/>
-    </update>
+				)
+	</insert>
+	<update id="update" parameterType="com.code.domain.Admin">
+		update t_Admin set Admin_Name = #{Name},Admin_ModifyTime = now(),Admin_Status = #{Status},Admin_HeadImg = #{HeadImg},Admin_LoginName = #{LoginName},Admin_PassWord = #{PassWord},Admin_Phone = #{Phone},Admin_ProvinceID = #{ProvinceID},Admin_AreaID = #{AreaID},Admin_CityID = #{CityID},Admin_LongAddress = #{LongAddress},Admin_Address = #{Address},Admin_RoleID = #{RoleID}
+		<where>
+			Admin_ID= #{ID} 
+		</where>
+	</update>
+
+
+	<!-- 根据编号删除 by majian-->
+	<update id="deleteById" parameterType="com.code.domain.Admin">
+		update t_Admin set Admin_Status=88 where Admin_ID = #{_parameter} 
+	</update>
+
+	<!-- 根据编号恢复 by majian-->
+	<update id="recoverByID" parameterType="com.code.domain.Admin">
+		update t_Admin set Admin_Status=1 where Admin_ID = #{_parameter} 
+	</update>
+
+	<!-- 根据条件删除 by majian-->
+	<update id="deleteByCondition" parameterType="com.code.domain.Admin">
+		update t_Admin set Admin_Status=88 
+		<where>
+			<include refid="where"></include>
+		</where>
+	</update>
+
+	<!-- 根据条件恢复 by majian-->
+	<update id="recoverByCondition" parameterType="com.code.domain.Admin">
+		update t_Admin set Admin_Status=1 
+		<where>
+			<include refid="where"></include>
+		</where>
+	</update>
 
 
 </mapper>

@@ -71,5 +71,15 @@ public class CommonStatus {
             this.seq = seq;
         }
     }
+    public enum OnLineType {
+        /** 用户*/
+        User(0),
+        /** 后台管理人员*/
+        Admin(1);
+        public int seq;
+        OnLineType(int seq){
+            this.seq = seq;
+        }
+    }
 
 }

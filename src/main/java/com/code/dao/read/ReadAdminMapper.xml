@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.code.dao.read.ReadAdminMapper">
+	<!-- 返回的map -->
+	<resultMap id="admin" type="com.code.domain.Admin">
+		<result property="ID" column="Admin_ID" />
+		<result property="Name" column="Admin_Name" />
+		<result property="CreateTime" column="Admin_CreateTime" />
+		<result property="ModifyTime" column="Admin_ModifyTime" />
+		<result property="Status" column="Admin_Status" />
+		<result property="HeadImg" column="Admin_HeadImg" />
+		<result property="LoginName" column="Admin_LoginName" />
+		<result property="PassWord" column="Admin_PassWord" />
+		<result property="Phone" column="Admin_Phone" />
+		<result property="ProvinceID" column="Admin_ProvinceID" />
+		<result property="AreaID" column="Admin_AreaID" />
+		<result property="CityID" column="Admin_CityID" />
+		<result property="LongAddress" column="Admin_LongAddress" />
+		<result property="Address" column="Admin_Address" />
+		<result property="RoleID" column="Admin_RoleID" />
+	</resultMap>
+	<!-- sql查询语句-->
+	<sql id="sql">
+		Admin_ID,Admin_Name,Admin_CreateTime,Admin_ModifyTime,Admin_Status,Admin_HeadImg,Admin_LoginName,Admin_PassWord,Admin_Phone,Admin_ProvinceID,Admin_AreaID,Admin_CityID,Admin_LongAddress,Admin_Address,Admin_RoleID
+	</sql>
+	<!-- sql查询条件-->
+	<sql id="where">
+		1=1 
+		<if test="ID!=null">
+				 and Admin_ID = #{ID}
+</if>
+<if test="Name!=null">
+				 and Admin_Name = #{Name}
+</if>
+<if test="CreateTime!=null">
+				 and Admin_CreateTime = #{CreateTime}
+</if>
+<if test="ModifyTime!=null">
+				 and Admin_ModifyTime = #{ModifyTime}
+</if>
+<if test="Status!=null">
+				 and Admin_Status = #{Status}
+</if>
+<if test="HeadImg!=null">
+				 and Admin_HeadImg = #{HeadImg}
+</if>
+<if test="LoginName!=null">
+				 and Admin_LoginName = #{LoginName}
+</if>
+<if test="PassWord!=null">
+				 and Admin_PassWord = #{PassWord}
+</if>
+<if test="Phone!=null">
+				 and Admin_Phone = #{Phone}
+</if>
+<if test="ProvinceID!=null">
+				 and Admin_ProvinceID = #{ProvinceID}
+</if>
+<if test="AreaID!=null">
+				 and Admin_AreaID = #{AreaID}
+</if>
+<if test="CityID!=null">
+				 and Admin_CityID = #{CityID}
+</if>
+<if test="LongAddress!=null">
+				 and Admin_LongAddress = #{LongAddress}
+</if>
+<if test="Address!=null">
+				 and Admin_Address = #{Address}
+</if>
+		<if test="RoleID!=null">
+			and Admin_RoleID = #{RoleID}
+		</if>
+
+	</sql>
+	<!-- 根据ID 查找-->
+	<select id="findById" resultMap="admin" parameterType="long">
+		SELECT
+		<include refid="sql"></include>
+		FROM t_Admin
+		<where>
+			Admin_ID = #{_parameter} 
+		</where>
+	</select>
+	<!-- 根据条件 查找-->
+	<select id="query"  resultMap="admin"
+		parameterType="java.util.Map">
+		SELECT
+		<include refid="sql"></include>
+		FROM t_Admin
+		<where>
+			<include refid="where"></include>
+		</where>
+	
+	</select>
+	<!-- 根据条件总数-->
+	<select id="queryCount" parameterType="map" resultType="int">
+		SELECT
+			Count(1)
+			FROM t_Admin
+			<where>
+				<include refid="where"></include>
+			</where>
+	</select>
+
+
+
+</mapper>

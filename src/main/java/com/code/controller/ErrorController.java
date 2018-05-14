@@ -2,6 +2,7 @@ package com.code.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.code.domain.Return;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -30,6 +31,13 @@ public class ErrorController extends BaseController {
         Map<String, Object> returnMap = new HashMap<>(2);
         returnMap.put("code", -1);
         returnMap.put("message", "服务器发送错误,请稍后重试");
+        return returnMap;
+    }
+    @GetMapping("errorToken")
+    @ApiOperation(value = "重定向Token的错误")
+    public Return AdminErrorToken() {
+        Return returnMap = null;
+        returnMap=CommonUntil.ReturnMap(1,"Token异常,请重新登录",null);
         return returnMap;
     }
 
@@ -121,5 +129,7 @@ public class ErrorController extends BaseController {
         returnMap.put("message", tempObj!=null?"修改成功":"修改失败");
         return returnMap;
     }
+
+
 
 }

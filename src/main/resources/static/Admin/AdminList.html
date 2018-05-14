@@ -6,7 +6,7 @@
     <title>代码生成工具- majian</title>
     <meta name="keywords" content="马健">
     <meta name="description" content="马健">
-    <script src="js/web/include.js?v=1.0.6"></script>
+    <script src="js/web/include.js?v=1.0.5"></script>
 </head>
 <body class="gray-bg">
 <div class="wrapper wrapper-content" id="app">
@@ -20,17 +20,20 @@
                         <h4 class="example-title"></h4>
                         <div class="example">
                             <div class="btn-group hidden-xs" id="exampleTableEventsToolbar" role="group">
-                                <!--<button type="button"   @click="modify(0)" class="btn btn-primary ">-->
-                                    <!--<i class="glyphicon glyphicon-plus" aria-hidden="true">新增</i>-->
-                                <!--</button>-->
-                                <!--<button type="button"  @click="modify(1)" class="btn btn-success ">-->
-                                    <!--<i class="glyphicon glyphicon-pencil" aria-hidden="true">修改</i>-->
-                                <!--</button>-->
+                                <button type="button"   @click="modify(0)" class="btn btn-primary ">
+                                    <i class="glyphicon glyphicon-plus" aria-hidden="true">新增</i>
+                                </button>
+                                <button type="button"  @click="modify(1)" class="btn btn-success ">
+                                    <i class="glyphicon glyphicon-pencil" aria-hidden="true">修改</i>
+                                </button>
                                 <button type="button" @click="recover(88)" class="btn  btn-danger">
                                     <i class="glyphicon glyphicon-trash" aria-hidden="true">删除</i>
                                 </button>
                                 <button type="button"  @click="recover(1)" class="btn btn-primary ">
                                     <i class="glyphicon glyphicon-play" aria-hidden="true">恢复</i>
+                                </button>
+                                <button type="button"  @click="reset" class="btn btn-warning ">
+                                    <i class="fa fa-lock" aria-hidden="true">重置密码</i>
                                 </button>
                             </div>
                             <table id="exampleTableEvents" >
@@ -57,24 +60,25 @@
                     setStatus(this,val)
                 },
                 modify: function (flag) {
-                    var url = "../Admin/addAccess.html?";
+                    var url = "../Admin/addAdmin.html?";
                     if(flag==0){//新增
                         url+= "id=0";
                     }else{//修改
                         if(checkIsSelection()){return};
                         url+= "id="+getRecordIDForFastJson($('#exampleTableEvents'));
                     }
-                    modifyShow(this,url,"100%","100%","Access");
+                    modifyShow(this,url,"100%","100%","Admin");
                 },
             },
             mounted: function () {
+                bindImgError()
                 tempApp=this;
             }
 
         })
         /** 固定写法 by majian*/
         function setStatus(that,status) {
-            setAdminStatus(that,status,"../Access/setAccessStatus")
+            setAdminStatus(that,status,"../Admin/setAdminStatus")
         }
         /** 初始化表格*/
         (function(document, window, $) {
@@ -86,32 +90,33 @@
                         checkbox:true
                     },
                     {
-                        title: '访问地址',
+                        title: '编号',
                         align: 'center',
-                        field: 'requestURL',
+                        field: 'iD',
                     },
                     {
-                        title: '访问者IP',
+                        title: '头像',
                         align: 'center',
-                        field: 'remoteAddr',
+                        field: 'headImg',
+                        formatter:headImgFormatter
                     },
                     {
-                        title: '请求方式',
+                        title: '名字',
                         align: 'center',
-                        field: 'method',
+                        field: 'name',
                     },
                     {
-                        title: '处理时间(毫秒)',
+                        title: '登录名',
                         align: 'center',
-                        field: 'time',
+                        field: 'loginName',
                     },
                     {
-                        title: '请求参数',
+                        title: '手机号',
                         align: 'center',
-                        field: 'args',
+                        field: 'phone',
                     },
                     {
-                        title: '访问时间',
+                        title: '创建时间',
                         align: 'center',
                         field: 'createTime',
                     },
@@ -123,7 +128,7 @@
                         formatter: statusFormatter
                     },
                 ];
-                getDataTable($('#exampleTableEvents'),"../Access/queryAccessPage",columns,queryParams);
+                getDataTable($('#exampleTableEvents'),"../Admin/queryAdminPage",columns,queryParams,false);
             })();
             function queryParams(params) {
                 var temp={}

@@ -43,13 +43,13 @@
 #{Session},
 now(),
 now(),
-#{Version},
+0,
 #{Status},
 #{Type}
 				)
 	</insert>
 	<update id="update" parameterType="com.code.domain.Online">
-		update t_OnLine set OnLine_UserID = #{UserID},OnLine_Session = #{Session},OnLine_ModifyTime = now(),OnLine_Version = #{Version},OnLine_Status = #{Status},OnLine_Type = #{Type}
+		update t_OnLine set OnLine_UserID = #{UserID},OnLine_Session = #{Session},OnLine_ModifyTime = now(),OnLine_Version = OnLine_Version+1,OnLine_Status = #{Status},OnLine_Type = #{Type}
 		<where>
 			OnLine_ID= #{ID} 
 		</where>

@@ -215,9 +215,15 @@ function setAdminStatus(that,status,url) {
     $.ajax({
         url: url,
         type: "POST",
+        headers: {
+            Token: getToken()
+        },
         data: {data: JSON.stringify(data)},
         success: function (json) {
             $("#overlay").hide()
+            if (json.code == 1) {
+                top.location.href="../Admin/login.html"
+            }
             if (json.code == 0) {
                 success(json.message)
                 that.status = status;
@@ -262,6 +268,9 @@ function getDataTable(obj,url,columns,queryParams){
         height:window.screen.availHeight-34*4-40-100,//自动识别高度
         paginationPreText:"上一页",
         paginationNextText:"下一页",
+        ajaxOptions:{
+            headers: {"Token": getToken()},
+        },
         onLoadSuccess: function(){  //加载成功时执行
             bindImgError()
         },
@@ -270,6 +279,14 @@ function getDataTable(obj,url,columns,queryParams){
     obj.on('click-row.bs.table', function(e, row, $element) {
        //$($element).find("input[type='checkbox']").click()
     })
+}
+
+function getToken(){
+    var Token=sessionStorage.getItem("Token");
+    if(chechIsUnll(Token)){
+        return Token;
+    }
+    location.href="../Admin/login.html";
 }
 function tableRefresh(){
     $('.bootstrap-table [name=refresh]').click()
@@ -294,9 +311,15 @@ function findByID(that,id,url){
     $("#overlay").show()
     $.ajax({
         url: url+id,
+        headers: {
+            Token: getToken()
+        },
         success: function (json) {
             $("#overlay").hide()
             console.log("获取查找数据",json)
+            if (json.code == 1) {
+                top.location.href="../Admin/login.html"
+            }
             if (json.code == 0) {
                 that.data=json.data;
             } else {
@@ -320,10 +343,16 @@ function savaData(that,url) {
     $.ajax({
         url: url,
         type: "POST",
+        headers: {
+            Token: getToken()
+        },
         data: {data: JSON.stringify(that.data)},
         success: function (json) {
             console.log("获取到数据",json)
             $("#overlay").hide()
+            if (json.code == 1) {
+                top.location.href="../Admin/login.html"
+            }
             if (json.code == 0) {
                 parent.closes(json.message)
             } else {
@@ -354,8 +383,14 @@ function bindImgError(){
 function getRegionHead(that,type,ParentID){
     if(ParentID!=0&&ParentID!="0"){
         $.ajax({
+            headers: {
+                Token: getToken()
+            },
             url:"../Region/queryRegionByParentID?ParentID="+ParentID,
             success:function(json){
+                if (json.code == 1) {
+                    top.location.href="../Admin/login.html"
+                }
                 if(type==1){
                     that.ProvinceList=json.data;
                     that.AreaID=0;that.CityID=0;

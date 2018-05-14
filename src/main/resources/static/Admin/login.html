@@ -71,11 +71,11 @@
             }else{
                 $("#overlay").show()
                 var data={
-                    username:that._data.username,
-                    password:hex_md5(that._data.password).toLocaleUpperCase()
+                    loginName:that._data.username,
+                    passWord:hex_md5(that._data.password).toLocaleUpperCase()
                 }
                 $.ajax({
-                    url:loginUrl(),
+                    url:"../Admin/loginName",
                     type:"POST",
                     data:{data:JSON.stringify(data)},
                     success:function (json) {
@@ -83,15 +83,18 @@
                         if(json.code==0){
                             sessionStorage.setItem('Login',1);
                             sessionStorage.setItem('User',JSON.stringify(json.data));
-                            location.href=indexUrlView();
+                            sessionStorage.setItem('Token',json.token);
+                            location.href="../Admin/index.html";
                         }else{
-                            error(json.message);
+                             error(json.message);
                         }
                     },
                     error: function(){ $("#overlay").hide(); error("网络异常哦,请稍后重试");}
                 })
             }
         }
+
+
     </script>
 
 </body>
