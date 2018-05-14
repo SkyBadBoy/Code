@@ -19,6 +19,8 @@
 		<result property="LongAddress" column="Admin_LongAddress" />
 		<result property="Address" column="Admin_Address" />
 		<result property="RoleID" column="Admin_RoleID" />
+
+		<association property="Role" column="Admin_RoleID" select="com.code.dao.read.ReadRoleMapper.findById" />
 	</resultMap>
 	<!-- sql查询语句-->
 	<sql id="sql">

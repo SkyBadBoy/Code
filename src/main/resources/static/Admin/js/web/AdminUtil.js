@@ -1,16 +1,8 @@
-function success(text){
-    swal({
-        title: "福来了",
-        text: text,
-        type: "success"
-    });
+function success(text) {
+    toastr.success(text,"操作提示");
 }
 function error(text){
-    swal({
-        title: "福来了",
-        text: text,
-        type: "error"
-    });
+    toastr.error(text,"操作提示");
 }
 /**
  * 提示框

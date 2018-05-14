@@ -90,7 +90,8 @@ public class Admin implements Serializable {
     @ApiModelProperty("角色编号")
     private String RoleID ;
 
-
+    @ApiModelProperty("用户")
+    private Role Role ;
 
 
 }

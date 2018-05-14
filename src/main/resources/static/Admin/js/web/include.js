@@ -24,6 +24,7 @@ linkScriptDOMLoaded([
     "css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css",
     "css/plugins/clockpicker/clockpicker.css",
     "css/plugins/datapicker/datepicker3.css",
+    "css/plugins/toastr/toastr.min.css",
     "js/plugins/layer/skin/layer.css",
 
     "js/jquery.min.js",
@@ -49,6 +50,7 @@ linkScriptDOMLoaded([
     "js/plugins/datapicker/bootstrap-datepicker.js",
     "js/plugins/datapicker/bootstrap-datepicker.js",
     "js/plugins/layer/laydate/laydate.js",
+    "js/plugins/toastr/toastr.min.js",
     "js/web/commonUrl.js",
     "js/web/commonUtil.js",
     "js/web/AdminUtil.js",

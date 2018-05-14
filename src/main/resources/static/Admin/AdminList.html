@@ -121,6 +121,21 @@
                         field: 'createTime',
                     },
                     {
+                        title: '地址',
+                        align: 'center',
+                        field: 'longAddress',
+                    },
+                    {
+                        title: '创建时间',
+                        align: 'center',
+                        field: 'role',
+                        formatter:function(val){
+                            if(val!=null){
+                                return '<small class="label label-primary"> '+val.name+'</small>'
+                            }
+                        }
+                    },
+                    {
                         title: getStatus(),
                         align: 'center',
                         field: 'status',

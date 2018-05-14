@@ -15,6 +15,7 @@
     <link href="css/font-awesome.min.css?v=4.4.0" rel="stylesheet">
     <link href="css/animate.css" rel="stylesheet">
     <link href="css/style.css?v=4.1.0" rel="stylesheet">
+    <link href="css/plugins/toastr/toastr.min.css" rel="stylesheet">
 </head>
 
 <body class="fixed-sidebar full-height-layout gray-bg" style="overflow:hidden">
@@ -28,14 +29,22 @@
                 <ul class="nav" id="side-menu">
                     <li class="nav-header">
                         <div class="dropdown profile-element">
-                            <span><img alt="image" class="img-circle" src="img/profile_small.jpg" /></span>
+                            <span><img alt="image" class="img-circle" :src="user.headImg" style="width: 65px;height: 65px" /></span>
                             <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                                 <span class="clear">
-                               <span class="block m-t-xs"><strong class="font-bold">互办科技</strong></span>
-                                <span class="text-muted text-xs block">超级管理员</span>
+                               <span class="block m-t-xs"><strong class="font-bold" v-text="user.name"></strong></span>
+                                <span class="text-muted text-xs block">{{user.roleName}}<b class="caret"></b></span>
                                 </span>
                             </a>
-
+                            <ul class="dropdown-menu animated fadeInRight m-t-xs">
+                                <li><a class="J_menuItem" href="profile.html">个人资料</a>
+                                </li>
+                                <li><a class="J_menuItem" href="contacts.html">修改密码</a>
+                                </li>
+                                <li class="divider"></li>
+                                <li><a @click="loginOut">安全退出</a>
+                                </li>
+                            </ul>
                         </div>
                         <div class="logo-element">福
                         </div>
@@ -46,14 +55,6 @@
                             <span class="nav-label">首页</span>
                         </a>
                     </li>
-                    <li>
-                        <a  class="J_menuItem" :href="addressUrlView">
-                            <i class="fa fa-map-marker"></i>
-                            <span class="nav-label">地区管理</span>
-
-                        </a>
-                    </li>
-
                     <li>
                         <a href="#">
                             <i class="glyphicon glyphicon-info-sign"></i>
@@ -219,7 +220,9 @@
     <script src="js/plugins/pace/pace.min.js"></script>
     <script src="js/web/commonUrl.js"></script>
     <script src="js/web/commonUtil.js"></script>
+    <script src="js/web/AdminUtil.js"></script>
     <script src="js/vue.js"></script>
+    <script src="js/plugins/toastr/toastr.min.js"></script>
     <!-- 自定义工具类 -->
 
     <script>
@@ -231,12 +234,20 @@
                 boxUrlView:boxUrlView(),
                 addressUrlView:addressUrlView(),
                 foot:getFootInfo(),
+                user:{
+                    name:JSON.parse(sessionStorage.getItem("User")).name,
+                    headImg:JSON.parse(sessionStorage.getItem("User")).headImg,
+                    roleName:JSON.parse(sessionStorage.getItem("User")).role.name,
+                }
             },
             methods:{
                 loginOut:function(){
                     sessionStorage.clear();
                     location.href="../Admin/login.html";
                 }
+            },
+            mounted: function () {
+                bindImgError()
             }
         })
     </script>
