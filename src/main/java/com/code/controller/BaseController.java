@@ -1,6 +1,7 @@
 package com.code.controller;
 
 
+import com.code.config.rabbit.RabbitUtil;
 import com.code.domain.Error;
 import com.code.service.write.*;
 import com.code.service.read.*;
@@ -108,7 +109,7 @@ public class BaseController {
 		error.setName(method);
 		error.setMessage(exception.substring(0,exception.length()>200?200:exception.length()));
 		error.setStatus(1);
-		ErrorService.insert(error);
+		RabbitUtil.getInstance().ErrorLog(error,ErrorService,RabbitTemplate);
 		System.err.println(exception);
 		request.getRequestDispatcher("/Error").forward(request, response);
 	}

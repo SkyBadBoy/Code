@@ -1,7 +1,9 @@
 package com.code.config.rabbit;
 
 import com.code.domain.Access;
+import com.code.domain.Error;
 import com.code.service.write.AccessService;
+import com.code.service.write.ErrorService;
 import com.code.until.CommonStatus;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,11 +34,11 @@ public class RabbitUtil {
         }
     }
 
-//    public void ErrorLog(Access access, AccessService accessService,AmqpTemplate rabbitTemplate){
-//        if(Open){
-//            rabbitTemplate.convertAndSend(CommonStatus.RabbitType.WEBLOG.seq,access);
-//        }else{
-//            accessService.insert(access);
-//        }
-//    }
+    public void ErrorLog(Error error, ErrorService errorService, AmqpTemplate rabbitTemplate){
+        if(Open){
+            rabbitTemplate.convertAndSend(CommonStatus.RabbitType.ERRORLOG.seq,error);
+        }else{
+            errorService.insert(error);
+        }
+    }
 }
