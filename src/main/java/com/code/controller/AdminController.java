@@ -99,10 +99,8 @@ public class AdminController extends BaseController {
         }
 
         obj.setName(temp.getName());
-        obj.setModifyTime(temp.getModifyTime());
         obj.setHeadImg(temp.getHeadImg());
         obj.setLoginName(temp.getLoginName());
-        obj.setPassWord(temp.getPassWord());
         obj.setPhone(temp.getPhone());
         obj.setProvinceID(temp.getProvinceID());
         obj.setAreaID(temp.getAreaID());
@@ -113,7 +111,7 @@ public class AdminController extends BaseController {
 
         Admin tempObj=null;
         if(isNew){
-            obj.setID(CommonUntil.CreateNewID());
+            obj.setID(CommonUntil.getInstance().CreateNewID());
             obj.setStatus(Integer.parseInt(CommonStatus.Status.Ectivity.getid()));
             tempObj=AdminService.insert(obj);
         }else{
@@ -153,4 +151,37 @@ public class AdminController extends BaseController {
         }
 		return returnMap;
 	}
+
+    @ApiOperation(value = "管理员修改密码")
+    @PostMapping("/modifyPassWord")
+    public Return<Admin> modifyPassWord(String ID, String PassWord,HttpServletRequest request){
+        Return returnMap=new Return();
+        Map<String,Object> queryMap=new HashMap<String, Object>();
+        if(CommonUntil.CheckIsNull(ID)&&CommonUntil.CheckIsNull(PassWord)){
+            queryMap.put(Admin.COLUMN_ID,ID);
+            queryMap.put(Admin.COLUMN_Status,CommonStatus.Status.Ectivity.getid());
+            List<Admin> admins=ReadAdminService.query(queryMap);
+            if(admins.size()>0){
+                String pass=CommonUntil.getInstance().MD5(PassWord);
+                if(CommonUntil.CheckIsNull(pass)){
+                    admins.get(0).setPassWord(pass);
+                    Admin a=AdminService.update(admins.get(0));
+                    if(a!=null){
+                        returnMap=CommonUntil.ReturnMap(0,"修改成功",null);
+                    }else{
+                        returnMap=CommonUntil.ReturnMap(-1,"设置异常,稍后重试",null);
+                    }
+                }else{
+                    returnMap=CommonUntil.ReturnMap(-1,"设置异常",null);
+                }
+            }else{
+                returnMap=CommonUntil.ReturnMap(-1,"改用户不存在哦",null);
+            }
+        }else{
+            returnMap=CommonUntil.ReturnMap(-1,"密码不能为空",null);
+        }
+        return returnMap;
+    }
+
+
 }

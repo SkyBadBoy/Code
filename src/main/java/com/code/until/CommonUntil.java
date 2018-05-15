@@ -14,6 +14,7 @@ import lombok.extern.log4j.Log4j;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.security.MessageDigest;
 import java.util.*;
 
 /**
@@ -61,8 +62,9 @@ public class CommonUntil {
         return flag;
     }
 
-    public static String CreateNewID(){
-        return new IdWorker(1, new Random().nextInt(31)).nextId()+"";
+    public String CreateNewID(){
+        // new IdWorker(1, new Random().nextInt(31)).nextId()+""
+        return IdWorker.getInstance().nextId(1,1)+"";
     }
 
     public static WeChatInfo getWeChatInfo(WeChatInfoService WeChatInfoServices ){
@@ -72,7 +74,7 @@ public class CommonUntil {
 
     public static boolean getWithdraw(User user, float price, HttpServletResponse response, HttpServletRequest request, WeChatInfoService WeChatInfoServices){
        if(CommonStatus.IsGetMoney){//提现功能
-            String orderNo = String.valueOf(CreateNewID());
+            String orderNo = String.valueOf(CommonUntil.getInstance().CreateNewID());
             WeChatInfo weChatInfo=getWeChatInfo(WeChatInfoServices);
             try {
                 String respcontent = WXPayUtil.pushClient(request, response, user,(int)(price*100), orderNo,weChatInfo,weChatInfo.getAppid());// 提现金额写死1元钱
@@ -129,7 +131,7 @@ public class CommonUntil {
         if(requestUrl.contains("druid")){
             return true;
         }
-        List<String> pass= Arrays.asList("js","css","jpg","png","jpeg","ico","mp3","pdf","mp4","html","json","ttf");
+        List<String> pass= Arrays.asList("js","css","jpg","png","jpeg","ico","mp3","pdf","mp4","html","json","ttf","woff2");
         if(requestUrl.contains(".")){
             if(pass.contains(requestUrl.split("\\.")[requestUrl.split("\\.").length-1])){
                 f=true;
@@ -150,7 +152,7 @@ public class CommonUntil {
             temp=OnlineService.update(onlines.get(0));
         }else{
             Online online=new Online();
-            online.setID(CommonUntil.CreateNewID());
+            online.setID(CommonUntil.getInstance().CreateNewID());
             online.setType(Type);
             online.setUserID(UserID);
             online.setSession(sessionID);
@@ -175,6 +177,45 @@ public class CommonUntil {
                 }
             }
         }
+        return f;
+    }
+    public  String MD5(String s) {
+        char hexDigits[] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
+        try {
+            byte[] btInput = s.getBytes();
+            // 获得MD5摘要算法的 MessageDigest 对象
+            MessageDigest mdInst = MessageDigest.getInstance("MD5");
+            // 使用指定的字节更新摘要
+            mdInst.update(btInput);
+            // 获得密文
+            byte[] md = mdInst.digest();
+            // 把密文转换成十六进制的字符串形式
+            int j = md.length;
+            char str[] = new char[j * 2];
+            int k = 0;
+            for (int i = 0; i < j; i++) {
+                byte byte0 = md[i];
+                str[k++] = hexDigits[byte0 >>> 4 & 0xf];
+                str[k++] = hexDigits[byte0 & 0xf];
+            }
+            return new String(str);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    //**过滤不需要的地址
+    public  static Boolean CheckWebLog(String s) {
+        boolean f=true;
+        if(CommonUntil.CheckIsNull(s)){
+            if(s.contains("errorToken")){
+                f=false;
+            }
+        }else{
+            f=false;
+        }
+
         return f;
     }
 }

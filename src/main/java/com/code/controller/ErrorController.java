@@ -119,7 +119,7 @@ public class ErrorController extends BaseController {
 
         Error tempObj=null;
         if(isNew){
-            obj.setID(CommonUntil.CreateNewID());
+            obj.setID(CommonUntil.getInstance().CreateNewID());
             obj.setStatus(Integer.parseInt(CommonStatus.Status.Ectivity.getid()));
             tempObj=ErrorService.insert(obj);
         }else{

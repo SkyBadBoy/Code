@@ -5,13 +5,15 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.Serializable;
+
 /**
  * Created by MaJian on 18/4/10.
  */
 @Getter
 @Setter
 @ApiModel("管理员")
-public class OnLines {
+public class OnLines implements Serializable{
     @ApiModelProperty("编号")
     private String ID;
     @ApiModelProperty("用户")

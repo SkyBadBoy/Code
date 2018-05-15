@@ -105,7 +105,7 @@ public class AccessController extends BaseController {
 
         Access tempObj=null;
         if(isNew){
-            obj.setID(CommonUntil.CreateNewID());
+            obj.setID(CommonUntil.getInstance().CreateNewID());
             obj.setStatus(Integer.parseInt(CommonStatus.Status.Ectivity.getid()));
             tempObj=AccessService.insert(obj);
         }else{

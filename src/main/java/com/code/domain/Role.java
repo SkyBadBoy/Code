@@ -13,7 +13,7 @@ import java.io.Serializable;
 @Getter
 @Setter
 @ApiModel("Role")
-public class Role implements Serializable {
+public class Role  implements Serializable{
 
     public static final String COLUMN_ID = "ID";
 

@@ -67,8 +67,14 @@
                         if(checkIsSelection()){return};
                         url+= "id="+getRecordIDForFastJson($('#exampleTableEvents'));
                     }
-                    modifyShow(this,url,"100%","100%","Admin");
+                    modifyShow(this,url,"100%","100%","设置管理员");
                 },
+                reset:function(){
+                    if(checkIsSelection()){return};
+                    var url = "../Admin/modifyPassword.html?";
+                    url+= "id="+getRecordIDForFastJson($('#exampleTableEvents'));
+                    modifyShow(this,url,"500px","400px","修改密码");
+                }
             },
             mounted: function () {
                 bindImgError()

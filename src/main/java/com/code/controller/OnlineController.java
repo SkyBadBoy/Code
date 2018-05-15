@@ -111,7 +111,7 @@ public class OnlineController extends BaseController {
 
         Online tempObj=null;
         if(isNew){
-            obj.setID(CommonUntil.CreateNewID());
+            obj.setID(CommonUntil.getInstance().CreateNewID());
             obj.setStatus(Integer.parseInt(CommonStatus.Status.Ectivity.getid()));
             tempObj=OnlineService.insert(obj);
         }else{

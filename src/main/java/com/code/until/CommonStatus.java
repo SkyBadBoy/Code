@@ -82,4 +82,19 @@ public class CommonStatus {
         }
     }
 
+    public enum RabbitType {
+        /** 访问日志*/
+        WEBLOG("WEBLOG"),
+        /** 日志的log*/
+        ERRORLOG("ERRORLOG"),
+        /** 日志的log*/
+        OPERATIONLOG("OPERATIONLOG");
+        public String seq;
+        RabbitType(String seq){
+            this.seq = seq;
+        }
+    }
+
+
+
 }

@@ -65,9 +65,9 @@ public class Access implements Serializable {
     @ApiModelProperty("处理的时间")
     private long Time;
 
-    public static Access getAccess(String RequestURL,String Method,String RemoteAddr,String ClassName,String Args,long Time){
+    public  static Access getAccess(String RequestURL,String Method,String RemoteAddr,String ClassName,String Args,long Time){
         Access access=new Access();
-        access.setID(CommonUntil.CreateNewID());
+        access.setID(CommonUntil.getInstance().CreateNewID());
         access.setStatus(CommonStatus.StatusEnum.Ectivity.seq);
         access.setRequestURL(RequestURL);
         access.setMethod(Method);

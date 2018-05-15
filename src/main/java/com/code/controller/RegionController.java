@@ -130,7 +130,7 @@ public class RegionController extends BaseController {
 
         Region tempObj=null;
         if(isNew){
-            obj.setID(CommonUntil.CreateNewID());
+            obj.setID(CommonUntil.getInstance().CreateNewID());
             obj.setStatus(Integer.parseInt(CommonStatus.Status.Ectivity.getid()));
             tempObj=RegionService.insert(obj);
         }else{

@@ -1,7 +1,10 @@
 package com.code.config.aspect;
 
+import com.code.config.rabbit.RabbitUtil;
 import com.code.domain.Access;
 import com.code.service.write.AccessService;
+import com.code.until.CommonStatus;
+import com.code.until.CommonUntil;
 import com.code.until.SpringUtil;
 import org.apache.log4j.Logger;
 import org.aspectj.lang.JoinPoint;
@@ -9,6 +12,7 @@ import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
+import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
@@ -48,10 +52,14 @@ public class WebLogAspect {
     @Autowired
     private AccessService accessService;
 
+    @Autowired
+    private AmqpTemplate rabbitTemplate;
+
     @PostConstruct
     public void Init() {
         webLogAspect = this;
         webLogAspect.accessService = this.accessService;
+        webLogAspect.rabbitTemplate=this.rabbitTemplate;
     }
 
 
@@ -86,9 +94,11 @@ public class WebLogAspect {
 //        logger.info("返回值 : " + ret);
 //        logger.info("处理时间 : " + (System.currentTimeMillis() - startTime.get()));
         /** 目前参数和返回值还没有记录 */
-        if(accessService!=null) {
-            accessService.insert(Access.getAccess(RequestURL, Method, RemoteAddr, ClassName, Args, (System.currentTimeMillis() - startTime.get())));
+        if(CommonUntil.CheckWebLog(RequestURL)){
+            Access access=Access.getAccess(RequestURL, Method, RemoteAddr, ClassName, Args, (System.currentTimeMillis() - startTime.get()));
+            RabbitUtil.getInstance().WebLog(access,accessService,rabbitTemplate);
         }
+
     }
 
 

@@ -22,7 +22,6 @@ public class IndexController extends BaseController{
         return "index";
     }
 
-
     /**
      * 主页的数据接口
      * @return

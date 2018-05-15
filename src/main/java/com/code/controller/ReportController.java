@@ -111,7 +111,7 @@ public class ReportController extends BaseController {
 
         Report tempObj=null;
         if(isNew){
-            obj.setID(CommonUntil.CreateNewID());
+            obj.setID(CommonUntil.getInstance().CreateNewID());
             obj.setStatus(Integer.parseInt(CommonStatus.Status.Ectivity.getid()));
             tempObj=ReportService.insert(obj);
         }else{

@@ -10,16 +10,16 @@ package com.code.until;
  */
 public class IdWorker {
 
-    private long workerId;
-    private long datacenterId;
+    private static long workerId;
+    private static long datacenterId;
     private long sequence = 0L;
  
     private long twepoch = 1288834974657L;
  
-    private long workerIdBits = 5L;
-    private long datacenterIdBits = 5L;
-    private long maxWorkerId = -1L ^ (-1L << workerIdBits);
-    private long maxDatacenterId = -1L ^ (-1L << datacenterIdBits);
+    private static long workerIdBits = 5L;
+    private static long datacenterIdBits = 5L;
+    private static long maxWorkerId = -1L ^ (-1L << workerIdBits);
+    private static long maxDatacenterId = -1L ^ (-1L << datacenterIdBits);
     private long sequenceBits = 12L;
  
     private long workerIdShift = sequenceBits;
@@ -28,7 +28,16 @@ public class IdWorker {
     private long sequenceMask = -1L ^ (-1L << sequenceBits);
  
     private long lastTimestamp = -1L;
- 
+
+    private IdWorker(){}
+
+    private static IdWorker instance = new IdWorker();
+
+    public static IdWorker getInstance(){
+        return instance;
+    }
+
+
     public IdWorker(long workerId, long datacenterId) {
         // sanity check for workerId
         if (workerId > maxWorkerId || workerId < 0) {
@@ -37,12 +46,22 @@ public class IdWorker {
         if (datacenterId > maxDatacenterId || datacenterId < 0) {
             throw new IllegalArgumentException(String.format("datacenter Id can't be greater than %d or less than 0", maxDatacenterId));
         }
-        this.workerId = workerId;
-        this.datacenterId = datacenterId;
+        IdWorker.workerId = workerId;
+        IdWorker.datacenterId = datacenterId;
         //LOG.info(String.format("worker starting. timestamp left shift %d, datacenter id bits %d, worker id bits %d, sequence bits %d, workerid %d", timestampLeftShift, datacenterIdBits, workerIdBits, sequenceBits, workerId));
     }
  
-    public synchronized long nextId() {
+    public synchronized long nextId(long workerId, long datacenterId) {
+
+        if (workerId > maxWorkerId || workerId < 0) {
+            throw new IllegalArgumentException(String.format("worker Id can't be greater than %d or less than 0", maxWorkerId));
+        }
+        if (datacenterId > maxDatacenterId || datacenterId < 0) {
+            throw new IllegalArgumentException(String.format("datacenter Id can't be greater than %d or less than 0", maxDatacenterId));
+        }
+        IdWorker.workerId = workerId;
+        IdWorker.datacenterId = datacenterId;
+
         long timestamp = timeGen();
  
         if (timestamp < lastTimestamp) {

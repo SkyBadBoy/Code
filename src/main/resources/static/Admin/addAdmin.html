@@ -17,85 +17,100 @@
                 <div class="ibox float-e-margins">
                     <div class="ibox-content">
                         <div class="form-horizontal">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">用户名</label>
+                                <div class="col-sm-10">
+                                    <input type="text" v-model="data.name" class="form-control">
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">登录名</label>
+                                <div class="col-sm-10">
+                                    <input type="text" v-model="data.loginName" class="form-control">
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" >头像</label>
+                                <div class="col-sm-10">
+                                    <div class="input-group col-sm-12">
+                                        <input type="text" v-model="data.headImg" class="form-control">
+                                        <span class="input-group-btn"> <button type="button" class="btn btn-primary" @click="addImage">选择图片 </button></span>
+                                    </div>
+                                    <img :src="data.headImg" style="width: 150px;height: 150px;">
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">手机号</label>
+                                <div class="col-sm-10">
+                                    <input type="text" v-model="data.phone" class="form-control">
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">选择地区</label>
+                                <div class="col-sm-10">
+                                    <div class="col-sm-3">
+                                        <select class="form-control m-b" v-model="ProvinceID" @change="getCity">
+                                            <option value="0">请选择省份</option>
+                                            <option v-for="item in ProvinceList" :value="item.iD" v-text="item.name"></option>
+                                        </select>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <select class="form-control m-b" v-model="CityID" @change="getArea" >
+                                            <option value="0">请选择市</option>
+                                            <option v-for="item in CityList" :value="item.iD" v-text="item.name"></option>
+                                        </select>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <select class="form-control m-b" v-model="AreaID" @change="getRefresh" >
+                                            <option value="0">请选择区</option>
+                                            <option v-for="item in AreaList" :value="item.iD" v-text="item.name"></option>
+                                        </select>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <input type="text" v-model="data.address" class="form-control" placeholder="请输入详细地址">
+                                    </div>
+                                </div>
+                            </div>
+                            <!--<div class="hr-line-dashed"></div>-->
+                            <!--<div class="form-group">-->
+                                <!--<label class="col-sm-2 control-label">provinceID</label>-->
+                                <!--<div class="col-sm-10">-->
+                                    <!--<input type="text" v-model="data.provinceID" class="form-control">-->
+                                <!--</div>-->
+                            <!--</div>-->
+                            <!--<div class="hr-line-dashed"></div>-->
+                            <!--<div class="form-group">-->
+                                <!--<label class="col-sm-2 control-label">areaID</label>-->
+                                <!--<div class="col-sm-10">-->
+                                    <!--<input type="text" v-model="data.areaID" class="form-control">-->
+                                <!--</div>-->
+                            <!--</div>-->
+                            <!--<div class="hr-line-dashed"></div>-->
+                            <!--<div class="form-group">-->
+                                <!--<label class="col-sm-2 control-label">cityID</label>-->
+                                <!--<div class="col-sm-10">-->
+                                    <!--<input type="text" v-model="data.cityID" class="form-control">-->
+                                <!--</div>-->
+                            <!--</div>-->
+                            <!--<div class="hr-line-dashed"></div>-->
+                            <!--<div class="form-group">-->
+                                <!--<label class="col-sm-2 control-label">longAddress</label>-->
+                                <!--<div class="col-sm-10">-->
+                                    <!--<input type="text" v-model="data.longAddress" class="form-control">-->
+                                <!--</div>-->
+                            <!--</div>-->
+                            <!--<div class="hr-line-dashed"></div>-->
+                            <!--<div class="form-group">-->
+                                <!--<label class="col-sm-2 control-label">address</label>-->
+                                <!--<div class="col-sm-10">-->
+                                    <!--<input type="text" v-model="data.address" class="form-control">-->
+                                <!--</div>-->
+                            <!--</div>-->
 
-														    <div class="hr-line-dashed" ></div>
-	                            <div class="form-group">
-	                                <label class="col-sm-2 control-label" >name</label>
-	                                <div class="col-sm-10">
-	                                    <input type="text" v-model="data.name" class="form-control">
-	                            </div>
-                            </div>
-							    <div class="hr-line-dashed" ></div>
-	                            <div class="form-group">
-	                                <label class="col-sm-2 control-label" >status</label>
-	                                <div class="col-sm-10">
-	                                    <input type="text" v-model="data.status" class="form-control">
-	                            </div>
-                            </div>
-							    <div class="hr-line-dashed" ></div>
-	                            <div class="form-group">
-	                                <label class="col-sm-2 control-label" >headImg</label>
-	                                <div class="col-sm-10">
-	                                    <input type="text" v-model="data.headImg" class="form-control">
-	                            </div>
-                            </div>
-							    <div class="hr-line-dashed" ></div>
-	                            <div class="form-group">
-	                                <label class="col-sm-2 control-label" >loginName</label>
-	                                <div class="col-sm-10">
-	                                    <input type="text" v-model="data.loginName" class="form-control">
-	                            </div>
-                            </div>
-							    <div class="hr-line-dashed" ></div>
-	                            <div class="form-group">
-	                                <label class="col-sm-2 control-label" >passWord</label>
-	                                <div class="col-sm-10">
-	                                    <input type="text" v-model="data.passWord" class="form-control">
-	                            </div>
-                            </div>
-							    <div class="hr-line-dashed" ></div>
-	                            <div class="form-group">
-	                                <label class="col-sm-2 control-label" >phone</label>
-	                                <div class="col-sm-10">
-	                                    <input type="text" v-model="data.phone" class="form-control">
-	                            </div>
-                            </div>
-							    <div class="hr-line-dashed" ></div>
-	                            <div class="form-group">
-	                                <label class="col-sm-2 control-label" >provinceID</label>
-	                                <div class="col-sm-10">
-	                                    <input type="text" v-model="data.provinceID" class="form-control">
-	                            </div>
-                            </div>
-							    <div class="hr-line-dashed" ></div>
-	                            <div class="form-group">
-	                                <label class="col-sm-2 control-label" >areaID</label>
-	                                <div class="col-sm-10">
-	                                    <input type="text" v-model="data.areaID" class="form-control">
-	                            </div>
-                            </div>
-							    <div class="hr-line-dashed" ></div>
-	                            <div class="form-group">
-	                                <label class="col-sm-2 control-label" >cityID</label>
-	                                <div class="col-sm-10">
-	                                    <input type="text" v-model="data.cityID" class="form-control">
-	                            </div>
-                            </div>
-							    <div class="hr-line-dashed" ></div>
-	                            <div class="form-group">
-	                                <label class="col-sm-2 control-label" >longAddress</label>
-	                                <div class="col-sm-10">
-	                                    <input type="text" v-model="data.longAddress" class="form-control">
-	                            </div>
-                            </div>
-							    <div class="hr-line-dashed" ></div>
-	                            <div class="form-group">
-	                                <label class="col-sm-2 control-label" >address</label>
-	                                <div class="col-sm-10">
-	                                    <input type="text" v-model="data.address" class="form-control">
-	                            </div>
-                            </div>
-                          
                             <div class="hr-line-dashed"></div>
                             <div class="form-group">
                                 <div class="col-sm-4 col-sm-offset-2">
@@ -110,37 +125,94 @@
     </div>
 </div>
 <script>
-    window.onload=function () {
+    var tempApp=this;
+    window.onload = function () {
         var app = new Vue({
             el: "#app",
             data: {
-                data:{
-                    iD:getUrlKey("id"),
-                    	name:0,
-                    	status:0,
-                    	headImg:0,
-                    	loginName:0,
-                    	passWord:0,
-                    	phone:0,
-                    	provinceID:0,
-                    	areaID:0,
-                    	cityID:0,
-                    	longAddress:0,
-                    	address:0,
+                ProvinceList:[],
+                CityList:[],
+                AreaList:[],
+                ProvinceID:0,
+                CityID:0,
+                AreaID:0,
+                data: {
+                    iD: getUrlKey("id"),
+                    name: "",
+                    headImg: "",
+                    loginName: "",
+                    phone: "",
+                    provinceID: 0,
+                    areaID: 0,
+                    cityID: 0,
+                    longAddress: "",
+                    address: "",
                 }
             },
             methods: {
+                getProvince:function(f){
+                    this.getRegion(1,1)
+                },
+                getCity:function(){
+                    this.getRegion(2,this.ProvinceID)
+                },
+                getArea:function(){
+                    this.getRegion(3,this.CityID)
+                },
+                getRefresh:function(){
+                    tableRefresh();
+                },
+                getRegion:function(type,ParentID){
+                    getRegionHead(this,type,ParentID,false);
+                },
                 save: function () {
-                    savaData(this,"../Admin/modifyAdmin")
+                    savaData(this, "../Admin/modifyAdmin")
+                },
+                addImage:function(){
+                    var url = "../Admin/addPicture.html?type=1&url=" +  this.data.headImg;
+                    modifyShow(this,url,"1000px","420px","选择图片");
                 }
             },
             mounted: function () {
-                if(this.data.iD!=0){
-                    findByID(this,this.data.iD,"../Admin/findAdmin/")
+                tempApp=this;
+                var that=this;
+                if (this.data.iD != 0) {
+                    $("#overlay").show()
+                    $.ajax({
+                        url: "../Admin/findAdmin/"+this.data.iD,
+                        headers: {
+                            Token: getToken()
+                        },
+                        success: function (json) {
+                            $("#overlay").hide()
+                            console.log("获取查找数据",json)
+                            if (json.code == 1) {
+                                top.location.href="../Admin/login.html"
+                            }
+                            if (json.code == 0) {
+                                tempApp.data=json.data;
+                                that.ProvinceID=json.data.provinceID;
+                                that.CityID=json.data.cityID;
+                                that.AreaID=json.data.AreaID;
+                                that.getProvince(1);
+                            } else {
+                                error(json.message);
+                            }
+                        },
+                        error: function () {
+                            $("#overlay").hide();
+                            error("网络异常哦,请稍后重试");
+                        }
+                    })
                 }
                 bindImgError()
+                this.getProvince(0);
             }
         })
+    }
+    function saveImage(type,url){
+        closes("上传成功");
+        tempApp.data.headImg=url;
     }
 </script>
 </body>

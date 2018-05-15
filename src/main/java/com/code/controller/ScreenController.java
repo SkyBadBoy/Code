@@ -109,7 +109,7 @@ public class ScreenController extends BaseController {
 
         Screen tempObj=null;
         if(isNew){
-            obj.setID(CommonUntil.CreateNewID());
+            obj.setID(CommonUntil.getInstance().CreateNewID());
             obj.setStatus(Integer.parseInt(CommonStatus.Status.Ectivity.getid()));
             tempObj=ScreenService.insert(obj);
         }else{

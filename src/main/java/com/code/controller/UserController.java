@@ -128,7 +128,7 @@ public class UserController extends BaseController {
 
         User tempObj=null;
         if(isNew){
-            obj.setID(CommonUntil.CreateNewID());
+            obj.setID(CommonUntil.getInstance().CreateNewID());
             obj.setStatus(Integer.parseInt(CommonStatus.Status.Ectivity.getid()));
             tempObj=UserService.insert(obj);
         }else{

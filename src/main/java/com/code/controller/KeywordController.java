@@ -96,7 +96,7 @@ public class KeywordController extends BaseController {
         obj.setKeyWord(temp.getKeyWord());
         Keyword tempObj=null;
         if(isNew){
-            obj.setID(CommonUntil.CreateNewID());
+            obj.setID(CommonUntil.getInstance().CreateNewID());
             obj.setStatus(Integer.parseInt(CommonStatus.Status.Ectivity.getid()));
             tempObj=KeywordService.insert(obj);
         }else{

@@ -39,7 +39,7 @@
                             <ul class="dropdown-menu animated fadeInRight m-t-xs">
                                 <li><a class="J_menuItem" href="profile.html">个人资料</a>
                                 </li>
-                                <li><a class="J_menuItem" href="contacts.html">修改密码</a>
+                                <li><a class="J_menuItem" @click="reset">修改密码</a>
                                 </li>
                                 <li class="divider"></li>
                                 <li><a @click="loginOut">安全退出</a>
@@ -226,6 +226,7 @@
     <!-- 自定义工具类 -->
 
     <script>
+        var tempApp="";
         var app=new Vue({
             el:"#wrapper",
             data:{
@@ -244,12 +245,21 @@
                 loginOut:function(){
                     sessionStorage.clear();
                     location.href="../Admin/login.html";
+                },reset:function(){
+                    var url = "../Admin/modifyPassword.html?";
+                    url+= "id="+JSON.parse(sessionStorage.getItem("User")).iD;
+                    modifyShow(this,url,"500px","400px","修改密码");
                 }
             },
             mounted: function () {
-                bindImgError()
+                bindImgError();
+                tempApp=this;
             }
         })
+        function closes(message) {
+            layer.close(tempApp.index);
+            success(message)
+        }
     </script>
 
 </body>

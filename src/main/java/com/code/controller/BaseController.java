@@ -5,6 +5,7 @@ import com.code.domain.Error;
 import com.code.service.write.*;
 import com.code.service.read.*;
 import com.code.until.CommonUntil;
+import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -84,6 +85,8 @@ public class BaseController {
 	@Autowired
 	protected ReadAdminService ReadAdminService;
 
+	@Autowired
+	protected AmqpTemplate RabbitTemplate;
 
 	@ExceptionHandler
 	public void exp(HttpServletRequest request, HttpServletResponse response, Exception ex, HttpSession session) throws ServletException, IOException {
@@ -100,7 +103,7 @@ public class BaseController {
 			}
 		}
 		Error error=new Error();
-		error.setID(CommonUntil.CreateNewID());
+		error.setID(CommonUntil.getInstance().CreateNewID());
 		error.setClassName(clazz);
 		error.setName(method);
 		error.setMessage(exception.substring(0,exception.length()>200?200:exception.length()));

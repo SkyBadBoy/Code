@@ -105,7 +105,7 @@ public class AuthorizeController extends BaseController {
 
         Authorize tempObj=null;
         if(isNew){
-            obj.setID(CommonUntil.CreateNewID());
+            obj.setID(CommonUntil.getInstance().CreateNewID());
             obj.setStatus(Integer.parseInt(CommonStatus.Status.Ectivity.getid()));
             tempObj=AuthorizeService.insert(obj);
         }else{
