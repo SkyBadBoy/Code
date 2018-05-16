@@ -16,7 +16,7 @@ import javax.annotation.PostConstruct;
  */
 public class RabbitUtil {
 
-    private boolean Open=false;
+    private boolean Open=true;
 
     private RabbitUtil(){}
 
