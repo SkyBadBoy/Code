@@ -34,28 +34,28 @@ public class MenuService {
 	private ReadMenuMapper ReadMapper;
  
 
-	@CachePut(key="#p0.ID")  
+	@CachePut(key="'Menu_'+#p0.ID")
 	@CacheEvict(value = "ReadMenuCache",allEntries = true)
 	public Menu insert(Menu obj){
 		WriteMapper.insert(obj);
 		return ReadMapper.findById(obj.getID());
 	}
 
-	@CachePut(key="#p0.ID")  
+	@CachePut(key="'Menu_'+#p0.ID")
 	@CacheEvict(value = "ReadMenuCache",allEntries = true)
 	public Menu update(Menu obj){
 		WriteMapper.update(obj);
 		return ReadMapper.findById(obj.getID());
 	}
 
-	@CachePut(key="#p0")  
+	@CachePut(key="'Menu_'+#p0")
 	@CacheEvict(value = "ReadMenuCache",allEntries = true)
 	public Menu deleteById(String id){
 		WriteMapper.deleteById(id);
 		return ReadMapper.findById(id);
 	}
 
-	@CachePut(key="#p0")  
+	@CachePut(key="'Menu_'+#p0")
 	@CacheEvict(value = "ReadMenuCache",allEntries = true)
 	public Menu recoverByID(String id){
 		WriteMapper.recoverByID(id);

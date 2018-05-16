@@ -35,7 +35,7 @@ public class ReadCrimeService {
     @Autowired
 	private ReadCrimeMapper ReadMapper;
 
-	@Cacheable(value = "CrimeCache",key="#p0") 
+	@Cacheable(value = "CrimeCache",key="'Crime_'+#p0")
 	public Crime findById(String id){
 		return ReadMapper.findById(id);
 	}

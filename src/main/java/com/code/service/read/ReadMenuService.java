@@ -35,7 +35,7 @@ public class ReadMenuService {
     @Autowired
 	private ReadMenuMapper ReadMapper;
 
-	@Cacheable(value = "MenuCache",key="#p0") 
+	@Cacheable(value = "MenuCache",key="'Menu_'+#p0")
 	public Menu findById(String id){
 		return ReadMapper.findById(id);
 	}

@@ -34,28 +34,28 @@ public class ErrorService {
 	private ReadErrorMapper ReadMapper;
  
 
-	@CachePut(key="#p0.ID")  
+	@CachePut(key="'Error_'+#p0.ID")
 	@CacheEvict(value = "ReadErrorCache",allEntries = true)
 	public Error insert(Error obj){
 		WriteMapper.insert(obj);
 		return ReadMapper.findById(obj.getID());
 	}
 
-	@CachePut(key="#p0.ID")  
+	@CachePut(key="'Error_'+#p0.ID")
 	@CacheEvict(value = "ReadErrorCache",allEntries = true)
 	public Error update(Error obj){
 		WriteMapper.update(obj);
 		return ReadMapper.findById(obj.getID());
 	}
 
-	@CachePut(key="#p0")  
+	@CachePut(key="'Error_'+#p0")
 	@CacheEvict(value = "ReadErrorCache",allEntries = true)
 	public Error deleteById(String id){
 		WriteMapper.deleteById(id);
 		return ReadMapper.findById(id);
 	}
 
-	@CachePut(key="#p0")  
+	@CachePut(key="'Error_'+#p0")
 	@CacheEvict(value = "ReadErrorCache",allEntries = true)
 	public Error recoverByID(String id){
 		WriteMapper.recoverByID(id);

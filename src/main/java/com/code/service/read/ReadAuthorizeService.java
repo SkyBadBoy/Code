@@ -35,7 +35,7 @@ public class ReadAuthorizeService {
     @Autowired
 	private ReadAuthorizeMapper ReadMapper;
 
-	@Cacheable(value = "AuthorizeCache",key="#p0") 
+	@Cacheable(value = "AuthorizeCache",key="'Authorize_'+#p0")
 	public Authorize findById(String id){
 		return ReadMapper.findById(id);
 	}

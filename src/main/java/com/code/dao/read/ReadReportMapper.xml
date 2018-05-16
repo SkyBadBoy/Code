@@ -13,7 +13,7 @@
 		<result property="Content" column="Report_Content" typeHandler="com.code.until.expression.MyBlobTypeHandler" />
 		<result property="SrcID" column="Report_SrcID" />
 		<result property="Type" column="Report_Type" />
-		<association property="User" column="Report_UserID" select="com.code.dao.read.ReadUserMapper.findById" />
+		<association property="User" column="Report_UserID" select="com.code.dao.read.ReadUserMapper.findById" fetchType="eager"/>
 
 	</resultMap>
 

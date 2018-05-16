@@ -35,7 +35,7 @@ public class ReadRegionService {
     @Autowired
 	private ReadRegionMapper ReadMapper;
 
-	@Cacheable(value = "RegionCache",key="#p0") 
+	@Cacheable(value = "RegionCache",key="'Region_'+#p0")
 	public Region findById(String id){
 		return ReadMapper.findById(id);
 	}

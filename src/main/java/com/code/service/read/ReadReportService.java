@@ -35,7 +35,7 @@ public class ReadReportService {
     @Autowired
 	private ReadReportMapper ReadMapper;
 
-	@Cacheable(value = "ReportCache",key="#p0") 
+	@Cacheable(value = "ReportCache",key="'Report_'+#p0")
 	public Report findById(String id){
 		return ReadMapper.findById(id);
 	}

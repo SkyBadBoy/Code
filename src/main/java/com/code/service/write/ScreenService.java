@@ -34,28 +34,28 @@ public class ScreenService {
 	private ReadScreenMapper ReadMapper;
  
 
-	@CachePut(key="#p0.ID")  
+	@CachePut(key="'Screen_'+#p0.ID")
 	@CacheEvict(value = "ReadScreenCache",allEntries = true)
 	public Screen insert(Screen obj){
 		WriteMapper.insert(obj);
 		return ReadMapper.findById(obj.getID());
 	}
 
-	@CachePut(key="#p0.ID")  
+	@CachePut(key="'Screen_'+#p0.ID")
 	@CacheEvict(value = "ReadScreenCache",allEntries = true)
 	public Screen update(Screen obj){
 		WriteMapper.update(obj);
 		return ReadMapper.findById(obj.getID());
 	}
 
-	@CachePut(key="#p0")  
+	@CachePut(key="'Screen_'+#p0")
 	@CacheEvict(value = "ReadScreenCache",allEntries = true)
 	public Screen deleteById(String id){
 		WriteMapper.deleteById(id);
 		return ReadMapper.findById(id);
 	}
 
-	@CachePut(key="#p0")  
+	@CachePut(key="'Screen_'+#p0")
 	@CacheEvict(value = "ReadScreenCache",allEntries = true)
 	public Screen recoverByID(String id){
 		WriteMapper.recoverByID(id);

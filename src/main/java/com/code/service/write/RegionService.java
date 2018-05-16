@@ -34,28 +34,28 @@ public class RegionService {
 	private ReadRegionMapper ReadMapper;
  
 
-	@CachePut(key="#p0.ID")  
+	@CachePut(key="'Region_'+#p0.ID")
 	@CacheEvict(value = "ReadRegionCache",allEntries = true)
 	public Region insert(Region obj){
 		WriteMapper.insert(obj);
 		return ReadMapper.findById(obj.getID());
 	}
 
-	@CachePut(key="#p0.ID")  
+	@CachePut(key="'Region_'+#p0.ID")
 	@CacheEvict(value = "ReadRegionCache",allEntries = true)
 	public Region update(Region obj){
 		WriteMapper.update(obj);
 		return ReadMapper.findById(obj.getID());
 	}
 
-	@CachePut(key="#p0")  
+	@CachePut(key="'Region_'+#p0")
 	@CacheEvict(value = "ReadRegionCache",allEntries = true)
 	public Region deleteById(String id){
 		WriteMapper.deleteById(id);
 		return ReadMapper.findById(id);
 	}
 
-	@CachePut(key="#p0")  
+	@CachePut(key="'Region_'+#p0")
 	@CacheEvict(value = "ReadRegionCache",allEntries = true)
 	public Region recoverByID(String id){
 		WriteMapper.recoverByID(id);

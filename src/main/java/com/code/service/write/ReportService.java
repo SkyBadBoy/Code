@@ -34,28 +34,28 @@ public class ReportService {
 	private ReadReportMapper ReadMapper;
  
 
-	@CachePut(key="#p0.ID")  
+	@CachePut(key="'Report_'+#p0.ID")
 	@CacheEvict(value = "ReadReportCache",allEntries = true)
 	public Report insert(Report obj){
 		WriteMapper.insert(obj);
 		return ReadMapper.findById(obj.getID());
 	}
 
-	@CachePut(key="#p0.ID")  
+	@CachePut(key="'Report_'+#p0.ID")
 	@CacheEvict(value = "ReadReportCache",allEntries = true)
 	public Report update(Report obj){
 		WriteMapper.update(obj);
 		return ReadMapper.findById(obj.getID());
 	}
 
-	@CachePut(key="#p0")  
+	@CachePut(key="'Report_'+#p0")
 	@CacheEvict(value = "ReadReportCache",allEntries = true)
 	public Report deleteById(String id){
 		WriteMapper.deleteById(id);
 		return ReadMapper.findById(id);
 	}
 
-	@CachePut(key="#p0")  
+	@CachePut(key="'Report_'+#p0")
 	@CacheEvict(value = "ReadReportCache",allEntries = true)
 	public Report recoverByID(String id){
 		WriteMapper.recoverByID(id);

@@ -34,28 +34,28 @@ public class AdminService {
 	private ReadAdminMapper ReadMapper;
  
 
-	@CachePut(key="#p0.ID")  
+	@CachePut(key="'Admin_'+#p0.ID")
 	@CacheEvict(value = "ReadAdminCache",allEntries = true)
 	public Admin insert(Admin obj){
 		WriteMapper.insert(obj);
 		return ReadMapper.findById(obj.getID());
 	}
 
-	@CachePut(key="#p0.ID")  
+	@CachePut(key="'Admin_'+#p0.ID")
 	@CacheEvict(value = "ReadAdminCache",allEntries = true)
 	public Admin update(Admin obj){
 		WriteMapper.update(obj);
 		return ReadMapper.findById(obj.getID());
 	}
 
-	@CachePut(key="#p0")  
+	@CachePut(key="'Admin_'+#p0")
 	@CacheEvict(value = "ReadAdminCache",allEntries = true)
 	public Admin deleteById(String id){
 		WriteMapper.deleteById(id);
 		return ReadMapper.findById(id);
 	}
 
-	@CachePut(key="#p0")  
+	@CachePut(key="'Admin_'+#p0")
 	@CacheEvict(value = "ReadAdminCache",allEntries = true)
 	public Admin recoverByID(String id){
 		WriteMapper.recoverByID(id);

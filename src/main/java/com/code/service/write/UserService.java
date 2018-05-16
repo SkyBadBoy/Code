@@ -34,28 +34,28 @@ public class UserService {
 	private ReadUserMapper ReadMapper;
  
 
-	@CachePut(key="#p0.ID")  
+	@CachePut(key="'User_'+#p0.ID")
 	@CacheEvict(value = "ReadUserCache",allEntries = true)
 	public User insert(User obj){
 		WriteMapper.insert(obj);
 		return ReadMapper.findById(obj.getID());
 	}
 
-	@CachePut(key="#p0.ID")  
+	@CachePut(key="'User_'+#p0.ID")
 	@CacheEvict(value = "ReadUserCache",allEntries = true)
 	public User update(User obj){
 		WriteMapper.update(obj);
 		return ReadMapper.findById(obj.getID());
 	}
 
-	@CachePut(key="#p0")  
+	@CachePut(key="'User_'+#p0")
 	@CacheEvict(value = "ReadUserCache",allEntries = true)
 	public User deleteById(String id){
 		WriteMapper.deleteById(id);
 		return ReadMapper.findById(id);
 	}
 
-	@CachePut(key="#p0")  
+	@CachePut(key="'User_'+#p0")
 	@CacheEvict(value = "ReadUserCache",allEntries = true)
 	public User recoverByID(String id){
 		WriteMapper.recoverByID(id);

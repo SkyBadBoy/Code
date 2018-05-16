@@ -24,8 +24,7 @@ import java.io.PrintStream;
  */
 @Controller
 public class BaseController {
-	@Autowired
-	protected RecordService recordService;
+
 	@Autowired
 	protected WeChatInfoService weChatInfoService;
 	@Autowired

@@ -36,28 +36,28 @@ public class AccessService {
 
 	//操作太平凡不合适用redis
 
-//	@CachePut(key="#p0.ID")
-//	@CacheEvict(value = "ReadAccessCache",allEntries = true)
+	@CachePut(key="'Access_'+#p0.ID")
+	@CacheEvict(value = "ReadAccessCache",allEntries = true)
 	public Access insert(Access obj){
 		WriteMapper.insert(obj);
 		return ReadMapper.findById(obj.getID());
 	}
 
-//	@CachePut(key="#p0.ID")
-//	@CacheEvict(value = "ReadAccessCache",allEntries = true)
+	@CachePut(key="'Access_'+#p0.ID")
+	@CacheEvict(value = "ReadAccessCache",allEntries = true)
 	public Access update(Access obj){
 		WriteMapper.update(obj);
 		return ReadMapper.findById(obj.getID());
 	}
 
-	@CachePut(key="#p0")  
+	@CachePut(key="'Access_'+#p0")
 	@CacheEvict(value = "ReadAccessCache",allEntries = true)
 	public Access deleteById(String id){
 		WriteMapper.deleteById(id);
 		return ReadMapper.findById(id);
 	}
 
-	@CachePut(key="#p0")  
+	@CachePut(key="'Access_'+#p0")
 	@CacheEvict(value = "ReadAccessCache",allEntries = true)
 	public Access recoverByID(String id){
 		WriteMapper.recoverByID(id);

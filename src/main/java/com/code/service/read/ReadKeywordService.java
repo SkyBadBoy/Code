@@ -35,7 +35,7 @@ public class ReadKeywordService {
     @Autowired
 	private ReadKeywordMapper ReadMapper;
 
-	@Cacheable(value = "KeywordCache",key="#p0") 
+	@Cacheable(value = "KeywordCache",key="'Keyword_'+#p0")
 	public Keyword findById(String id){
 		return ReadMapper.findById(id);
 	}

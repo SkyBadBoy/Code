@@ -35,7 +35,7 @@ public class ReadScreenService {
     @Autowired
 	private ReadScreenMapper ReadMapper;
 
-	@Cacheable(value = "ScreenCache",key="#p0") 
+	@Cacheable(value = "ScreenCache",key="'Screen_'+#p0")
 	public Screen findById(String id){
 		return ReadMapper.findById(id);
 	}

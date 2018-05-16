@@ -34,28 +34,28 @@ public class FeedbackService {
 	private ReadFeedbackMapper ReadMapper;
  
 
-	@CachePut(key="#p0.ID")  
+	@CachePut(key="'Feedback_'+#p0.ID")
 	@CacheEvict(value = "ReadFeedbackCache",allEntries = true)
 	public Feedback insert(Feedback obj){
 		WriteMapper.insert(obj);
 		return ReadMapper.findById(obj.getID());
 	}
 
-	@CachePut(key="#p0.ID")  
+	@CachePut(key="'Feedback_'+#p0.ID")
 	@CacheEvict(value = "ReadFeedbackCache",allEntries = true)
 	public Feedback update(Feedback obj){
 		WriteMapper.update(obj);
 		return ReadMapper.findById(obj.getID());
 	}
 
-	@CachePut(key="#p0")  
+	@CachePut(key="'Feedback_'+#p0")
 	@CacheEvict(value = "ReadFeedbackCache",allEntries = true)
 	public Feedback deleteById(String id){
 		WriteMapper.deleteById(id);
 		return ReadMapper.findById(id);
 	}
 
-	@CachePut(key="#p0")  
+	@CachePut(key="'Feedback_'+#p0")
 	@CacheEvict(value = "ReadFeedbackCache",allEntries = true)
 	public Feedback recoverByID(String id){
 		WriteMapper.recoverByID(id);

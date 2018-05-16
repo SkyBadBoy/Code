@@ -34,28 +34,28 @@ public class OnlineService {
 	private ReadOnlineMapper ReadMapper;
  
 
-	@CachePut(key="#p0.ID")  
+	@CachePut(key="'Online_'+#p0.ID")
 	@CacheEvict(value = "ReadOnlineCache",allEntries = true)
 	public Online insert(Online obj){
 		WriteMapper.insert(obj);
 		return ReadMapper.findById(obj.getID());
 	}
 
-	@CachePut(key="#p0.ID")  
+	@CachePut(key="'Online_'+#p0.ID")
 	@CacheEvict(value = "ReadOnlineCache",allEntries = true)
 	public Online update(Online obj){
 		WriteMapper.update(obj);
 		return ReadMapper.findById(obj.getID());
 	}
 
-	@CachePut(key="#p0")  
+	@CachePut(key="'Online_'+#p0")
 	@CacheEvict(value = "ReadOnlineCache",allEntries = true)
 	public Online deleteById(String id){
 		WriteMapper.deleteById(id);
 		return ReadMapper.findById(id);
 	}
 
-	@CachePut(key="#p0")  
+	@CachePut(key="'Online_'+#p0")
 	@CacheEvict(value = "ReadOnlineCache",allEntries = true)
 	public Online recoverByID(String id){
 		WriteMapper.recoverByID(id);

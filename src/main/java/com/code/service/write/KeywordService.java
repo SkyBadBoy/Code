@@ -34,28 +34,28 @@ public class KeywordService {
 	private ReadKeywordMapper ReadMapper;
  
 
-	@CachePut(key="#p0.ID")  
+	@CachePut(key="'Keyword_'+#p0.ID")
 	@CacheEvict(value = "ReadKeywordCache",allEntries = true)
 	public Keyword insert(Keyword obj){
 		WriteMapper.insert(obj);
 		return ReadMapper.findById(obj.getID());
 	}
 
-	@CachePut(key="#p0.ID")  
+	@CachePut(key="'Keyword_'+#p0.ID")
 	@CacheEvict(value = "ReadKeywordCache",allEntries = true)
 	public Keyword update(Keyword obj){
 		WriteMapper.update(obj);
 		return ReadMapper.findById(obj.getID());
 	}
 
-	@CachePut(key="#p0")  
+	@CachePut(key="'Keyword_'+#p0")
 	@CacheEvict(value = "ReadKeywordCache",allEntries = true)
 	public Keyword deleteById(String id){
 		WriteMapper.deleteById(id);
 		return ReadMapper.findById(id);
 	}
 
-	@CachePut(key="#p0")  
+	@CachePut(key="'Keyword_'+#p0")
 	@CacheEvict(value = "ReadKeywordCache",allEntries = true)
 	public Keyword recoverByID(String id){
 		WriteMapper.recoverByID(id);

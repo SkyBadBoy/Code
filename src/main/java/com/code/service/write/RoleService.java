@@ -34,28 +34,28 @@ public class RoleService {
 	private ReadRoleMapper ReadMapper;
  
 
-	@CachePut(key="#p0.ID")  
+	@CachePut(key="'Role_'+#p0.ID")
 	@CacheEvict(value = "ReadRoleCache",allEntries = true)
 	public Role insert(Role obj){
 		WriteMapper.insert(obj);
 		return ReadMapper.findById(obj.getID());
 	}
 
-	@CachePut(key="#p0.ID")  
+	@CachePut(key="'Role_'+#p0.ID")
 	@CacheEvict(value = "ReadRoleCache",allEntries = true)
 	public Role update(Role obj){
 		WriteMapper.update(obj);
 		return ReadMapper.findById(obj.getID());
 	}
 
-	@CachePut(key="#p0")  
+	@CachePut(key="'Role_'+#p0")
 	@CacheEvict(value = "ReadRoleCache",allEntries = true)
 	public Role deleteById(String id){
 		WriteMapper.deleteById(id);
 		return ReadMapper.findById(id);
 	}
 
-	@CachePut(key="#p0")  
+	@CachePut(key="'Role_'+#p0")
 	@CacheEvict(value = "ReadRoleCache",allEntries = true)
 	public Role recoverByID(String id){
 		WriteMapper.recoverByID(id);

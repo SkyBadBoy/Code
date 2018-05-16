@@ -28,14 +28,14 @@ import java.util.Map;
  * @version 1.00
  */
  @Service
- @CacheConfig(cacheNames="ReadAdminCache") 
+ @CacheConfig(cacheNames="ReadAdminCache")
  @Transactional(propagation=Propagation.REQUIRED,readOnly=false,rollbackFor=Exception.class)
 public class ReadAdminService {
 
     @Autowired
 	private ReadAdminMapper ReadMapper;
 
-	@Cacheable(value = "AdminCache",key="#p0") 
+	@Cacheable(value = "AdminCache",key="'Admin_'+#p0")
 	public Admin findById(String id){
 		return ReadMapper.findById(id);
 	}

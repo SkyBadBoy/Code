@@ -35,7 +35,7 @@ public class ReadRoleService {
     @Autowired
 	private ReadRoleMapper ReadMapper;
 
-	@Cacheable(value = "RoleCache",key="#p0") 
+	@Cacheable(value = "RoleCache",key="'Role_'+#p0")
 	public Role findById(String id){
 		return ReadMapper.findById(id);
 	}

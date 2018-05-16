@@ -35,7 +35,7 @@ public class ReadUserService {
     @Autowired
 	private ReadUserMapper ReadMapper;
 
-	@Cacheable(value = "UserCache",key="#p0") 
+	@Cacheable(value = "UserCache",key="'User_'+#p0")
 	public User findById(String id){
 		return ReadMapper.findById(id);
 	}
