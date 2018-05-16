@@ -2,6 +2,7 @@ package com.code.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.code.config.rabbit.RabbitUtil;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -36,12 +37,13 @@ public class KeywordController extends BaseController {
         PageInfo<Keyword> page = this.ReadKeywordService.queryPage(queryMap, pageNumber, pageSize);
         returnMap.put("rows", page.getList());
         returnMap.put("total", page.getTotal());
+        RabbitUtil.getInstance().OperationLog(request.getHeader("Token"),"查看【Keyword-queryKeywordPage】列表",ReadOnlineService,OperationService,RabbitTemplate,ReadUserService);
         return returnMap;
     }
 
     @PostMapping("/setKeywordStatus")
     @ApiOperation(value = "设置状态")
-    public Map setKeywordStatus(String data){
+    public Map setKeywordStatus(String data,HttpServletRequest request){
         Map<String,Object> returnMap=new HashMap<>(2);
         Map<String,Object> queryMap=new HashMap<>(1);
         Keyword temp=JSON.parseObject(data,Keyword.class);
@@ -56,12 +58,13 @@ public class KeywordController extends BaseController {
         }
         returnMap.put("code",0);
         returnMap.put("message","操作成功");
+        RabbitUtil.getInstance().OperationLog(request.getHeader("Token"),"设置【Keyword-setKeywordStatus】状态",ReadOnlineService,OperationService,RabbitTemplate,ReadUserService);
         return returnMap;
     }
 
     @GetMapping("/findKeyword/{id}")
     @ApiOperation(value = "根据编号查询内容")
-    public Map findKeyword(@PathVariable("id") String id){
+    public Map findKeyword(@PathVariable("id") String id,HttpServletRequest request){
         Map<String,Object> returnMap=new HashMap<>(2);
         Map<String,Object> queryMap=new HashMap<>(1);
         Keyword temp=ReadKeywordService.findById(id);
@@ -74,6 +77,7 @@ public class KeywordController extends BaseController {
 	        returnMap.put("data",temp);
 	        returnMap.put("message","获取失败");
 		}
+        RabbitUtil.getInstance().OperationLog(request.getHeader("Token"),"查询【Keyword-findKeyword-"+id+"】内容",ReadOnlineService,OperationService,RabbitTemplate,ReadUserService);
         return returnMap;
     }
 
@@ -104,6 +108,7 @@ public class KeywordController extends BaseController {
         }
         returnMap.put("code", tempObj!=null?0:-1);
         returnMap.put("message", tempObj!=null?"修改成功":"修改失败");
+        RabbitUtil.getInstance().OperationLog(request.getHeader("Token"),"修改【Keyword-modifyKeyword-"+obj.getID()+"】内容",ReadOnlineService,OperationService,RabbitTemplate,ReadUserService);
         return returnMap;
     }
 

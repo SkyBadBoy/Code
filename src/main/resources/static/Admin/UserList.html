@@ -72,6 +72,9 @@
                                 <button type="button"  @click="crime" class="btn btn-success ">
                                     <i class="glyphicon glyphicon-warning-sign" aria-hidden="true">违规处理</i>
                                 </button>
+                                <button type="button"  @click="operation" class="btn btn-info ">
+                                    <i class="fa fa-hand-o-up" aria-hidden="true">操作日志</i>
+                                </button>
                             </div>
                             <table id="exampleTableEvents" >
                             </table>
@@ -136,6 +139,12 @@
                     }
                     modifyShow(this,url,"100%","100%","User");
                 },
+                operation:function(){
+                    if(checkIsSelection()){return};
+                    var url = "../Admin/OperationList.html?";
+                    url+= "id="+getRecordIDForFastJson($('#exampleTableEvents'));
+                    modifyShow(this,url,"100%","100%","用户操作日志");
+                }
             },
             mounted: function () {
                 bindImgError()

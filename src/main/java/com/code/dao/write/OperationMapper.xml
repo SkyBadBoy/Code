@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.code.dao.write.OperationMapper">
+	<sql id="sql">
+		Operation_ID,Operation_Message,Operation_CreateTime,Operation_Status,Operation_UserID,Operation_Type
+	</sql>
+	<sql id="where">
+		1=1 
+		<if test="ID!=null">
+				 and Operation_ID = #{ID}
+</if>
+<if test="Message!=null">
+				 and Operation_Message = #{Message}
+</if>
+<if test="CreateTime!=null">
+				 and Operation_CreateTime = #{CreateTime}
+</if>
+<if test="Status!=null">
+				 and Operation_Status = #{Status}
+</if>
+<if test="UserID!=null">
+				 and Operation_UserID = #{UserID}
+</if>
+<if test="Type!=null">
+				 and Operation_Type = #{Type}
+</if>
+
+	</sql>
+
+	<!-- 插入数据 -->
+	<insert id="insert" parameterType="com.code.domain.Operation"  useGeneratedKeys="true">
+		insert into t_Operation( <include refid="sql"></include> )
+		values(
+				#{ID},
+#{Message},
+now(),
+#{Status},
+#{UserID},
+#{Type}
+				)
+	</insert>
+	<update id="update" parameterType="com.code.domain.Operation">
+		update t_Operation set Operation_Message = #{Message},Operation_Status = #{Status},Operation_UserID = #{UserID},Operation_Type = #{Type}
+		<where>
+			Operation_ID= #{ID} 
+		</where>
+	</update>
+
+
+	<!-- 根据编号删除 by majian-->
+	<update id="deleteById" parameterType="com.code.domain.Operation">
+		update t_Operation set Operation_Status=88 where Operation_ID = #{_parameter} 
+	</update>
+
+	<!-- 根据编号恢复 by majian-->
+	<update id="recoverByID" parameterType="com.code.domain.Operation">
+		update t_Operation set Operation_Status=1 where Operation_ID = #{_parameter} 
+	</update>
+
+	<!-- 根据条件删除 by majian-->
+	<update id="deleteByCondition" parameterType="com.code.domain.Operation">
+		update t_Operation set Operation_Status=88 
+		<where>
+			<include refid="where"></include>
+		</where>
+	</update>
+
+	<!-- 根据条件恢复 by majian-->
+	<update id="recoverByCondition" parameterType="com.code.domain.Operation">
+		update t_Operation set Operation_Status=1 
+		<where>
+			<include refid="where"></include>
+		</where>
+	</update>
+
+
+</mapper>

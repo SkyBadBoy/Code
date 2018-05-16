@@ -2,6 +2,7 @@ package com.code.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.code.config.rabbit.RabbitUtil;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -45,6 +46,7 @@ public class RegionController extends BaseController {
         PageInfo<Region> page = this.ReadRegionService.queryPage(queryMap, pageNumber, pageSize);
         returnMap.put("rows", page.getList());
         returnMap.put("total", page.getTotal());
+        RabbitUtil.getInstance().OperationLog(request.getHeader("Token"),"查看【Region-queryRegionPage】列表",ReadOnlineService,OperationService,RabbitTemplate,ReadUserService);
         return returnMap;
     }
     @GetMapping("/queryRegionByParentID")
@@ -60,7 +62,7 @@ public class RegionController extends BaseController {
     }
     @PostMapping("/setRegionStatus")
     @ApiOperation(value = "设置状态")
-    public Map setRegionStatus(String data){
+    public Map setRegionStatus(String data,HttpServletRequest request){
         Map<String,Object> returnMap=new HashMap<>(2);
         Map<String,Object> queryMap=new HashMap<>(1);
         Region temp=JSON.parseObject(data,Region.class);
@@ -75,12 +77,13 @@ public class RegionController extends BaseController {
         }
         returnMap.put("code",0);
         returnMap.put("message","操作成功");
+        RabbitUtil.getInstance().OperationLog(request.getHeader("Token"),"设置【Region-setRegionStatus】状态",ReadOnlineService,OperationService,RabbitTemplate,ReadUserService);
         return returnMap;
     }
 
     @GetMapping("/findRegion/{id}")
     @ApiOperation(value = "根据编号查询内容")
-    public Map findRegion(@PathVariable("id") String id){
+    public Map findRegion(@PathVariable("id") String id,HttpServletRequest request){
         Map<String,Object> returnMap=new HashMap<>(2);
         Map<String,Object> queryMap=new HashMap<>(1);
         Region temp=ReadRegionService.findById(id);
@@ -93,6 +96,7 @@ public class RegionController extends BaseController {
 	        returnMap.put("data",temp);
 	        returnMap.put("message","获取失败");
 		}
+        RabbitUtil.getInstance().OperationLog(request.getHeader("Token"),"查询【Region-findRegion-"+id+"】内容",ReadOnlineService,OperationService,RabbitTemplate,ReadUserService);
         return returnMap;
     }
 
@@ -138,6 +142,7 @@ public class RegionController extends BaseController {
         }
         returnMap.put("code", tempObj!=null?0:-1);
         returnMap.put("message", tempObj!=null?"修改成功":"修改失败");
+        RabbitUtil.getInstance().OperationLog(request.getHeader("Token"),"修改【Region-modifyRegion-"+obj.getID()+"】内容",ReadOnlineService,OperationService,RabbitTemplate,ReadUserService);
         return returnMap;
     }
 

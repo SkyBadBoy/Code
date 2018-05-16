@@ -29,5 +29,9 @@ public class RabbitConfig {
     public Queue OperationLogQueue() {
         return new Queue(CommonStatus.RabbitType.OPERATIONLOG.seq);
     }
-
+    /** 用户登录日志*/
+    @Bean
+    public Queue UserLoginLogQueue() {
+        return new Queue(CommonStatus.RabbitType.USERLOGINLOG.seq);
+    }
 }

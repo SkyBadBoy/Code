@@ -11,9 +11,9 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.Map;
 
-import com.code.domain.Error;
-import com.code.dao.read.ReadErrorMapper;
-import com.code.dao.write.ErrorMapper;
+import com.code.domain.Operation;
+import com.code.dao.read.ReadOperationMapper;
+import com.code.dao.write.OperationMapper;
 
 /**
  * <p>Service class。</p>
@@ -22,52 +22,54 @@ import com.code.dao.write.ErrorMapper;
  * @version 1.00
  */
 @Service
-@CacheConfig(cacheNames="ErrorCache") 
+@CacheConfig(cacheNames="OperationCache") 
 @Transactional(propagation=Propagation.REQUIRED,readOnly=false,rollbackFor=Exception.class)
-public class ErrorService {
+public class OperationService {
 
    
     @Autowired
-	private ErrorMapper WriteMapper;
+	private OperationMapper WriteMapper;
 
     @Autowired
-	private ReadErrorMapper ReadMapper;
+	private ReadOperationMapper ReadMapper;
  
 
-//	@CachePut(key="'Error_'+#p0.ID")
-	@CacheEvict(value = "ReadErrorCache",allEntries = true)
-	public Error insert(Error obj){
+//	@CachePut(key="'Operation_'+#p0.ID")
+	@CacheEvict(value = "ReadOperationCache",allEntries = true)
+	public Operation insert(Operation obj){
 		WriteMapper.insert(obj);
 		return ReadMapper.findById(obj.getID());
 	}
 
-//	@CachePut(key="'Error_'+#p0.ID")
-	@CacheEvict(value = "ReadErrorCache",allEntries = true)
-	public Error update(Error obj){
+//	@CachePut(key="'Operation_'+#p0.ID")
+	@CacheEvict(value = "ReadOperationCache",allEntries = true)
+	public Operation update(Operation obj){
 		WriteMapper.update(obj);
 		return ReadMapper.findById(obj.getID());
 	}
 
-//	@CachePut(key="'Error_'+#p0")
-	@CacheEvict(value = "ReadErrorCache",allEntries = true)
-	public Error deleteById(String id){
+//	@CachePut(key="'Operation_'+#p0")
+	@CacheEvict(value = "ReadOperationCache",allEntries = true)
+	public Operation deleteById(String id){
 		WriteMapper.deleteById(id);
 		return ReadMapper.findById(id);
 	}
 
-//	@CachePut(key="'Error_'+#p0")
-	@CacheEvict(value = "ReadErrorCache",allEntries = true)
-	public Error recoverByID(String id){
+//	@CachePut(key="'Operation_'+#p0")
+	@CacheEvict(value = "ReadOperationCache",allEntries = true)
+	public Operation recoverByID(String id){
 		WriteMapper.recoverByID(id);
 		return ReadMapper.findById(id);
 	}
 
-	@CacheEvict(value = {"ReadErrorCache"},allEntries = true)
+//	@CacheEvict(value = {"ReadOperationCache","OperationCache"},allEntries = true)
+	@CacheEvict(value = {"ReadOperationCache"},allEntries = true)
 	public int deleteByCondition(Map<String,Object> queryMap){
 		return WriteMapper.deleteByCondition(queryMap);
 	}
 
-	@CacheEvict(value = {"ReadErrorCache"},allEntries = true)
+//	@CacheEvict(value = {"ReadOperationCache","OperationCache"},allEntries = true)
+	@CacheEvict(value = {"ReadOperationCache"},allEntries = true)
 	public int recoverByCondition(Map<String,Object> queryMap){
 		return WriteMapper.recoverByCondition(queryMap);
 	}

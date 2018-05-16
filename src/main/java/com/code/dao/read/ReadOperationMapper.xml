@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.code.dao.read.ReadOperationMapper">
+	<!-- 返回的map -->
+	<resultMap id="operation" type="com.code.domain.Operation">
+		<result property="ID" column="Operation_ID" />
+		<result property="Message" column="Operation_Message" />
+		<result property="CreateTime" column="Operation_CreateTime" />
+		<result property="Status" column="Operation_Status" />
+		<result property="UserID" column="Operation_UserID" />
+		<result property="Type" column="Operation_Type" />
+	</resultMap>
+	<!-- sql查询语句-->
+	<sql id="sql">
+		Operation_ID,Operation_Message,Operation_CreateTime,Operation_Status,Operation_UserID,Operation_Type
+	</sql>
+	<!-- sql查询条件-->
+	<sql id="where">
+		1=1 
+		<if test="ID!=null">
+				 and Operation_ID = #{ID}
+</if>
+<if test="Message!=null">
+				 and Operation_Message = #{Message}
+</if>
+<if test="CreateTime!=null">
+				 and Operation_CreateTime = #{CreateTime}
+</if>
+<if test="Status!=null">
+				 and Operation_Status = #{Status}
+</if>
+<if test="UserID!=null">
+				 and Operation_UserID = #{UserID}
+</if>
+<if test="Type!=null">
+				 and Operation_Type = #{Type}
+</if>
+
+	</sql>
+	<!-- 根据ID 查找-->
+	<select id="findById" resultMap="operation" parameterType="long">
+		SELECT
+		<include refid="sql"></include>
+		FROM t_Operation
+		<where>
+			Operation_ID = #{_parameter} 
+		</where>
+	</select>
+	<!-- 根据条件 查找-->
+	<select id="query"  resultMap="operation"
+		parameterType="java.util.Map">
+		SELECT
+		<include refid="sql"></include>
+		FROM t_Operation
+		<where>
+			<include refid="where"></include>
+		</where>
+	
+	</select>
+	<!-- 根据条件总数-->
+	<select id="queryCount" parameterType="map" resultType="int">
+		SELECT
+			Count(1)
+			FROM t_Operation
+			<where>
+				<include refid="where"></include>
+			</where>
+	</select>
+
+
+
+</mapper>

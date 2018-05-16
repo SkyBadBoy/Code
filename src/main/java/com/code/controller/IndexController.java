@@ -2,6 +2,8 @@ package com.code.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -34,7 +36,7 @@ public class IndexController extends BaseController{
      */
     @GetMapping("/getHomeInfo")
     @ResponseBody
-    public Map<String,Object> getHomeInfo(){
+    public Map<String,Object> getHomeInfo(HttpServletRequest request){
         Map<String,Object> returnMap=new HashMap<String,Object>();
 //        returnMap.put("boxMoney", boxService.getAllMoney());
 //        returnMap.put("boxCount", boxService.getAllCount());

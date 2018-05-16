@@ -2,6 +2,7 @@ package com.code.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.code.config.rabbit.RabbitUtil;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -36,12 +37,13 @@ public class MenuController extends BaseController {
         PageInfo<Menu> page = this.ReadMenuService.queryPage(queryMap, pageNumber, pageSize);
         returnMap.put("rows", page.getList());
         returnMap.put("total", page.getTotal());
+        RabbitUtil.getInstance().OperationLog(request.getHeader("Token"),"查看【Menu-queryMenuPage】列表",ReadOnlineService,OperationService,RabbitTemplate,ReadUserService);
         return returnMap;
     }
 
     @PostMapping("/setMenuStatus")
     @ApiOperation(value = "设置状态")
-    public Map setMenuStatus(String data){
+    public Map setMenuStatus(String data,HttpServletRequest request){
         Map<String,Object> returnMap=new HashMap<>(2);
         Map<String,Object> queryMap=new HashMap<>(1);
         Menu temp=JSON.parseObject(data,Menu.class);
@@ -56,12 +58,13 @@ public class MenuController extends BaseController {
         }
         returnMap.put("code",0);
         returnMap.put("message","操作成功");
+        RabbitUtil.getInstance().OperationLog(request.getHeader("Token"),"设置【Menu-setMenuStatus】状态",ReadOnlineService,OperationService,RabbitTemplate,ReadUserService);
         return returnMap;
     }
 
     @GetMapping("/findMenu/{id}")
     @ApiOperation(value = "根据编号查询内容")
-    public Map findMenu(@PathVariable("id") String id){
+    public Map findMenu(@PathVariable("id") String id,HttpServletRequest request){
         Map<String,Object> returnMap=new HashMap<>(2);
         Map<String,Object> queryMap=new HashMap<>(1);
         Menu temp=ReadMenuService.findById(id);
@@ -74,6 +77,7 @@ public class MenuController extends BaseController {
 	        returnMap.put("data",temp);
 	        returnMap.put("message","获取失败");
 		}
+        RabbitUtil.getInstance().OperationLog(request.getHeader("Token"),"查询【Menu-findMenu-"+id+"】内容",ReadOnlineService,OperationService,RabbitTemplate,ReadUserService);
         return returnMap;
     }
 
@@ -118,6 +122,7 @@ public class MenuController extends BaseController {
         }
         returnMap.put("code", tempObj!=null?0:-1);
         returnMap.put("message", tempObj!=null?"修改成功":"修改失败");
+        RabbitUtil.getInstance().OperationLog(request.getHeader("Token"),"修改【Menu-modifyMenu-"+obj.getID()+"】内容",ReadOnlineService,OperationService,RabbitTemplate,ReadUserService);
         return returnMap;
     }
 

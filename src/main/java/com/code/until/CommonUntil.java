@@ -1,11 +1,8 @@
 package com.code.until;
 
-import com.code.domain.Online;
-import com.code.domain.Return;
-import com.code.domain.User;
-import com.code.domain.WeChatInfo;
-import com.code.service.read.ReadOnlineService;
-import com.code.service.write.OnlineService;
+import com.code.domain.*;
+import com.code.service.read.*;
+import com.code.service.write.*;
 import com.code.service.write.WeChatInfoService;
 import com.code.until.wechat.WXPayUtil;
 import com.code.until.wechat.XMLUtil;
@@ -160,6 +157,33 @@ public class CommonUntil {
             temp=OnlineService.insert(online);
         }
         return temp;
+    }
+
+    public Operation CreateOperation(String token, String message,ReadOnlineService ReadOnlineService,OperationService OperationService,ReadUserService userService){
+        String userID="0";
+        int type=1;
+        if(CommonUntil.CheckIsNull(token)&&!"0".equals(token)){
+            try {
+                long uid=Long.parseLong(token);
+                User user=userService.findById(token);
+                userID=String.valueOf(uid);
+                if(user==null){
+                    type=0;
+                }
+            } catch (NumberFormatException e) {
+                Map map=new HashMap();
+                map.put(Online.COLUMN_Session,token);
+                map.put(Online.COLUMN_Status, CommonStatus.Status.Ectivity.getid());
+                PageInfo<Online> onlines=ReadOnlineService.queryPage(map,1,1);
+                if(onlines.getList().size()>0){
+                    userID=onlines.getList().get(0).getUserID();
+                    type=onlines.getList().get(0).getType();
+                }
+            }
+        }
+        Operation operation=Operation.getOperation(message,userID,type);
+        operation=OperationService.insert(operation);
+        return operation;
     }
 
     public boolean CheckToken(String Token,HttpServletRequest request,ReadOnlineService ReadOnlineService){

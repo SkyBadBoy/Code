@@ -88,7 +88,9 @@ public class CommonStatus {
         /** 日志的log*/
         ERRORLOG("ERRORLOG"),
         /** 日志的log*/
-        OPERATIONLOG("OPERATIONLOG");
+        OPERATIONLOG("OPERATIONLOG"),
+        /** 用户登录的log*/
+        USERLOGINLOG("USERLOGINLOG");
         public String seq;
         RabbitType(String seq){
             this.seq = seq;

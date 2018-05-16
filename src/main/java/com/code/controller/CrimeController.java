@@ -2,6 +2,7 @@ package com.code.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.code.config.rabbit.RabbitUtil;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -36,12 +37,13 @@ public class CrimeController extends BaseController {
         PageInfo<Crime> page = this.ReadCrimeService.queryPage(queryMap, pageNumber, pageSize);
         returnMap.put("rows", page.getList());
         returnMap.put("total", page.getTotal());
+        RabbitUtil.getInstance().OperationLog(request.getHeader("Token"),"查看【Crime-queryCrimePage】列表",ReadOnlineService,OperationService,RabbitTemplate,ReadUserService);
         return returnMap;
     }
 
     @PostMapping("/setCrimeStatus")
     @ApiOperation(value = "设置状态")
-    public Map setCrimeStatus(String data){
+    public Map setCrimeStatus(String data,HttpServletRequest request){
         Map<String,Object> returnMap=new HashMap<>(2);
         Map<String,Object> queryMap=new HashMap<>(1);
         Crime temp=JSON.parseObject(data,Crime.class);
@@ -56,12 +58,13 @@ public class CrimeController extends BaseController {
         }
         returnMap.put("code",0);
         returnMap.put("message","操作成功");
+        RabbitUtil.getInstance().OperationLog(request.getHeader("Token"),"设置【Crime-setCrimeStatus】状态",ReadOnlineService,OperationService,RabbitTemplate,ReadUserService);
         return returnMap;
     }
 
     @GetMapping("/findCrime/{id}")
     @ApiOperation(value = "根据编号查询内容")
-    public Map findCrime(@PathVariable("id") String id){
+    public Map findCrime(@PathVariable("id") String id,HttpServletRequest request){
         Map<String,Object> returnMap=new HashMap<>(2);
         Map<String,Object> queryMap=new HashMap<>(1);
         Crime temp=ReadCrimeService.findById(id);
@@ -74,6 +77,7 @@ public class CrimeController extends BaseController {
 	        returnMap.put("data",temp);
 	        returnMap.put("message","获取失败");
 		}
+        RabbitUtil.getInstance().OperationLog(request.getHeader("Token"),"查询【Crime-findCrime-"+id+"】内容",ReadOnlineService,OperationService,RabbitTemplate,ReadUserService);
         return returnMap;
     }
 
@@ -113,14 +117,15 @@ public class CrimeController extends BaseController {
         }
         returnMap.put("code", tempObj!=null?0:-1);
         returnMap.put("message", tempObj!=null?"修改成功":"修改失败");
+        RabbitUtil.getInstance().OperationLog(request.getHeader("Token"),"修改【Crime-modifyCrime-"+obj.getID()+"】内容",ReadOnlineService,OperationService,RabbitTemplate,ReadUserService);
         return returnMap;
     }
 
 
 
     @GetMapping("/cancelPunish")
-    @ApiOperation(value = "根据编号查询内容")
-    public Map cancelPunish(String id){
+    @ApiOperation(value = "取消处理")
+    public Map cancelPunish(String id, HttpServletRequest request){
         Map<String,Object> returnMap=new HashMap<>(2);
         Map<String,Object> queryMap=new HashMap<>(1);
         Crime temp=ReadCrimeService.findById(id);
@@ -139,6 +144,7 @@ public class CrimeController extends BaseController {
             returnMap.put("code",-1);
             returnMap.put("message","未查询到该条记录");
         }
+        RabbitUtil.getInstance().OperationLog(request.getHeader("Token"),"修改【Crime-cancelPunish-"+id+"】内容",ReadOnlineService,OperationService,RabbitTemplate,ReadUserService);
         return returnMap;
     }
 }

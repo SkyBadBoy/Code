@@ -15,8 +15,8 @@ import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import com.code.domain.Access;
-import com.code.dao.read.ReadAccessMapper;
+import com.code.domain.Operation;
+import com.code.dao.read.ReadOperationMapper;
 
 import java.util.List;
 import java.util.Map;
@@ -28,20 +28,20 @@ import java.util.Map;
  * @version 1.00
  */
  @Service
- @CacheConfig(cacheNames="ReadAccessCache") 
+ @CacheConfig(cacheNames="ReadOperationCache") 
  @Transactional(propagation=Propagation.REQUIRED,readOnly=false,rollbackFor=Exception.class)
-public class ReadAccessService {
+public class ReadOperationService {
 
     @Autowired
-	private ReadAccessMapper ReadMapper;
+	private ReadOperationMapper ReadMapper;
 
-//	@Cacheable(value = "AccessCache",key="'Access_'+#p0")
-	public Access findById(String id){
+//	@Cacheable(value = "OperationCache",key="'Operation_'+#p0")
+	public Operation findById(String id){
 		return ReadMapper.findById(id);
 	}
 
 	@Cacheable(keyGenerator = "keyGenerator")
-	public List<Access> query(Map<String,Object> queryMap){
+	public List<Operation> query(Map<String,Object> queryMap){
 		return ReadMapper.query(queryMap);
 	}
 
@@ -51,9 +51,9 @@ public class ReadAccessService {
 	}
 
 	@Cacheable(keyGenerator = "keyGenerator")
-	public PageInfo<Access> queryPage(Map<String,Object> queryMap, int pageNum, int pageSize){
-		Page<Access> page = PageHelper.startPage(pageNum, pageSize);
-		page.setOrderBy("Access_CreateTime desc");
+	public PageInfo<Operation> queryPage(Map<String,Object> queryMap, int pageNum, int pageSize){
+		Page<Operation> page = PageHelper.startPage(pageNum, pageSize);
+		page.setOrderBy("Operation_CreateTime desc");
 		ReadMapper.query(queryMap);
 		return page.toPageInfo();
 	}

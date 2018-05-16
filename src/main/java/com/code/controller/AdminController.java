@@ -2,6 +2,7 @@ package com.code.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.code.config.rabbit.RabbitUtil;
 import com.code.domain.Online;
 import com.code.domain.Return;
 import com.github.pagehelper.PageInfo;
@@ -40,12 +41,13 @@ public class AdminController extends BaseController {
         PageInfo<Admin> page = this.ReadAdminService.queryPage(queryMap, pageNumber, pageSize);
         returnMap.put("rows", page.getList());
         returnMap.put("total", page.getTotal());
+        RabbitUtil.getInstance().OperationLog(request.getHeader("Token"),"查看【Admin-queryAdminPage】列表",ReadOnlineService,OperationService,RabbitTemplate,ReadUserService);
         return returnMap;
     }
 
     @PostMapping("/setAdminStatus")
     @ApiOperation(value = "设置状态")
-    public Map setAdminStatus(String data){
+    public Map setAdminStatus(String data,HttpServletRequest request){
         Map<String,Object> returnMap=new HashMap<>(2);
         Map<String,Object> queryMap=new HashMap<>(1);
         Admin temp=JSON.parseObject(data,Admin.class);
@@ -60,12 +62,13 @@ public class AdminController extends BaseController {
         }
         returnMap.put("code",0);
         returnMap.put("message","操作成功");
+        RabbitUtil.getInstance().OperationLog(request.getHeader("Token"),"设置【Admin-setAdminStatus】状态",ReadOnlineService,OperationService,RabbitTemplate,ReadUserService);
         return returnMap;
     }
 
     @GetMapping("/findAdmin/{id}")
     @ApiOperation(value = "根据编号查询内容")
-    public Map findAdmin(@PathVariable("id") String id){
+    public Map findAdmin(@PathVariable("id") String id,HttpServletRequest request){
         Map<String,Object> returnMap=new HashMap<>(2);
         Map<String,Object> queryMap=new HashMap<>(1);
         Admin temp=ReadAdminService.findById(id);
@@ -78,6 +81,7 @@ public class AdminController extends BaseController {
 	        returnMap.put("data",temp);
 	        returnMap.put("message","获取失败");
 		}
+        RabbitUtil.getInstance().OperationLog(request.getHeader("Token"),"查询【Admin-findAdmin-"+id+"】内容",ReadOnlineService,OperationService,RabbitTemplate,ReadUserService);
         return returnMap;
     }
 
@@ -119,6 +123,7 @@ public class AdminController extends BaseController {
         }
         returnMap.put("code", tempObj!=null?0:-1);
         returnMap.put("message", tempObj!=null?"修改成功":"修改失败");
+        RabbitUtil.getInstance().OperationLog(request.getHeader("Token"),"修改【Admin-modifyAdmin-"+obj.getID()+"】内容",ReadOnlineService,OperationService,RabbitTemplate,ReadUserService);
         return returnMap;
     }
 
@@ -137,19 +142,16 @@ public class AdminController extends BaseController {
             if(admins.size()>0){
                 admin=admins.get(0);
                 String sessionID=request.getSession().getId();
-                Online Online=CommonUntil.getInstance().CreateOnline(sessionID,admin.getID(),CommonStatus.OnLineType.Admin.seq,ReadOnlineService,OnlineService);
-                if(Online!=null){
-                    returnMap=CommonUntil.ReturnMapWithToken(0,"登录成功",admins.get(0),sessionID);
-                }else{
-                    returnMap=CommonUntil.ReturnMap(-1,"登陆异常请稍后重试",admin);
-                }
+                RabbitUtil.getInstance().UserLoginLog(sessionID,admin.getID(),CommonStatus.OnLineType.Admin.seq,ReadOnlineService,OnlineService,RabbitTemplate);
+                returnMap=CommonUntil.ReturnMapWithToken(0,"登录成功",admins.get(0),sessionID);
             }else{
                 returnMap=CommonUntil.ReturnMap(-1,"验证码或者密码错误",admin);
             }
         }else{
             returnMap=CommonUntil.ReturnMap(-1,"登录名或密码不能为空",admin);
         }
-		return returnMap;
+        RabbitUtil.getInstance().OperationLog(admin.getID(),"登录【Admin-loginName】",ReadOnlineService,OperationService,RabbitTemplate,ReadUserService);
+        return returnMap;
 	}
 
     @ApiOperation(value = "管理员修改密码")
@@ -180,6 +182,7 @@ public class AdminController extends BaseController {
         }else{
             returnMap=CommonUntil.ReturnMap(-1,"密码不能为空",null);
         }
+        RabbitUtil.getInstance().OperationLog(request.getSession().getId(),"修改【Admin-modifyPassWord"+ID+"】密码",ReadOnlineService,OperationService,RabbitTemplate,ReadUserService);
         return returnMap;
     }
 
