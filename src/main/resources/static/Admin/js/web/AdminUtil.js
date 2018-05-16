@@ -397,6 +397,40 @@ function getRegionHead(that,type,ParentID){
         })
     }else{tableRefresh()}
 }
+
+function getRegionHeadWithEdit(that,type,ParentID,f){
+    if(ParentID!=0&&ParentID!="0"){
+        $.ajax({
+            headers: {
+                Token: getToken()
+            },
+            async: false,
+            url:"../Region/queryRegionByParentID?ParentID="+ParentID,
+            success:function(json){
+                if (json.code == 1) {
+                    top.location.href="../Admin/login.html"
+                }
+                if(type==1){
+                    that.ProvinceList=json.data;
+                    if(f==0){
+                        that.data.areaID=0;that.data.cityID=0;
+                    }else{
+                        that.getCity(f)
+                    }
+                }else if(type==2){
+                    that.CityList=json.data;
+                    if(f==0){
+                        that.data.areaID=0;that.data.cityID=0;
+                    }else{
+                        that.getArea(f);
+                    }
+                }else if(type==3){
+                    that.AreaList=json.data;
+                }
+            }
+        })
+    }
+}
 function initSwitch(){
     var elem = document.querySelector('.js-switch');
     var switchery = new Switchery(elem, {

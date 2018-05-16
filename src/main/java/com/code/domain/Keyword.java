@@ -12,7 +12,7 @@ import java.io.Serializable;
  */
 @Getter
 @Setter
-@ApiModel("Keyword")
+@ApiModel(value = "Keyword")
 public class Keyword implements Serializable {
 
     public static final String COLUMN_ID = "ID";
@@ -25,19 +25,19 @@ public class Keyword implements Serializable {
 
     public static final String COLUMN_Status = "Status";
 
-    @ApiModelProperty("键词编号")
+    @ApiModelProperty(value = "键词编号")
     private String ID;
 
-    @ApiModelProperty("关键词语")
+    @ApiModelProperty(value = "关键词语")
     private String KeyWord;
 
-    @ApiModelProperty("创建时间")
+    @ApiModelProperty(value = "创建时间")
     private String CreateTime;
 
-    @ApiModelProperty("修改时间")
+    @ApiModelProperty(value = "修改时间")
     private String ModifyTime;
 
-    @ApiModelProperty("状态信息")
+    @ApiModelProperty(value = "状态信息")
     private int Status;
 
 

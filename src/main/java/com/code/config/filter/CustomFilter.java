@@ -51,7 +51,7 @@ public class CustomFilter implements Filter{
             this.response = (HttpServletResponse) servletResponse;
 
             String requestUrl = this.request.getRequestURI().replace(this.request.getContextPath(), "");
-            //log.info("访问地址"+requestUrl);
+            log.info("访问地址"+requestUrl);
             //静态文件直接放行
             if(CommonUntil.dimAuthorize(requestUrl)){return;}
 

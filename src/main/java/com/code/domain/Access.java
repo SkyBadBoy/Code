@@ -14,7 +14,7 @@ import java.io.Serializable;
  */
 @Getter
 @Setter
-@ApiModel("Access")
+@ApiModel(value = "Access")
 public class Access implements Serializable {
 
     public static final String COLUMN_ID = "ID";
@@ -35,34 +35,34 @@ public class Access implements Serializable {
 
     public static final String COLUMN_Time = "Time";
 
-    @ApiModelProperty("访问量编号")
+    @ApiModelProperty(value = "访问量编号")
     private String ID;
 
-    @ApiModelProperty("创建时间")
+    @ApiModelProperty(value = "创建时间")
     private String CreateTime;
 
-    @ApiModelProperty("修改时间")
+    @ApiModelProperty(value = "修改时间")
     private String ModifyTime;
 
-    @ApiModelProperty("状态 【正常：1   删除：88】")
+    @ApiModelProperty(value = "状态 【正常：1   删除：88】")
     private int Status;
 
-    @ApiModelProperty("请求地址")
+    @ApiModelProperty(value = "请求地址")
     private String RequestURL;
 
-    @ApiModelProperty("请求方式")
+    @ApiModelProperty(value = "请求方式")
     private String Method;
 
-    @ApiModelProperty("访问者IP")
+    @ApiModelProperty(value = "访问者IP")
     private String RemoteAddr;
 
-    @ApiModelProperty("类名+方法名")
+    @ApiModelProperty(value = "类名+方法名")
     private String ClassName;
 
-    @ApiModelProperty("参数")
+    @ApiModelProperty(value = "参数")
     private String Args;
 
-    @ApiModelProperty("处理的时间")
+    @ApiModelProperty(value = "处理的时间")
     private long Time;
 
     public  static Access getAccess(String RequestURL,String Method,String RemoteAddr,String ClassName,String Args,long Time){

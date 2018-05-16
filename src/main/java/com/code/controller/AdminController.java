@@ -107,7 +107,7 @@ public class AdminController extends BaseController {
         obj.setCityID(temp.getCityID());
         obj.setLongAddress(temp.getLongAddress());
         obj.setAddress(temp.getAddress());
-
+        obj.setRoleID(temp.getRoleID());
 
         Admin tempObj=null;
         if(isNew){

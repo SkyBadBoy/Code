@@ -61,7 +61,6 @@ public class Swagger2 {
     private String controller;
     @Bean
     public Docket createRestApi() {
-
         ApiInfo apiInfo = new ApiInfoBuilder()
                 .title("接口文档")
                 .description("项目文档")

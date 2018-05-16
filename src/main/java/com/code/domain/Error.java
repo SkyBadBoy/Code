@@ -12,7 +12,7 @@ import java.io.Serializable;
  */
 @Getter
 @Setter
-@ApiModel("Error")
+@ApiModel(value = "Error")
 public class Error implements Serializable {
 
     public static final String COLUMN_ID = "ID";
@@ -29,25 +29,25 @@ public class Error implements Serializable {
 
     public static final String COLUMN_Status = "Status";
 
-    @ApiModelProperty("编号")
+    @ApiModelProperty(value = "编号")
     private String ID;
 
-    @ApiModelProperty("用户编号")
+    @ApiModelProperty(value = "用户编号")
     private String UserID;
 
-    @ApiModelProperty("报错类")
+    @ApiModelProperty(value = "报错类")
     private String Name;
 
-    @ApiModelProperty("报错时间")
+    @ApiModelProperty(value = "报错时间")
     private String CreateTime;
 
-    @ApiModelProperty("报错信息")
+    @ApiModelProperty(value = "报错信息")
     private String Message;
 
-    @ApiModelProperty("报错信息标题")
+    @ApiModelProperty(value = "报错信息标题")
     private String ClassName;
 
-    @ApiModelProperty("状态")
+    @ApiModelProperty(value = "状态")
     private int Status;
 
 

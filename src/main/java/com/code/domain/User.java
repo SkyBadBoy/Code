@@ -57,67 +57,67 @@ public class User implements Serializable {
 
     public static final String COLUMN_Address = "Address";
 
-    @ApiModelProperty("编号")
+    @ApiModelProperty(value = "编号")
     private String ID;
 
-    @ApiModelProperty("创建时间")
+    @ApiModelProperty(value = "创建时间")
     private String CreateTime;
 
-    @ApiModelProperty("修改时间")
+    @ApiModelProperty(value = "修改时间")
     private String ModifyTime;
 
-    @ApiModelProperty("状态 【正常：1   删除：88】")
+    @ApiModelProperty(value = "状态 【正常：1   删除：88】")
     private int Status;
 
-    @ApiModelProperty("登录名")
+    @ApiModelProperty(value = "登录名")
     private String LoginName;
 
-    @ApiModelProperty("登录密码")
+    @ApiModelProperty(value = "登录密码")
     private String PassWord;
 
-    @ApiModelProperty("头像")
+    @ApiModelProperty(value = "头像")
     private String HeadImg;
 
-    @ApiModelProperty("用户名")
+    @ApiModelProperty(value = "用户名")
     private String Name;
 
-    @ApiModelProperty("微信名字【不是微信不需要】")
+    @ApiModelProperty(value = "微信名字【不是微信不需要】")
     private String NikeName;
 
-    @ApiModelProperty("个性签名")
+    @ApiModelProperty(value = "个性签名")
     private String Signature;
 
-    @ApiModelProperty("性别 【未设置：0   男：1  女：2】")
+    @ApiModelProperty(value = "性别 【未设置：0   男：1  女：2】")
     private int Sex;
 
-    @ApiModelProperty("生日")
+    @ApiModelProperty(value = "生日")
     private String Age;
 
-    @ApiModelProperty("手机号")
+    @ApiModelProperty(value = "手机号")
     private String Phone;
 
-    @ApiModelProperty("unionid")
+    @ApiModelProperty(value = "unionid")
     private String UnionID;
 
-    @ApiModelProperty("openid")
+    @ApiModelProperty(value = "openid")
     private String OpenID;
 
-    @ApiModelProperty("邮箱")
+    @ApiModelProperty(value = "邮箱")
     private String Email;
 
-    @ApiModelProperty("省")
+    @ApiModelProperty(value = "省")
     private String ProvinceID;
 
-    @ApiModelProperty("区")
+    @ApiModelProperty(value = "区")
     private String AreaID;
 
-    @ApiModelProperty("市")
+    @ApiModelProperty(value = "市")
     private String CityID;
 
-    @ApiModelProperty("长地址")
+    @ApiModelProperty(value = "长地址")
     private String LongAddress;
 
-    @ApiModelProperty("短地址")
+    @ApiModelProperty(value = "短地址")
     private String Address;
 
 

@@ -12,7 +12,7 @@ import java.io.Serializable;
  */
 @Getter
 @Setter
-@ApiModel("Online")
+@ApiModel(value = "Online")
 public class Online implements Serializable {
 
     public static final String COLUMN_ID = "ID";
@@ -31,28 +31,28 @@ public class Online implements Serializable {
 
     public static final String COLUMN_Type = "Type";
 
-    @ApiModelProperty("在线编号")
+    @ApiModelProperty(value = "在线编号")
     private String ID;
 
-    @ApiModelProperty("用户编号 或者管理员编号 ")
+    @ApiModelProperty(value = "用户编号 或者管理员编号 ")
     private String UserID;
 
-    @ApiModelProperty("会话编号")
+    @ApiModelProperty(value = "会话编号")
     private String Session;
 
-    @ApiModelProperty("创建时间")
+    @ApiModelProperty(value = "创建时间")
     private String CreateTime;
 
-    @ApiModelProperty("修改时间")
+    @ApiModelProperty(value = "修改时间")
     private String ModifyTime;
 
-    @ApiModelProperty("登录次数")
+    @ApiModelProperty(value = "登录次数")
     private int Version;
 
-    @ApiModelProperty("状态信息【正常：1    删除：88】")
+    @ApiModelProperty(value = "状态信息【正常：1    删除：88】")
     private int Status;
 
-    @ApiModelProperty("登录身份类型【用户:0  管理人员：1】")
+    @ApiModelProperty(value = "登录身份类型【用户:0  管理人员：1】")
     private int Type;
 
     private User User;

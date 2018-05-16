@@ -309,6 +309,7 @@
             $.ajax({
                 url:getHomeInfo(),
                 type:"GET",
+                headers: { Token: getToken() },
                 success:function (json) {
                     console.log(json)
                     that._data.boxMoney=json.boxMoney;

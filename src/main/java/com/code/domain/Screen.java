@@ -12,7 +12,7 @@ import java.io.Serializable;
  */
 @Getter
 @Setter
-@ApiModel("Screen")
+@ApiModel(value = "Screen")
 public class Screen implements Serializable {
 
     public static final String COLUMN_ID = "ID";
@@ -37,37 +37,37 @@ public class Screen implements Serializable {
 
     public static final String COLUMN_ClickUrl = "ClickUrl";
 
-    @ApiModelProperty("编号")
+    @ApiModelProperty(value = "编号")
     private String ID;
 
-    @ApiModelProperty("标题")
+    @ApiModelProperty(value = "标题")
     private String Title;
 
-    @ApiModelProperty("图片地址")
+    @ApiModelProperty(value = "图片地址")
     private String Url;
 
-    @ApiModelProperty("类型 0是PC  1是App的启动  2是微信端   3是所有平台的启动")
+    @ApiModelProperty(value = "类型 0是PC  1是App的启动  2是微信端   3是所有平台的启动")
     private int Type;
 
-    @ApiModelProperty("开始时间")
+    @ApiModelProperty(value = "开始时间")
     private String StartTime;
 
-    @ApiModelProperty("结束时间")
+    @ApiModelProperty(value = "结束时间")
     private String EndTime;
 
-    @ApiModelProperty("创建时间")
+    @ApiModelProperty(value = "创建时间")
     private String CreateTime;
 
-    @ApiModelProperty("修改时间")
+    @ApiModelProperty(value = "修改时间")
     private String ModifyTime;
 
-    @ApiModelProperty("状态 【正常：1 删除：88】")
+    @ApiModelProperty(value = "状态 【正常：1 删除：88】")
     private int Status;
 
-    @ApiModelProperty("创建者")
+    @ApiModelProperty(value = "创建者")
     private String AdminID;
 
-    @ApiModelProperty("点击跳转的URL")
+    @ApiModelProperty(value = "点击跳转的URL")
     private String ClickUrl;
 
 

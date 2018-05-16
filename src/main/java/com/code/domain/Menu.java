@@ -12,7 +12,7 @@ import java.io.Serializable;
  */
 @Getter
 @Setter
-@ApiModel("Menu")
+@ApiModel(value = "Menu")
 public class Menu implements Serializable {
 
     public static final String COLUMN_ID = "ID";
@@ -43,46 +43,46 @@ public class Menu implements Serializable {
 
     public static final String COLUMN_UrlType = "UrlType";
 
-    @ApiModelProperty("编号")
+    @ApiModelProperty(value = "编号")
     private String ID;
 
-    @ApiModelProperty("创建时间")
+    @ApiModelProperty(value = "创建时间")
     private String CreateTime;
 
-    @ApiModelProperty("修改时间")
+    @ApiModelProperty(value = "修改时间")
     private String ModifyTime;
 
-    @ApiModelProperty("状态 【正常：1   删除：88】")
+    @ApiModelProperty(value = "状态 【正常：1   删除：88】")
     private int Status;
 
-    @ApiModelProperty("菜单名字")
+    @ApiModelProperty(value = "菜单名字")
     private String Name;
 
-    @ApiModelProperty("备注")
+    @ApiModelProperty(value = "备注")
     private String Memo;
 
-    @ApiModelProperty("菜单类型【目录:0   菜单:1   操作:2】")
+    @ApiModelProperty(value = "菜单类型【目录:0   菜单:1   操作:2】")
     private int Type;
 
-    @ApiModelProperty("父编号")
+    @ApiModelProperty(value = "父编号")
     private String ParentID;
 
-    @ApiModelProperty("图标地址 只允许H+里面的图标")
+    @ApiModelProperty(value = "图标地址 只允许H+里面的图标")
     private String Logo;
 
-    @ApiModelProperty("地址")
+    @ApiModelProperty(value = "地址")
     private String Url;
 
-    @ApiModelProperty("排序")
+    @ApiModelProperty(value = "排序")
     private int Order;
 
-    @ApiModelProperty("操作者")
+    @ApiModelProperty(value = "操作者")
     private String AdminID;
 
-    @ApiModelProperty("是否是最低级 【不是低级 0  低级1 】")
+    @ApiModelProperty(value = "是否是最低级 【不是低级 0  低级1 】")
     private int End;
 
-    @ApiModelProperty("Url 类型 【后台：0  移动端：1】")
+    @ApiModelProperty(value = "Url 类型 【后台：0  移动端：1】")
     private int UrlType;
 
 

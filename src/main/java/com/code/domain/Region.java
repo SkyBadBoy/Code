@@ -12,7 +12,7 @@ import java.io.Serializable;
  */
 @Getter
 @Setter
-@ApiModel("Region")
+@ApiModel(value = "Region")
 public class Region implements Serializable {
 
     public static final String COLUMN_ID = "ID";
@@ -46,49 +46,49 @@ public class Region implements Serializable {
     public static final String COLUMN_Status = "Status";
 
 
-    @ApiModelProperty("编号")
+    @ApiModelProperty(value = "编号")
     private String ID;
 
-    @ApiModelProperty("code")
+    @ApiModelProperty(value = "code")
     private String Code;
 
-    @ApiModelProperty("名字")
+    @ApiModelProperty(value = "名字")
     private String Name;
 
-    @ApiModelProperty("父ID")
+    @ApiModelProperty(value = "父ID")
     private String ParentID;
 
-    @ApiModelProperty("等级 【国家：0  省：1   市：2   区：3   学校：4  】")
+    @ApiModelProperty(value = "等级 【国家：0  省：1   市：2   区：3   学校：4  】")
     private int Level;
 
-    @ApiModelProperty("排序")
+    @ApiModelProperty(value = "排序")
     private int Order;
 
-    @ApiModelProperty("英文名")
+    @ApiModelProperty(value = "英文名")
     private String NameEn;
 
-    @ApiModelProperty("短英文名")
+    @ApiModelProperty(value = "短英文名")
     private String ShortNameEn;
 
-    @ApiModelProperty("省份编号")
+    @ApiModelProperty(value = "省份编号")
     private String ProvinceID;
 
-    @ApiModelProperty("省份名字")
+    @ApiModelProperty(value = "省份名字")
     private String ProvinceName;
 
-    @ApiModelProperty("城市编号")
+    @ApiModelProperty(value = "城市编号")
     private String CityID;
 
-    @ApiModelProperty("城市名字")
+    @ApiModelProperty(value = "城市名字")
     private String CityName;
 
-    @ApiModelProperty("区域编号")
+    @ApiModelProperty(value = "区域编号")
     private String AreaID;
 
-    @ApiModelProperty("区域名字")
+    @ApiModelProperty(value = "区域名字")
     private String AreaName;
 
-    @ApiModelProperty("状态 【正常：1  删除：88】")
+    @ApiModelProperty(value = "状态 【正常：1  删除：88】")
     private int Status;
 
 

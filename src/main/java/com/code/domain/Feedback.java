@@ -12,7 +12,7 @@ import java.io.Serializable;
  */
 @Getter
 @Setter
-@ApiModel("Feedback")
+@ApiModel(value = "Feedback")
 public class Feedback implements Serializable {
 
     public static final String COLUMN_ID = "ID";
@@ -29,28 +29,28 @@ public class Feedback implements Serializable {
 
     public static final String COLUMN_Content = "Content";
 
-    @ApiModelProperty("编号")
+    @ApiModelProperty(value = "编号")
     private String ID;
 
-    @ApiModelProperty("创建时间")
+    @ApiModelProperty(value = "创建时间")
     private String CreateTime;
 
-    @ApiModelProperty("修改时间")
+    @ApiModelProperty(value = "修改时间")
     private String ModifyTime;
 
-    @ApiModelProperty("状态 【正常：1   删除：88】")
+    @ApiModelProperty(value = "状态 【正常：1   删除：88】")
     private int Status;
 
-    @ApiModelProperty("用户编号")
+    @ApiModelProperty(value = "用户编号")
     private String UserID;
 
-    @ApiModelProperty("是否匿名 【不匿名：0   匿名：1】")
+    @ApiModelProperty(value = "是否匿名 【不匿名：0   匿名：1】")
     private int Anonymity;
 
-    @ApiModelProperty("反馈内容")
+    @ApiModelProperty(value = "反馈内容")
     private String Content;
 
-    @ApiModelProperty("用户")
+    @ApiModelProperty(value = "用户")
     private User User;
 
 

@@ -22,6 +22,12 @@ public class IndexController extends BaseController{
         return "index";
     }
 
+    @GetMapping("test")
+    @ResponseBody
+    public String indexs(){
+
+        return "index"+1/0;
+    }
     /**
      * 主页的数据接口
      * @return

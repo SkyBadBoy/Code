@@ -2,6 +2,7 @@ package com.code.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.code.domain.Return;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -36,6 +37,17 @@ public class RoleController extends BaseController {
         PageInfo<Role> page = this.ReadRoleService.queryPage(queryMap, pageNumber, pageSize);
         returnMap.put("rows", page.getList());
         returnMap.put("total", page.getTotal());
+        return returnMap;
+    }
+
+    @GetMapping("/queryRolePageAll")
+    @ApiOperation(value = "获取列表")
+    public Return<Role> queryRolePageAll(HttpServletRequest request) {
+        Return returnMap = null;
+        Map<String, Object> queryMap = new HashMap<>(3);
+        queryMap.put("Status", 1);
+        List<Role> page = this.ReadRoleService.query(queryMap);
+        returnMap=CommonUntil.ReturnMap(0,"数据获取成功",page);
         return returnMap;
     }
 

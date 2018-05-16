@@ -12,7 +12,7 @@ import java.io.Serializable;
  */
 @Getter
 @Setter
-@ApiModel("Admin")
+@ApiModel(value = "Admin")
 public class Admin  implements Serializable{
 
     public static final String COLUMN_ID = "ID";
@@ -45,52 +45,52 @@ public class Admin  implements Serializable{
 
     public static final String COLUMN_RoleID = "RoleID";
 
-    @ApiModelProperty("编号")
+    @ApiModelProperty(value = "编号")
     private String ID;
 
-    @ApiModelProperty("名字")
+    @ApiModelProperty(value = "名字")
     private String Name;
 
-    @ApiModelProperty("创建时间")
+    @ApiModelProperty(value = "创建时间")
     private String CreateTime;
 
-    @ApiModelProperty("修改时间")
+    @ApiModelProperty(value = "修改时间")
     private String ModifyTime;
 
-    @ApiModelProperty("状态 【正常：1   删除：88】")
+    @ApiModelProperty(value = "状态 【正常：1   删除：88】")
     private int Status;
 
-    @ApiModelProperty("头像")
+    @ApiModelProperty(value = "头像")
     private String HeadImg;
 
-    @ApiModelProperty("登录名")
+    @ApiModelProperty(value = "登录名")
     private String LoginName;
 
-    @ApiModelProperty("登录密码")
+    @ApiModelProperty(value = "登录密码")
     private String PassWord;
 
-    @ApiModelProperty("手机号")
+    @ApiModelProperty(value = "手机号")
     private String Phone;
 
-    @ApiModelProperty("省份")
+    @ApiModelProperty(value = "省份")
     private String ProvinceID;
 
-    @ApiModelProperty("区")
+    @ApiModelProperty(value = "区")
     private String AreaID;
 
-    @ApiModelProperty("市")
+    @ApiModelProperty(value = "市")
     private String CityID;
 
-    @ApiModelProperty("长地址")
+    @ApiModelProperty(value = "长地址")
     private String LongAddress;
 
-    @ApiModelProperty("短地址")
+    @ApiModelProperty(value = "短地址")
     private String Address;
 
-    @ApiModelProperty("角色编号")
+    @ApiModelProperty(value = "角色编号")
     private String RoleID ;
 
-    @ApiModelProperty("用户")
+    @ApiModelProperty(value = "用户")
     private Role Role ;
 
 

@@ -53,19 +53,19 @@
                                 <label class="col-sm-2 control-label">选择地区</label>
                                 <div class="col-sm-10">
                                     <div class="col-sm-3">
-                                        <select class="form-control m-b" v-model="ProvinceID" @change="getCity">
+                                        <select class="form-control m-b" v-model="data.provinceID" @change="getCity" id="provinceID">
                                             <option value="0">请选择省份</option>
                                             <option v-for="item in ProvinceList" :value="item.iD" v-text="item.name"></option>
                                         </select>
                                     </div>
                                     <div class="col-sm-3">
-                                        <select class="form-control m-b" v-model="CityID" @change="getArea" >
+                                        <select class="form-control m-b" v-model="data.cityID" @change="getArea" id="cityID">
                                             <option value="0">请选择市</option>
                                             <option v-for="item in CityList" :value="item.iD" v-text="item.name"></option>
                                         </select>
                                     </div>
                                     <div class="col-sm-3">
-                                        <select class="form-control m-b" v-model="AreaID" @change="getRefresh" >
+                                        <select class="form-control m-b" v-model="data.areaID" id="areaID">
                                             <option value="0">请选择区</option>
                                             <option v-for="item in AreaList" :value="item.iD" v-text="item.name"></option>
                                         </select>
@@ -75,42 +75,16 @@
                                     </div>
                                 </div>
                             </div>
-                            <!--<div class="hr-line-dashed"></div>-->
-                            <!--<div class="form-group">-->
-                                <!--<label class="col-sm-2 control-label">provinceID</label>-->
-                                <!--<div class="col-sm-10">-->
-                                    <!--<input type="text" v-model="data.provinceID" class="form-control">-->
-                                <!--</div>-->
-                            <!--</div>-->
-                            <!--<div class="hr-line-dashed"></div>-->
-                            <!--<div class="form-group">-->
-                                <!--<label class="col-sm-2 control-label">areaID</label>-->
-                                <!--<div class="col-sm-10">-->
-                                    <!--<input type="text" v-model="data.areaID" class="form-control">-->
-                                <!--</div>-->
-                            <!--</div>-->
-                            <!--<div class="hr-line-dashed"></div>-->
-                            <!--<div class="form-group">-->
-                                <!--<label class="col-sm-2 control-label">cityID</label>-->
-                                <!--<div class="col-sm-10">-->
-                                    <!--<input type="text" v-model="data.cityID" class="form-control">-->
-                                <!--</div>-->
-                            <!--</div>-->
-                            <!--<div class="hr-line-dashed"></div>-->
-                            <!--<div class="form-group">-->
-                                <!--<label class="col-sm-2 control-label">longAddress</label>-->
-                                <!--<div class="col-sm-10">-->
-                                    <!--<input type="text" v-model="data.longAddress" class="form-control">-->
-                                <!--</div>-->
-                            <!--</div>-->
-                            <!--<div class="hr-line-dashed"></div>-->
-                            <!--<div class="form-group">-->
-                                <!--<label class="col-sm-2 control-label">address</label>-->
-                                <!--<div class="col-sm-10">-->
-                                    <!--<input type="text" v-model="data.address" class="form-control">-->
-                                <!--</div>-->
-                            <!--</div>-->
-
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">角色分配</label>
+                                <div class="col-sm-10">
+                                    <select class="form-control m-b" v-model="data.roleID" >
+                                        <option value="0">请选择角色</option>
+                                        <option v-for="item in RoleList" :value="item.iD" v-text="item.name"></option>
+                                    </select>
+                                </div>
+                            </div>
                             <div class="hr-line-dashed"></div>
                             <div class="form-group">
                                 <div class="col-sm-4 col-sm-offset-2">
@@ -133,9 +107,7 @@
                 ProvinceList:[],
                 CityList:[],
                 AreaList:[],
-                ProvinceID:0,
-                CityID:0,
-                AreaID:0,
+                RoleList:[],
                 data: {
                     iD: getUrlKey("id"),
                     name: "",
@@ -147,25 +119,36 @@
                     cityID: 0,
                     longAddress: "",
                     address: "",
+                    roleID:"",
                 }
             },
             methods: {
+                //编辑里面的
                 getProvince:function(f){
-                    this.getRegion(1,1)
+                    this.getRegion(1,1,f)
                 },
-                getCity:function(){
-                    this.getRegion(2,this.ProvinceID)
+                getCity:function(f){
+                    this.getRegion(2,this.data.provinceID,f)
                 },
-                getArea:function(){
-                    this.getRegion(3,this.CityID)
+                getArea:function(f){
+                    this.getRegion(3,this.data.cityID,f)
                 },
-                getRefresh:function(){
-                    tableRefresh();
+                getRegion:function(type,ParentID,f){
+                    getRegionHeadWithEdit(this,type,ParentID,f);
                 },
-                getRegion:function(type,ParentID){
-                    getRegionHead(this,type,ParentID,false);
+                getRoleList:function(){
+                    var that=this;
+                    $.ajax({url:"../Role/queryRolePageAll",headers: {Token: getToken()},success:function(json){
+                        console.log(json);
+                        if(json.code==0){
+                            that.RoleList=json.data;
+                        }else{
+                            error(json.message);
+                        }
+                    }})
                 },
                 save: function () {
+                    this.data.longAddress=$('#provinceID option:selected').text()+$('#cityID option:selected').text()+$('#areaID option:selected').text()+this.data.address;
                     savaData(this, "../Admin/modifyAdmin")
                 },
                 addImage:function(){
@@ -180,9 +163,8 @@
                     $("#overlay").show()
                     $.ajax({
                         url: "../Admin/findAdmin/"+this.data.iD,
-                        headers: {
-                            Token: getToken()
-                        },
+                        headers: {Token: getToken()},
+
                         success: function (json) {
                             $("#overlay").hide()
                             console.log("获取查找数据",json)
@@ -191,9 +173,6 @@
                             }
                             if (json.code == 0) {
                                 tempApp.data=json.data;
-                                that.ProvinceID=json.data.provinceID;
-                                that.CityID=json.data.cityID;
-                                that.AreaID=json.data.AreaID;
                                 that.getProvince(1);
                             } else {
                                 error(json.message);
@@ -204,9 +183,12 @@
                             error("网络异常哦,请稍后重试");
                         }
                     })
+                }else{
+                    this.getProvince(0);
                 }
                 bindImgError()
-                this.getProvince(0);
+                this.getRoleList();
+
             }
         })
     }

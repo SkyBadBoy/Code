@@ -1,5 +1,7 @@
 package com.code.domain;
 
+import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.annotation.JSONField;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -12,8 +14,9 @@ import java.io.Serializable;
  */
 @Getter
 @Setter
-@ApiModel("Role")
+@ApiModel(value = "角色")
 public class Role  implements Serializable{
+
 
     public static final String COLUMN_ID = "ID";
 
@@ -27,26 +30,27 @@ public class Role  implements Serializable{
 
     public static final String COLUMN_AdminID = "AdminID";
 
-    @ApiModelProperty("角色的编号")
+    @ApiModelProperty(value = "角色的编号")
     private String ID;
 
-    @ApiModelProperty("创建时间")
+    @ApiModelProperty(value = "创建时间")
     private String CreateTime;
 
-    @ApiModelProperty("修改时间")
+    @ApiModelProperty(value = "修改时间")
     private String ModifyTime;
 
-    @ApiModelProperty("状态 【正常：1   删除：88】")
+    @ApiModelProperty(value = "状态 【正常：1   删除：88】")
     private int Status;
 
-    @ApiModelProperty("角色名字")
+    @ApiModelProperty(value = "角色名字")
     private String Name;
 
-    @ApiModelProperty("创建者")
+    @ApiModelProperty(value = "创建者")
     private String AdminID;
 
 
-
-
+    @ApiModelProperty(value = "['ID','角色的编号']['CreateTime','创建时间']['ModifyTime','修改时间']['Status','状态 【正常：1   删除：88】']['Name','角色名字']['AdminID','创建者']")
+    @JSONField(serialize = false)
+    public String RoleFiled;
 
 }

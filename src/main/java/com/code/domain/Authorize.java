@@ -12,7 +12,7 @@ import java.io.Serializable;
  */
 @Getter
 @Setter
-@ApiModel("Authorize")
+@ApiModel(value = "Authorize")
 public class Authorize implements Serializable {
 
     public static final String COLUMN_ID = "ID";
@@ -27,22 +27,22 @@ public class Authorize implements Serializable {
 
     public static final String COLUMN_Title = "Title";
 
-    @ApiModelProperty("编号")
+    @ApiModelProperty(value = "编号")
     private String ID;
 
-    @ApiModelProperty("创建时间")
+    @ApiModelProperty(value = "创建时间")
     private String CreateTime;
 
-    @ApiModelProperty("修改时间")
+    @ApiModelProperty(value = "修改时间")
     private String ModifyTime;
 
-    @ApiModelProperty("状态【正常：1  删除：88】")
+    @ApiModelProperty(value = "状态【正常：1  删除：88】")
     private int Status;
 
-    @ApiModelProperty("放行类型【全平台：0    Admin: 1     接口：2】")
+    @ApiModelProperty(value = "放行类型【全平台：0    Admin: 1     接口：2】")
     private int Type;
 
-    @ApiModelProperty("")
+    @ApiModelProperty(value = "")
     private String Title;
 
 
