@@ -17,17 +17,17 @@
             <div class="row row-lg">
                 <div class="col-sm-2" style="margin-top: 10px;">
                     <h4 class="example-title">目录</h4>
-                    <button type="button" @click="modifyM(0)" class="btn btn-primary btn-sm">
-                        新增
-                    </button>
-                    <button type="button" @click="modifyM(1)"  class="btn  btn-success btn-sm">
-                        修改
-                    </button>
-                    <button type="button" @click="recover(88)" class="btn btn-danger btn-sm">
-                        删除
-                    </button>
+                        <button type="button" @click="modifyM(0)" class="btn btn-primary btn-sm">
+                            新增
+                        </button>
+                        <button type="button" @click="modifyM(1)"  class="btn  btn-success btn-sm">
+                            修改
+                        </button>
+                        <button type="button" @click="recoverM" class="btn btn-danger btn-sm">
+                            删除
+                        </button>
                     <br>
-                    <div id="treeview12" class="test"></div>
+                    <div id="treeview12" class="test" style="margin-top: 10px;"></div>
                 </div>
                 <div class="col-sm-10">
                     <div class="example-wrap">
@@ -64,25 +64,111 @@
             el: "#app",
             data: {
                 status: -1,
-                index:0
+                index:0,
+                TreeList:[],
+                MenuContentList:[],
+                MenuContentID:0,
             },
             methods: {
                 recover: function (val) {
                     setStatus(this,val)
                 },
+                recoverM: function () {
+                    if(this.MenuContentID!=0){
+                        $("#overlay").show()
+                        var data = {
+                            ID:this.MenuContentID,
+                            status: status
+                        }
+                        var that=this;
+                        $.ajax({url: "../Menu/setMenuStatus",
+                            type: "POST",
+                            headers: {Token: getToken()},data: {data: JSON.stringify(data)},
+                            success: function (json) {
+                                $("#overlay").hide()
+                                if (json.code == 1) {
+                                    top.location.href="../Admin/login.html"
+                                }
+                                if (json.code == 0) {
+                                    success(json.message)
+                                    that.getMenuContents();
+                                    that.initTree();
+                                    that.MenuContentID=0;
+                                } else {
+                                    error(json.message);
+                                }
+                            }
+                        })
+                    }else{
+                        error("请选择目录")
+                    }
+
+                },
                 modify: function (flag) {
                     var url = "../Admin/addMenu.html?";
                     if(flag==0){//新增
-                        url+= "id=0";
+                        if(this.MenuContentID!=0) {
+                            url += "id=0";
+                        }else{
+                            error("请选选择目录");
+                            return ;
+                        }
                     }else{//修改
                         if(checkIsSelection()){return};
                         url+= "id="+getRecordIDForFastJson($('#exampleTableEvents'));
                     }
-                    modifyShow(this,url,"100%","100%","Menu");
+                    modifyShow(this,url+"&parentID="+this.MenuContentID,"60%","80%","新建/修改菜单");
                 },
+                modifyM: function (flag) {
+                    var url = "../Admin/addContents.html?";
+                    if(flag==0){//新增
+                        url+= "id=0";
+                    }else{//修改
+                        if(this.MenuContentID!=0){
+                            url+= "id="+this.MenuContentID;
+                        }else{
+                            error("请选择目录")
+                        }
+                    }
+                    modifyShow(this,url,"80%","80%","新增/修改目录");
+                },
+                getMenuContents:function(){
+                    //获取所有的左边菜单
+                    var that=this;
+                    $.ajax({url:"../Menu/queryMenuContentAll", headers: {Token: getToken()},async:false,success:function(json){
+                        that.MenuContentList=json.data;
+                    }});
+                },
+                initTree:function(){
+                    //初始化左边的参数
+                    var that=this;
+                    if(this.MenuContentList.length!=null&&this.MenuContentList.length>0){
+                        var json=[];
+                        for(var i=0;i<this.MenuContentList.length;i++ ){
+                            var sub={};
+                            sub.text=this.MenuContentList[i].name;
+                            sub.id=this.MenuContentList[i].iD;
+                            sub.icon=this.MenuContentList[i].logo;
+                            json.push(sub);
+                        }
+                        console.log(json)
+                        $('#treeview12').treeview({
+                            data: JSON.stringify(json),
+                            onNodeSelected: function (event, node){
+                                that.MenuContentID=node.id;
+                                tableRefresh();
+                            }
+                        });
+                    }else{
+                        error("当前还未创建目录")
+                    }
+
+                }
             },
             mounted: function () {
                 tempApp=this;
+                this.getMenuContents();//获取所有的目录内容
+                this.initTree();//初始化左边的内容
             }
 
         })
@@ -105,6 +191,26 @@
                         field: 'iD',
                     },
                     {
+                        title: '菜单名字',
+                        align: 'center',
+                        field: 'name',
+                    },
+                    {
+                        title: '菜单备注',
+                        align: 'center',
+                        field: 'memo',
+                    },
+                    {
+                        title: '目录',
+                        align: 'center',
+                        field: 'parentMenu',
+                        formatter:function(val){
+                            if(chechIsUnll(val)){
+                                return val.name;
+                            }
+                        }
+                    },
+                    {
                         title: '创建时间',
                         align: 'center',
                         field: 'createTime',
@@ -113,6 +219,11 @@
                         title: '修改时间',
                         align: 'center',
                         field: 'modifyTime',
+                    },
+                    {
+                        title: '排序',
+                        align: 'center',
+                        field: 'order',
                     },
                     {
                         title: getStatus(),
@@ -130,11 +241,20 @@
                 temp.pageNumber=params.offset/params.limit+1;
                 temp.search=params.search;
                 temp.status=app.status;
+                temp.parentID=app.MenuContentID;
                 return temp;
             }
 
         })(document, window, jQuery);
     }
+    function closesContent(msg){
+        console.log("closesContent");
+        layer.close(tempApp.index);
+        success(msg);
+        tempApp.getMenuContents();
+        tempApp.initTree();
+    }
+
 </script>
 </body>
 </html>

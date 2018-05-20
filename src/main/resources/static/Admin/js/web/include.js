@@ -26,6 +26,7 @@ linkScriptDOMLoaded([
     "css/plugins/datapicker/datepicker3.css",
     "css/plugins/toastr/toastr.min.css",
     "js/plugins/layer/skin/layer.css",
+    "css/plugins/treeview/bootstrap-treeview.css",
 
     "js/jquery.min.js",
     "js/bootstrap.min.js",
@@ -51,6 +52,7 @@ linkScriptDOMLoaded([
     "js/plugins/datapicker/bootstrap-datepicker.js",
     "js/plugins/layer/laydate/laydate.js",
     "js/plugins/toastr/toastr.min.js",
+    "js/plugins/treeview/bootstrap-treeview.js",
     "js/web/commonUrl.js",
     "js/web/commonUtil.js",
     "js/web/AdminUtil.js",

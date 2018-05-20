@@ -53,6 +53,7 @@ public class RabbitHandler {
     @org.springframework.amqp.rabbit.annotation.RabbitHandler
     @RabbitListener(queues = "WEBLOG")
     public void WebLogHandler(Access access) {
+        access.setArgs(access.getArgs().length()>800?access.getArgs().substring(0,800):access.getArgs());
         accessService.insert(access);
     }
 

@@ -128,7 +128,7 @@ public class CommonUntil {
         if(requestUrl.contains("druid")){
             return true;
         }
-        List<String> pass= Arrays.asList("js","css","jpg","png","jpeg","ico","mp3","pdf","mp4","html","json","ttf","woff2");
+        List<String> pass= Arrays.asList("js","css","jpg","png","jpeg","ico","mp3","pdf","mp4","html","json","ttf","woff2","map","woff");
         if(requestUrl.contains(".")){
             if(pass.contains(requestUrl.split("\\.")[requestUrl.split("\\.").length-1])){
                 f=true;

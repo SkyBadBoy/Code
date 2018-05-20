@@ -85,8 +85,8 @@ public class Menu implements Serializable {
     @ApiModelProperty(value = "Url 类型 【后台：0  移动端：1】")
     private int UrlType;
 
-
-
+    @ApiModelProperty(value = "父类的属性")
+    private Menu ParentMenu;
 
 
 }

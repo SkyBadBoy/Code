@@ -39,11 +39,12 @@ public class CodeApplication extends SpringBootServletInitializer {
 		FastJsonHttpMessageConverter fastConverter = new FastJsonHttpMessageConverter();
 		// 2、添加fastJson 的配置信息，比如：是否要格式化返回的json数据
 		FastJsonConfig fastJsonConfig = new FastJsonConfig();
-		fastJsonConfig.setSerializerFeatures(SerializerFeature.PrettyFormat);
-		//重复引用引用问题   这边注释的原因是 mybatis已经配置fetchType="eager"   可以注释
-		//fastJsonConfig.setSerializerFeatures(SerializerFeature.DisableCircularReferenceDetect);
-		//返回null的值
-		fastJsonConfig.setSerializerFeatures(SerializerFeature.WriteMapNullValue);
+		//修改配置 https://www.jianshu.com/p/7be46b8b4c4a
+		fastJsonConfig.setSerializerFeatures(
+                SerializerFeature.DisableCircularReferenceDetect,
+				SerializerFeature.WriteMapNullValue,
+				SerializerFeature.WriteNullStringAsEmpty
+		);
 		// 3、在convert 中添加配置信息
 		fastConverter.setFastJsonConfig(fastJsonConfig);
 		// 4、将convert 添加到converters当中

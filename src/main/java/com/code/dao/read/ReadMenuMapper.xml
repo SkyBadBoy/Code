@@ -18,6 +18,7 @@
 		<result property="AdminID" column="Menu_AdminID" />
 		<result property="End" column="Menu_End" />
 		<result property="UrlType" column="Menu_UrlType" />
+		<association property="ParentMenu" column="Menu_ParentID" select="com.code.dao.read.ReadMenuMapper.findById" fetchType="eager"/>
 	</resultMap>
 	<!-- sql查询语句-->
 	<sql id="sql">

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>代码生成工具- majian</title>
+    <meta name="keywords" content="马健">
+    <meta name="description" content="马健">
+    <script src="js/web/include.js?v=1.0.5"></script>
+</head>
+<body class="gray-bg">
+<div class="wrapper wrapper-content" id="app">
+    <!-- Panel Other -->
+    <div class="ibox float-e-margins">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-content">
+                        <div class="form-horizontal">
+	                            <div class="form-group">
+	                                <label class="col-sm-2 control-label" >目录名字</label>
+	                                <div class="col-sm-10">
+	                                    <input type="text" v-model="data.name" class="form-control">
+	                            </div>
+                            </div>
+							<div class="hr-line-dashed" ></div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label" >目录图标</label>
+								<div class="col-sm-10">
+									<input type="text" v-model="data.logo" class="form-control">
+								</div>
+							</div>
+							<div class="hr-line-dashed" ></div>
+	                            <div class="form-group">
+	                                <label class="col-sm-2 control-label" >目录备注</label>
+	                                <div class="col-sm-10">
+	                                    <input type="text" v-model="data.memo" class="form-control">
+	                            </div>
+                            </div>
+
+							<div class="hr-line-dashed" ></div>
+	                            <div class="form-group">
+	                                <label class="col-sm-2 control-label" >点击地址(可为空)</label>
+	                                <div class="col-sm-10">
+	                                    <input type="text" v-model="data.url" class="form-control">
+	                            </div>
+                            </div>
+							    <div class="hr-line-dashed" ></div>
+	                            <div class="form-group">
+	                                <label class="col-sm-2 control-label" >排序</label>
+	                                <div class="col-sm-10">
+	                                    <input type="text" v-model="data.order" class="form-control">
+	                            </div>
+                            </div>
+							    <div class="hr-line-dashed" ></div>
+	                            <div class="form-group">
+	                                <label class="col-sm-2 control-label" >目录类型</label>
+	                                <div class="col-sm-10">
+										<select class="form-control m-b" v-model="data.urlType" >
+											<option value="0">后台</option>
+											<option value="1">移动端</option>
+										</select>
+									</div>
+                            </div>
+                          
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <div class="col-sm-4 col-sm-offset-2">
+                                    <button class="btn btn-primary" @click="save" type="submit">保存内容</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    window.onload=function () {
+        var app = new Vue({
+            el: "#app",
+            data: {
+                data:{
+                    iD:getUrlKey("id"),
+                    	name:"",
+                    	memo:"",
+                    	type:0,
+                    	parentID:0,
+                    	logo:"",
+                    	url:"",
+                    	order:0,
+                    	adminID:0,
+                    	end:1,
+                    	urlType:0,
+                }
+            },
+            methods: {
+                save: function () {
+                    var that=this;
+                    $("#overlay").show()
+                    $.ajax({
+                        url: "../Menu/modifyMenu",
+                        type: "POST",
+                        headers: {
+                            Token: getToken()
+                        },
+                        data: {data: JSON.stringify(that.data)},
+                        success: function (json) {
+                            console.log("获取到数据",json)
+                            $("#overlay").hide()
+                            if (json.code == 1) {
+                                top.location.href="../Admin/login.html"
+                            }
+                            if (json.code == 0) {
+                                parent.closesContent(json.message)
+                            } else {
+                                error(json.message);
+                            }
+                        },
+                        error: function () {
+                            $("#overlay").hide();
+                            error("网络异常哦,请稍后重试");
+                        }
+                    })
+
+                }
+            },
+            mounted: function () {
+                if(this.data.iD!=0){
+                    findByID(this,this.data.iD,"../Menu/findMenu/")
+                }
+            }
+        })
+    }
+
+    /**
+     * 修改的方法
+     * @param that
+     * @param url
+     */
+    function savaData(that,url) {
+        $("#overlay").show()
+        $.ajax({
+            url: url,
+            type: "POST",
+            headers: {
+                Token: getToken()
+            },
+            data: {data: JSON.stringify(that.data)},
+            success: function (json) {
+                console.log("获取到数据",json)
+                $("#overlay").hide()
+                if (json.code == 1) {
+                    top.location.href="../Admin/login.html"
+                }
+                if (json.code == 0) {
+                    parent.closes(json.message)
+                } else {
+                    error(json.message);
+                }
+            },
+            error: function () {
+                $("#overlay").hide();
+                error("网络异常哦,请稍后重试");
+            }
+        })
+    }
+</script>
+</body>
+</html>

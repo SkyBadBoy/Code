@@ -27,19 +27,37 @@ public class MenuController extends BaseController {
 
     @GetMapping("/queryMenuPage")
     @ApiOperation(value = "获取列表")
-    public Map queryMenuPage(int status,String search,int pageNumber, int pageSize,HttpServletRequest request) {
+    public Map queryMenuPage(int status,String search,long parentID,int pageNumber, int pageSize,HttpServletRequest request) {
         Map<String, Object> returnMap = new HashMap<>(2);
         Map<String, Object> queryMap = new HashMap<>(3);
         queryMap.put("search", search);
         if(status!=-1){
             queryMap.put("Status", status);
         }
+        if(parentID!=0){
+            queryMap.put(Menu.COLUMN_ParentID, parentID);
+        }
+        queryMap.put(Menu.COLUMN_Type, 1);
         PageInfo<Menu> page = this.ReadMenuService.queryPage(queryMap, pageNumber, pageSize);
         returnMap.put("rows", page.getList());
         returnMap.put("total", page.getTotal());
         RabbitUtil.getInstance().OperationLog(request.getHeader("Token"),"查看【Menu-queryMenuPage】列表",ReadOnlineService,OperationService,RabbitTemplate,ReadUserService);
         return returnMap;
     }
+
+    @GetMapping("/queryMenuContentAll")
+    @ApiOperation(value = "获取所有的目录列表")
+    public Map queryMenuContentAll(HttpServletRequest request) {
+        Map<String, Object> returnMap = new HashMap<>(2);
+        Map<String, Object> queryMap = new HashMap<>(3);
+        queryMap.put("Status", 1);
+        queryMap.put(Menu.COLUMN_Type, 0);
+        List<Menu> page = this.ReadMenuService.query(queryMap);
+        returnMap.put("data",page);
+        RabbitUtil.getInstance().OperationLog(request.getHeader("Token"),"查看【Menu-queryMenuContentAll】目录列表",ReadOnlineService,OperationService,RabbitTemplate,ReadUserService);
+        return returnMap;
+    }
+
 
     @PostMapping("/setMenuStatus")
     @ApiOperation(value = "设置状态")

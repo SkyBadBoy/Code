@@ -359,7 +359,7 @@ function savaData(that,url) {
 }
 
 /**
- * 默认图片
+ * 默认图片处理
  */
 function bindImgError(){
     setTimeout(function(){
@@ -369,7 +369,6 @@ function bindImgError(){
             }
         })
     },500);
-
 }
 
 function getRegionHead(that,type,ParentID){

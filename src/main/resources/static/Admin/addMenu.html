@@ -18,84 +18,33 @@
                     <div class="ibox-content">
                         <div class="form-horizontal">
 
-														    <div class="hr-line-dashed" ></div>
 	                            <div class="form-group">
-	                                <label class="col-sm-2 control-label" >status</label>
-	                                <div class="col-sm-10">
-	                                    <input type="text" v-model="data.status" class="form-control">
-	                            </div>
-                            </div>
-							    <div class="hr-line-dashed" ></div>
-	                            <div class="form-group">
-	                                <label class="col-sm-2 control-label" >name</label>
+	                                <label class="col-sm-2 control-label" >菜单名字</label>
 	                                <div class="col-sm-10">
 	                                    <input type="text" v-model="data.name" class="form-control">
 	                            </div>
                             </div>
 							    <div class="hr-line-dashed" ></div>
 	                            <div class="form-group">
-	                                <label class="col-sm-2 control-label" >memo</label>
+	                                <label class="col-sm-2 control-label" >菜单备注</label>
 	                                <div class="col-sm-10">
 	                                    <input type="text" v-model="data.memo" class="form-control">
 	                            </div>
                             </div>
 							    <div class="hr-line-dashed" ></div>
 	                            <div class="form-group">
-	                                <label class="col-sm-2 control-label" >type</label>
-	                                <div class="col-sm-10">
-	                                    <input type="text" v-model="data.type" class="form-control">
-	                            </div>
-                            </div>
-							    <div class="hr-line-dashed" ></div>
-	                            <div class="form-group">
-	                                <label class="col-sm-2 control-label" >parentID</label>
-	                                <div class="col-sm-10">
-	                                    <input type="text" v-model="data.parentID" class="form-control">
-	                            </div>
-                            </div>
-							    <div class="hr-line-dashed" ></div>
-	                            <div class="form-group">
-	                                <label class="col-sm-2 control-label" >logo</label>
-	                                <div class="col-sm-10">
-	                                    <input type="text" v-model="data.logo" class="form-control">
-	                            </div>
-                            </div>
-							    <div class="hr-line-dashed" ></div>
-	                            <div class="form-group">
-	                                <label class="col-sm-2 control-label" >url</label>
+	                                <label class="col-sm-2 control-label" >点击地址</label>
 	                                <div class="col-sm-10">
 	                                    <input type="text" v-model="data.url" class="form-control">
 	                            </div>
                             </div>
 							    <div class="hr-line-dashed" ></div>
 	                            <div class="form-group">
-	                                <label class="col-sm-2 control-label" >order</label>
+	                                <label class="col-sm-2 control-label" >排序</label>
 	                                <div class="col-sm-10">
 	                                    <input type="text" v-model="data.order" class="form-control">
 	                            </div>
                             </div>
-							    <div class="hr-line-dashed" ></div>
-	                            <div class="form-group">
-	                                <label class="col-sm-2 control-label" >adminID</label>
-	                                <div class="col-sm-10">
-	                                    <input type="text" v-model="data.adminID" class="form-control">
-	                            </div>
-                            </div>
-							    <div class="hr-line-dashed" ></div>
-	                            <div class="form-group">
-	                                <label class="col-sm-2 control-label" >end</label>
-	                                <div class="col-sm-10">
-	                                    <input type="text" v-model="data.end" class="form-control">
-	                            </div>
-                            </div>
-							    <div class="hr-line-dashed" ></div>
-	                            <div class="form-group">
-	                                <label class="col-sm-2 control-label" >urlType</label>
-	                                <div class="col-sm-10">
-	                                    <input type="text" v-model="data.urlType" class="form-control">
-	                            </div>
-                            </div>
-                          
                             <div class="hr-line-dashed"></div>
                             <div class="form-group">
                                 <div class="col-sm-4 col-sm-offset-2">
@@ -116,15 +65,12 @@
             data: {
                 data:{
                     iD:getUrlKey("id"),
-                    	status:0,
-                    	name:0,
-                    	memo:0,
-                    	type:0,
-                    	parentID:0,
-                    	logo:0,
-                    	url:0,
+                    	name:"",
+                    	memo:"",
+                    	type:1,
+                    	parentID:getUrlKey("parentID"),
+                    	url:"",
                     	order:0,
-                    	adminID:0,
                     	end:0,
                     	urlType:0,
                 }

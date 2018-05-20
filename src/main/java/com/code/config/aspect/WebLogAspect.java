@@ -95,7 +95,7 @@ public class WebLogAspect {
 //        logger.info("处理时间 : " + (System.currentTimeMillis() - startTime.get()));
         /** 目前参数和返回值还没有记录 */
         if(CommonUntil.CheckWebLog(RequestURL)){
-            Access access=Access.getAccess(RequestURL, Method, RemoteAddr, ClassName, Args, (System.currentTimeMillis() - startTime.get()));
+            Access access=Access.getAccess(RequestURL, Method, RemoteAddr, ClassName,Args, (System.currentTimeMillis() - startTime.get()));
             RabbitUtil.getInstance().WebLog(access,accessService,rabbitTemplate);
         }
 
