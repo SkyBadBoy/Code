@@ -40,6 +40,7 @@ public class CodeApplication extends SpringBootServletInitializer {
 		// 2、添加fastJson 的配置信息，比如：是否要格式化返回的json数据
 		FastJsonConfig fastJsonConfig = new FastJsonConfig();
 		//修改配置 https://www.jianshu.com/p/7be46b8b4c4a
+		// 以下一定要这么配置,不然会出问题的
 		fastJsonConfig.setSerializerFeatures(
                 SerializerFeature.DisableCircularReferenceDetect,
 				SerializerFeature.WriteMapNullValue,

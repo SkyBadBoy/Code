@@ -206,7 +206,7 @@
                         field: 'parentMenu',
                         formatter:function(val){
                             if(chechIsUnll(val)){
-                                return val.name;
+                                return `<i class="`+val.logo+`" aria-hidden="true"></i>`;
                             }
                         }
                     },
@@ -248,7 +248,6 @@
         })(document, window, jQuery);
     }
     function closesContent(msg){
-        console.log("closesContent");
         layer.close(tempApp.index);
         success(msg);
         tempApp.getMenuContents();

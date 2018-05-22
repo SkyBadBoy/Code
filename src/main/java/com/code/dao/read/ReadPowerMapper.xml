@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.code.dao.read.ReadPowerMapper">
+	<!-- 返回的map -->
+	<resultMap id="power" type="com.code.domain.Power">
+		<result property="ID" column="Power_ID" />
+		<result property="CreateTime" column="Power_CreateTime" />
+		<result property="ModifyTime" column="Power_ModifyTime" />
+		<result property="Status" column="Power_Status" />
+		<result property="ParentID" column="Power_ParentID" />
+		<result property="Order" column="Power_Order" />
+		<result property="AdminID" column="Power_AdminID" />
+		<result property="End" column="Power_End" />
+		<result property="MenuID" column="Power_MenuID" />
+		<result property="RoleID" column="Power_RoleID" />
+		<result property="Type" column="Power_Type" />
+		<association property="Menu" column="Power_MenuID" select="com.code.dao.read.ReadMenuMapper.findById" fetchType="eager"/>
+	</resultMap>
+	<!-- sql查询语句-->
+	<sql id="sql">
+		Power_ID,Power_CreateTime,Power_ModifyTime,Power_Status,Power_ParentID,Power_Order,Power_AdminID,Power_End,Power_MenuID,Power_RoleID,Power_Type
+	</sql>
+	<!-- sql查询条件-->
+	<sql id="where">
+		1=1 
+		<if test="ID!=null">
+				 and Power_ID = #{ID}
+</if>
+<if test="CreateTime!=null">
+				 and Power_CreateTime = #{CreateTime}
+</if>
+<if test="ModifyTime!=null">
+				 and Power_ModifyTime = #{ModifyTime}
+</if>
+<if test="Status!=null">
+				 and Power_Status = #{Status}
+</if>
+<if test="ParentID!=null">
+				 and Power_ParentID = #{ParentID}
+</if>
+<if test="Order!=null">
+				 and Power_Order = #{Order}
+</if>
+<if test="AdminID!=null">
+				 and Power_AdminID = #{AdminID}
+</if>
+<if test="End!=null">
+				 and Power_End = #{End}
+</if>
+<if test="MenuID!=null">
+				 and Power_MenuID = #{MenuID}
+</if>
+<if test="RoleID!=null">
+				 and Power_RoleID = #{RoleID}
+</if>
+		<if test="Type!=null">
+			and Power_Type = #{Type}
+		</if>
+
+
+	</sql>
+	<!-- 根据ID 查找-->
+	<select id="findById" resultMap="power" parameterType="long">
+		SELECT
+		<include refid="sql"></include>
+		FROM t_Power
+		<where>
+			Power_ID = #{_parameter} 
+		</where>
+	</select>
+	<!-- 根据条件 查找-->
+	<select id="query"  resultMap="power"
+		parameterType="java.util.Map">
+		SELECT
+		<include refid="sql"></include>
+		FROM t_Power
+		<where>
+			<include refid="where"></include>
+		</where>
+	
+	</select>
+	<!-- 根据条件总数-->
+	<select id="queryCount" parameterType="map" resultType="int">
+		SELECT
+			Count(1)
+			FROM t_Power
+			<where>
+				<include refid="where"></include>
+			</where>
+	</select>
+
+
+
+</mapper>

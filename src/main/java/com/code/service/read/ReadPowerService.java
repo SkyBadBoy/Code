@@ -15,8 +15,8 @@ import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import com.code.domain.Menu;
-import com.code.dao.read.ReadMenuMapper;
+import com.code.domain.Power;
+import com.code.dao.read.ReadPowerMapper;
 
 import java.util.List;
 import java.util.Map;
@@ -28,20 +28,20 @@ import java.util.Map;
  * @version 1.00
  */
  @Service
- @CacheConfig(cacheNames="ReadMenuCache") 
+ @CacheConfig(cacheNames="ReadPowerCache") 
  @Transactional(propagation=Propagation.REQUIRED,readOnly=false,rollbackFor=Exception.class)
-public class ReadMenuService {
+public class ReadPowerService {
 
     @Autowired
-	private ReadMenuMapper ReadMapper;
+	private ReadPowerMapper ReadMapper;
 
-	@Cacheable(value = "MenuCache",key="'Menu_'+#p0")
-	public Menu findById(String id){
+	@Cacheable(value = "PowerCache",key="'Power_'+#p0") 
+	public Power findById(String id){
 		return ReadMapper.findById(id);
 	}
 
 	@Cacheable(keyGenerator = "keyGenerator")
-	public List<Menu> query(Map<String,Object> queryMap){
+	public List<Power> query(Map<String,Object> queryMap){
 		return ReadMapper.query(queryMap);
 	}
 
@@ -51,13 +51,13 @@ public class ReadMenuService {
 	}
 
 	@Cacheable(keyGenerator = "keyGenerator")
-	public PageInfo<Menu> queryPage(Map<String,Object> queryMap, int pageNum, int pageSize){
-		Page<Menu> page = PageHelper.startPage(pageNum, pageSize);
+	public PageInfo<Power> queryPage(Map<String,Object> queryMap, int pageNum, int pageSize){
+		Page<Power> page = PageHelper.startPage(pageNum, pageSize);
 		if(pageSize==0){
 			page.setPageSizeZero(true);
 		}
-		page.setOrderBy("Menu_Order asc");
-//		page.setOrderBy("Menu_CreateTime desc");
+		page.setOrderBy("Power_Order asc");
+		//page.setOrderBy("Power_CreateTime desc");
 		ReadMapper.query(queryMap);
 		return page.toPageInfo();
 	}

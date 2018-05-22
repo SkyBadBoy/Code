@@ -50,7 +50,31 @@
             },
             methods: {
                 save: function () {
-                    savaData(this,"../Role/modifyRole")
+                    var that=this;
+                    $("#overlay").show()
+                    $.ajax({
+                        url: "../Role/modifyRole",
+                        type: "POST",
+                        headers: {
+                            Token: getToken()
+                        },
+                        data: {data: JSON.stringify(that.data)},
+                        success: function (json) {
+                            $("#overlay").hide()
+                            if (json.code == 1) {
+                                top.location.href="../Admin/login.html"
+                            }
+                            if (json.code == 0) {
+                                parent.closesRole(json.message)
+                            } else {
+                                error(json.message);
+                            }
+                        },
+                        error: function () {
+                            $("#overlay").hide();
+                            error("网络异常哦,请稍后重试");
+                        }
+                    })
                 }
             },
             mounted: function () {

@@ -15,29 +15,27 @@
     <!-- Panel Other -->
         <div class="ibox-content">
             <div class="row row-lg">
-                <div class="col-sm-12">
-                    <div class="example-wrap">
-                        <h4 class="example-title"></h4>
-                        <div class="example">
-                            <div class="btn-group hidden-xs" id="exampleTableEventsToolbar" role="group">
-                                <button type="button"   @click="modify(0)" class="btn btn-primary ">
-                                    <i class="glyphicon glyphicon-plus" aria-hidden="true">新增</i>
-                                </button>
-                                <button type="button"  @click="modify(1)" class="btn btn-success ">
-                                    <i class="glyphicon glyphicon-pencil" aria-hidden="true">修改</i>
-                                </button>
-                                <button type="button" @click="recover(88)" class="btn  btn-danger">
-                                    <i class="glyphicon glyphicon-trash" aria-hidden="true">删除</i>
-                                </button>
-                                <button type="button"  @click="recover(1)" class="btn btn-primary ">
-                                    <i class="glyphicon glyphicon-play" aria-hidden="true">恢复</i>
-                                </button>
-                            </div>
-                            <table id="exampleTableEvents" >
-                            </table>
-                        </div>
-                    </div>
-                    <!-- End Example Events -->
+                <div class="col-sm-3" style="margin-top: 10px;">
+                    <h4 class="example-title">角色管理</h4>
+                    <button type="button" @click="modify(0)" class="btn btn-primary btn-sm">
+                        新增
+                    </button>
+                    <button type="button" @click="modify(1)"  class="btn  btn-success btn-sm">
+                        修改
+                    </button>
+                    <button type="button" @click="recover(88)" class="btn btn-danger btn-sm">
+                        删除
+                    </button>
+                    <button type="button" @click="power" class="btn btn-info btn-sm">
+                        权限
+                    </button>
+                    <br>
+                    <div id="treeview12" class="test" style="margin-top: 10px;"></div>
+                </div>
+
+                <div class="col-sm-7" style="margin-top: 50px;">
+                    <h4 class="example-title">获取的权限</h4>
+                    <div id="Role" class="test" style="margin-left: 30px;"></div>
                 </div>
             </div>
         </div>
@@ -50,7 +48,10 @@
             el: "#app",
             data: {
                 status: -1,
-                index:0
+                index:0,
+                TreeList:[],
+                RoleList:[],
+                RoleID:0,
             },
             methods: {
                 recover: function (val) {
@@ -61,71 +62,146 @@
                     if(flag==0){//新增
                         url+= "id=0";
                     }else{//修改
-                        if(checkIsSelection()){return};
-                        url+= "id="+getRecordIDForFastJson($('#exampleTableEvents'));
+                        if(this.RoleID==0){
+                            error("请选择角色进行操作")
+                            return ;
+                        }
+                        url+= "id="+this.RoleID;
                     }
                     modifyShow(this,url,"500px","300px","角色管理");
                 },
+                getRoleAll:function(){
+                    //获取所有的左边菜单
+                    var that=this;
+                    $.ajax({url:"../Role/queryRolePageAll", headers: {Token: getToken()},async:false,success:function(json){
+                        that.RoleList=json.data
+                        if(that.RoleList.length>0){
+                            that.RoleID=that.RoleList[0].iD
+                        }
+                    }});
+                },
+                initTree:function(){
+                    //初始化左边的参数
+                    var that=this;
+                    if(this.RoleList.length!=null&&this.RoleList.length>0){
+                        var json=[];
+                        for(var i=0;i<this.RoleList.length;i++ ){
+                            var sub={};
+                            sub.text=this.RoleList[i].name;
+                            sub.id=this.RoleList[i].iD;
+                            json.push(sub);
+                        }
+                        $('#treeview12').treeview({
+                            data: JSON.stringify(json),
+                            onNodeSelected: function (event, node){
+                                that.RoleID=node.id;
+                                that.initShowList();
+                            }
+                        });
+
+                    }else{
+                        error("当前还未创建目录")
+                    }
+
+                },
+                initShowList:function(){
+                    var that=this;
+                    $.ajax({url:"../Power/queryPowerAll?RoleID="+that.RoleID+"&Type=0", headers: {Token: getToken()},async:true,success:function(json){
+                        console.log(json)
+                        var data=json.data;
+                        var list=[]
+                        for(var i=0;i<data.length;i++){
+                            var sub={};
+                            sub.text=data[i].menu.name;
+                            sub.id=data[i].menu.iD;
+                            sub.icon=data[i].menu.logo;
+                            var subPower=data[i].subPower;
+                            if(subPower.length>0){
+                                sub.nodes=[];
+                            }
+
+                            for(var j=0;j<subPower.length;j++ ){
+                                var subNode={}
+                                subNode.text=subPower[j].menu.name;
+                                sub.nodes.push(subNode)
+                            }
+                            list.push(sub);
+                        }
+                        $('#Role').treeview({
+                            levels: 1,//全部收起来
+                            data: JSON.stringify(list),
+                            onNodeSelected: function (event, node){
+                                that.RoleID=node.id;
+                            }
+                        });
+                    }});
+                },
+                power:function(){
+                    if(this.RoleID==0){
+                        error("请选择角色进行操作")
+                        return;
+                    }
+                    var url = "../Admin/addPower.html?";
+                    url+= "id="+this.RoleID;
+                    modifyShow(this,url,"60%","80%","权限设置");
+
+
+                }
             },
             mounted: function () {
                 tempApp=this;
+                this.getRoleAll();
+                this.initTree();
+                this.initShowList();
             }
 
         })
         /** 固定写法 by majian*/
         function setStatus(that,status) {
-            setAdminStatus(that,status,"../Role/setRoleStatus")
-        }
-        /** 初始化表格*/
-        (function(document, window, $) {
-            'use strict';
-            (function() {
-                var columns=[
-                    {
-                        field: 'state',
-                        checkbox:true
-                    },
-                    {
-                        title: '编号',
-                        align: 'center',
-                        field: 'iD',
-                    },
-                    {
-                        title: '角色名字',
-                        align: 'center',
-                        field: 'name',
-                    },
-                    {
-                        title: '创建时间',
-                        align: 'center',
-                        field: 'createTime',
-                    },
-                    {
-                        title: '修改时间',
-                        align: 'center',
-                        field: 'modifyTime',
-                    },
-                    {
-                        title: getStatus(),
-                        align: 'center',
-                        field: 'status',
-                        titleTooltip : "",
-                        formatter: statusFormatter
-                    },
-                ];
-                getDataTable($('#exampleTableEvents'),"../Role/queryRolePage",columns,queryParams,false);
-            })();
-            function queryParams(params) {
-                var temp={}
-                temp.pageSize=params.limit;
-                temp.pageNumber=params.offset/params.limit+1;
-                temp.search=params.search;
-                temp.status=app.status;
-                return temp;
+            if(that.RoleID==0){
+                error("请选择角色后进行操作")
+                return;
             }
-
-        })(document, window, jQuery);
+            $("#overlay").show()
+            var data = {
+                ID:that.RoleID,
+                status: 88
+            }
+            $.ajax({
+                url: "../Role/setRoleStatus",
+                type: "POST",
+                headers: {
+                    Token: getToken()
+                },
+                data: {data: JSON.stringify(data)},
+                success: function (json) {
+                    $("#overlay").hide()
+                    if (json.code == 1) {
+                        top.location.href="../Admin/login.html"
+                    }
+                    if (json.code == 0) {
+                        success(json.message)
+                        that.getRoleAll();
+                        that.initTree();
+                    } else {
+                        error(json.message);
+                    }
+                },
+                error: function () {
+                    $("#overlay").hide();
+                    error("网络异常哦,请稍后重试");
+                }
+            })
+        }
     }
+    function closesRole(msg){
+        layer.close(tempApp.index);
+        success(msg);
+        tempApp.getRoleAll();
+        tempApp.initTree();
+        tempApp.initShowList();
+    }
+
 </script>
 </body>
 </html>

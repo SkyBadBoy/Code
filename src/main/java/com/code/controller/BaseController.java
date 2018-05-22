@@ -57,6 +57,8 @@ public class BaseController {
 	protected AdminService AdminService;
 	@Autowired
 	protected OperationService OperationService;
+	@Autowired
+	protected PowerService PowerService;
 
 	@Autowired
 	protected ReadErrorService ReadErrorService;
@@ -88,6 +90,9 @@ public class BaseController {
 	protected ReadAdminService ReadAdminService;
 	@Autowired
 	protected ReadOperationService ReadOperationService;
+	@Autowired
+	protected ReadPowerService ReadPowerService;
+
 
 	@Autowired
 	protected AmqpTemplate RabbitTemplate;

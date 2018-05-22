@@ -32,12 +32,6 @@
                                 <button type="button"  @click="recover(1)" class="btn btn-primary ">
                                     <i class="glyphicon glyphicon-play" aria-hidden="true">恢复</i>
                                 </button>
-                                <button type="button"  @click="reset" class="btn btn-warning ">
-                                    <i class="fa fa-lock" aria-hidden="true">重置密码</i>
-                                </button>
-                                <button type="button"  @click="operation" class="btn btn-info ">
-                                    <i class="fa fa-hand-o-up" aria-hidden="true">操作日志</i>
-                                </button>
                             </div>
                             <table id="exampleTableEvents" >
                             </table>
@@ -63,37 +57,24 @@
                     setStatus(this,val)
                 },
                 modify: function (flag) {
-                    var url = "../Admin/addAdmin.html?";
+                    var url = "../Admin/addRole.html?";
                     if(flag==0){//新增
-                        url+= "id=0&f=0";
+                        url+= "id=0";
                     }else{//修改
                         if(checkIsSelection()){return};
-                        url+= "id="+getRecordIDForFastJson($('#exampleTableEvents'))+"&f=0";
+                        url+= "id="+getRecordIDForFastJson($('#exampleTableEvents'));
                     }
-                    modifyShow(this,url,"100%","100%","设置管理员");
+                    modifyShow(this,url,"500px","300px","角色管理");
                 },
-                reset:function(){
-                    if(checkIsSelection()){return};
-                    var url = "../Admin/modifyPassword.html?";
-                    url+= "id="+getRecordIDForFastJson($('#exampleTableEvents'));
-                    modifyShow(this,url,"500px","400px","修改密码");
-                },
-                operation:function(){
-                    if(checkIsSelection()){return};
-                    var url = "../Admin/OperationList.html?";
-                    url+= "id="+getRecordIDForFastJson($('#exampleTableEvents'));
-                    modifyShow(this,url,"100%","100%","用户操作日志");
-                }
             },
             mounted: function () {
-                bindImgError()
                 tempApp=this;
             }
 
         })
         /** 固定写法 by majian*/
         function setStatus(that,status) {
-            setAdminStatus(that,status,"../Admin/setAdminStatus")
+            setAdminStatus(that,status,"../Role/setRoleStatus")
         }
         /** 初始化表格*/
         (function(document, window, $) {
@@ -110,25 +91,9 @@
                         field: 'iD',
                     },
                     {
-                        title: '头像',
-                        align: 'center',
-                        field: 'headImg',
-                        formatter:headImgFormatter
-                    },
-                    {
-                        title: '名字',
+                        title: '角色名字',
                         align: 'center',
                         field: 'name',
-                    },
-                    {
-                        title: '登录名',
-                        align: 'center',
-                        field: 'loginName',
-                    },
-                    {
-                        title: '手机号',
-                        align: 'center',
-                        field: 'phone',
                     },
                     {
                         title: '创建时间',
@@ -136,19 +101,9 @@
                         field: 'createTime',
                     },
                     {
-                        title: '地址',
+                        title: '修改时间',
                         align: 'center',
-                        field: 'longAddress',
-                    },
-                    {
-                        title: '创建时间',
-                        align: 'center',
-                        field: 'role',
-                        formatter:function(val){
-                            if(val!=null){
-                                return '<small class="label label-primary"> '+val.name+'</small>'
-                            }
-                        }
+                        field: 'modifyTime',
                     },
                     {
                         title: getStatus(),
@@ -158,7 +113,7 @@
                         formatter: statusFormatter
                     },
                 ];
-                getDataTable($('#exampleTableEvents'),"../Admin/queryAdminPage",columns,queryParams,false);
+                getDataTable($('#exampleTableEvents'),"../Role/queryRolePage",columns,queryParams,false);
             })();
             function queryParams(params) {
                 var temp={}

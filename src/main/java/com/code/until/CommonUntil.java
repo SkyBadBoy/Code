@@ -7,6 +7,7 @@ import com.code.service.write.WeChatInfoService;
 import com.code.until.wechat.WXPayUtil;
 import com.code.until.wechat.XMLUtil;
 import com.github.pagehelper.PageInfo;
+import io.swagger.models.auth.In;
 import lombok.extern.log4j.Log4j;
 
 import javax.servlet.http.HttpServletRequest;
@@ -241,5 +242,41 @@ public class CommonUntil {
         }
 
         return f;
+    }
+
+    public  void CheckPower(String menuID,String RoleID,ReadPowerService ReadPowerService,PowerService PowerService,ReadMenuService ReadMenuService) {
+        Map queryMap=new HashMap();
+        queryMap.put(Power.COLUMN_RoleID,RoleID);
+        queryMap.put(Power.COLUMN_MenuID,menuID);
+        PageInfo<Power> powerList=ReadPowerService.queryPage(queryMap,0,0);
+        if(powerList.getSize()>0){
+            Power power=powerList.getList().get(0);
+            power.setStatus(Integer.parseInt(CommonStatus.Status.Ectivity.getid()));
+            PowerService.update(power);
+        }else{
+            Menu menu=ReadMenuService.findById(menuID);
+            String ParentID="0";
+            int Type=0;
+            if(menu.getParentMenu()!=null){
+                queryMap.clear();
+                queryMap.put(Power.COLUMN_RoleID,RoleID);
+                queryMap.put(Power.COLUMN_MenuID,menu.getParentID());
+                PageInfo<Power> ParentList=ReadPowerService.queryPage(queryMap,0,0);
+                if(ParentList.getSize()>0){
+                    ParentID=ParentList.getList().get(0).getID();
+                }
+            }
+            Power power=new Power();
+            power.setID(CommonUntil.getInstance().CreateNewID());
+            power.setMenuID(menuID);
+            power.setOrder(menu.getOrder());
+            power.setRoleID(RoleID);
+            power.setParentID(ParentID);
+            power.setAdminID("0");
+            power.setType(menu.getType());
+            power.setStatus(Integer.parseInt(CommonStatus.Status.Ectivity.getid()));
+            PowerService.insert(power);
+        }
+
     }
 }

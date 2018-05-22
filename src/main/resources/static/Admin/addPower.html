@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>代码生成工具- majian</title>
+    <meta name="keywords" content="马健">
+    <meta name="description" content="马健">
+    <script src="js/web/include.js?v=1.0.5"></script>
+</head>
+<body class="gray-bg">
+<div class="wrapper wrapper-content" id="app">
+    <!-- Panel Other -->
+    <div class="ibox float-e-margins">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-content">
+                        <div class="form-horizontal">
+
+                            <div class="form-group">
+	                                <label class="col-sm-2 control-label" >权限</label>
+	                                <div class="col-sm-10">
+
+                                        <div class="col-sm-12" v-for="(item,index) in ShowList">
+                                            <div class="checkbox checkbox-primary">
+                                                <input :id="item.id" type="checkbox" v-if="item.check" checked @change="checkbox(index,-1)">
+                                                <input :id="item.id" type="checkbox" v-if="!item.check" @change="checkbox(index,-1)" >
+                                                <label :for="item.id" v-text="item.name"></label>
+                                            </div>
+                                            <div class="checkbox checkbox-primary"  v-for="(sub,subIndex) in item.subShow" style="margin-left: 25px;">
+                                                <input :id="sub.id" type="checkbox" v-if="sub.check" checked @change="checkbox(index,subIndex)">
+                                                <input :id="sub.id" type="checkbox" v-if="!sub.check" @change="checkbox(index,subIndex)" >
+                                                <label :for="sub.id" v-text="sub.name"></label>
+                                            </div>
+                                       </div>
+	                            </div>
+                            </div>
+
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <div class="col-sm-4 col-sm-offset-2">
+                                    <button class="btn btn-primary" @click="save" type="submit">保存内容</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    var tempApp="";
+    window.onload=function () {
+        var app = new Vue({
+            el: "#app",
+            data: {
+                MenuList:[],
+                PowerList:[],
+                ShowList:[],
+                RoleID:getUrlKey("id")
+            },
+            methods: {
+                save: function () {
+                    var that=this;
+                    var d={
+                        RoleID:this.RoleID,
+                        ShowList:this.ShowList
+                    }
+                    $.ajax({url:"../Power/setPower",type:"post",data:{data:JSON.stringify(d)},headers: {Token: getToken()},async:true,success:function(json){
+                        parent.closesRole(json.message)
+                    }});
+                },
+                getMenuContents:function(){
+                    var that=this;
+                    $.ajax({url:"../Menu/queryMenuContentAll", headers: {Token: getToken()},async:false,success:function(json){
+                        that.MenuList=json.data;
+                        for(var i=0;i<that.MenuList.length;i++){//先遍历目录,然后菜单
+                            var show={}
+                            show.id=that.MenuList[i].iD;
+                            show.name=that.MenuList[i].name;
+                            show.check=false;
+                            show.subShow=[];
+                            var subMenu=that.MenuList[i].subMenu;
+                            for(var j=0;j<subMenu.length;j++){
+                                var showM={};
+                                showM.id=subMenu[j].iD;
+                                showM.name=subMenu[j].name;
+                                showM.check=false;
+                                show.subShow.push(showM);
+                            }
+                            that.ShowList.push(show);
+                        }
+                    }});
+                },
+                initShowList:function(){
+                    var that=this;
+                    $.ajax({url:"../Power/queryPowerAll?RoleID="+that.RoleID+"&Type=1", headers: {Token: getToken()},async:true,success:function(json){
+                        console.log(json)
+                        that.PowerList=json.data;
+                        var powList=json.data;
+                        for(var i=0;i<that.ShowList.length;i++){//先遍历目录,然后菜单
+                            for(var j=0;j<powList.length;j++){
+                                if(powList[j].menuID==that.ShowList[i].id){
+                                    that.ShowList[i].check=true;
+                                    break;
+                                }
+                            }
+                            var subMenu=that.ShowList[i].subShow;
+                            for(var z=0;z<subMenu.length;z++){
+                                for(var j=0;j<powList.length;j++){
+                                    if(powList[j].menuID==subMenu[z].id){
+                                        subMenu[z].check=true;
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }});
+                },
+                checkbox:function(index,subIndex){
+                    if(subIndex==-1){
+                        this.ShowList[index].check=!this.ShowList[index].check;
+                    }else{//子
+                        this.ShowList[index].subShow[subIndex].check=!this.ShowList[index].subShow[subIndex].check;
+                    }
+                }
+            },
+            mounted: function () {
+                tempApp=this;
+                this.getMenuContents();
+                this.initShowList();
+            }
+        })
+    }
+</script>
+</body>
+</html>

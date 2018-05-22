@@ -53,6 +53,13 @@ public class MenuController extends BaseController {
         queryMap.put("Status", 1);
         queryMap.put(Menu.COLUMN_Type, 0);
         List<Menu> page = this.ReadMenuService.query(queryMap);
+        for (Menu sub:page) {
+            queryMap.clear();
+            queryMap.put(Menu.COLUMN_ParentID,sub.getID());
+            queryMap.put(Menu.COLUMN_Status,1);
+            PageInfo<Menu> subMenu = this.ReadMenuService.queryPage(queryMap, 0, 0);
+            sub.setSubMenu(subMenu.getList());
+        }
         returnMap.put("data",page);
         RabbitUtil.getInstance().OperationLog(request.getHeader("Token"),"查看【Menu-queryMenuContentAll】目录列表",ReadOnlineService,OperationService,RabbitTemplate,ReadUserService);
         return returnMap;
@@ -125,7 +132,7 @@ public class MenuController extends BaseController {
         obj.setLogo(temp.getLogo());
         obj.setUrl(temp.getUrl());
         obj.setOrder(temp.getOrder());
-        obj.setAdminID(temp.getAdminID());
+//        obj.setAdminID(temp.getAdminID());
         obj.setEnd(temp.getEnd());
         obj.setUrlType(temp.getUrlType());
 

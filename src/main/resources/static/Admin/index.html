@@ -36,7 +36,7 @@
                                 </span>
                             </a>
                             <ul class="dropdown-menu animated fadeInRight m-t-xs">
-                                <li><a class="J_menuItem" href="profile.html">个人资料</a>
+                                <li><a class="J_menuItem" @click="person">个人资料</a>
                                 </li>
                                 <li><a class="J_menuItem" @click="reset">修改密码</a>
                                 </li>
@@ -45,124 +45,30 @@
                                 </li>
                             </ul>
                         </div>
-                        <div class="logo-element">福
+                        <div class="logo-element">code
                         </div>
                     </li>
-                    <li>
-                        <a class="J_menuItem" :href="homeUrlView">
-                            <i class="fa fa-home"></i>
-                            <span class="nav-label">首页</span>
+
+                    <!-- 自动生成 -->
+                    <li v-for="(item,index) in PowerList" v-if="item.subPower.length<=0">
+                        <a class="J_menuItem" :href="'..'+item.menu.url">
+                            <i :class="item.menu.logo"></i>
+                            <span class="nav-label" v-text="item.menu.name"></span>
                         </a>
                     </li>
-                    <li>
-                        <a href="#">
-                            <i class="glyphicon glyphicon-info-sign"></i>
-                            <span class="nav-label">基础信息</span>
-                            <span class="fa arrow"></span>
-                        </a>
-                        <ul class="nav nav-second-level">
-                            <li>
-                                <a class="J_menuItem" href="../Admin/MenuList.html" data-index="0">菜单管理</a>
-                            </li>
-                            <li>
-                                <a class="J_menuItem" href="../Admin/ScreenList.html" data-index="0">启动图管理</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <i class="fa fa-user"></i>
-                            <span class="nav-label">管理员管理</span>
-                            <span class="fa arrow"></span>
-                        </a>
-                        <ul class="nav nav-second-level">
-                            <li>
-                                <a class="J_menuItem" href="../Admin/AdminList.html" data-index="0">用户管理</a>
-                            </li>
-                            <li>
-                                <a class="J_menuItem" href="../Admin/RoleList.html" data-index="0">角色管理</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <i class="fa fa-users"></i>
-                            <span class="nav-label">用户管理</span>
-                            <span class="fa arrow"></span>
-                        </a>
-                        <ul class="nav nav-second-level">
-                            <li>
-                                <a class="J_menuItem" href="../Admin/UserList.html" data-index="0">用户管理</a>
-                            </li>
-                            <li>
-                                <a class="J_menuItem" href="../Admin/OnlineList.html?type=0" data-index="0">登录(会话)管理</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <i class="glyphicon glyphicon-map-marker"></i>
-                            <span class="nav-label">行政规划管理</span>
-                            <span class="fa arrow"></span>
-                        </a>
-                        <ul class="nav nav-second-level">
-                            <li>
-                                <a class="J_menuItem" href="../Admin/RegionList.html" data-index="0">地区管理</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <i class="glyphicon glyphicon-wrench"></i>
-                            <span class="nav-label">系统运维</span>
-                            <span class="fa arrow"></span>
-                        </a>
-                        <ul class="nav nav-second-level">
-                            <li>
-                                <a class="J_menuItem" href="../Admin/AuthorizeList.html" data-index="0">请求(放行)管理</a>
-                            </li>
-                            <li>
-                                <a class="J_menuItem" href="../Admin/KeywordList.html" data-index="0">敏感词管理</a>
-                            </li>
-                            <li>
-                                <a class="J_menuItem" href="../Admin/FeedbackList.html" data-index="0">反馈管理</a>
-                            </li>
-                            <li>
-                                <a class="J_menuItem" href="../Admin/ReportList.html" data-index="0">举报管理</a>
-                            </li>
-                            <li>
-                                <a class="J_menuItem" href="../Admin/CrimeList.html" data-index="0">违规管理</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <i class="glyphicon glyphicon-cog"></i>
-                            <span class="nav-label">系统维护</span>
-                            <span class="fa arrow"></span>
-                        </a>
-                        <ul class="nav nav-second-level">
-                            <li>
-                                <a class="J_menuItem" href="../druid/index.html" data-index="0">数据连接池管理</a>
-                            </li>
-                        </ul>
-                        <ul class="nav nav-second-level">
-                            <li>
-                                <a class="J_menuItem" href="../swagger-ui.html" data-index="0">数据接口文档</a>
-                            </li>
-                        </ul>
-                        <ul class="nav nav-second-level">
-                            <li>
-                                <a class="J_menuItem" href="../Admin/ErrorList.html" data-index="0">错误日志报告</a>
-                            </li>
-                        </ul>
-                        <ul class="nav nav-second-level">
-                            <li>
-                                <a class="J_menuItem" href="../Admin/AccessList.html" data-index="0">访问日志报告</a>
-                            </li>
-                        </ul>
 
 
+                    <li v-for="(item,index) in PowerList" v-if="item.subPower.length>0">
+                        <a href="#">
+                            <i :class="item.menu.logo"></i>
+                            <span class="nav-label" v-text="item.menu.name"></span>
+                            <span class="fa arrow"></span>
+                        </a>
+                        <ul class="nav nav-second-level" v-for="sub in item.subPower">
+                            <li>
+                                <a class="J_menuItem"  :href="'..'+sub.menu.url"data-index="0" v-text="sub.menu.name"></a>
+                            </li>
+                        </ul>
                     </li>
                 </ul>
             </div>
@@ -218,7 +124,7 @@
 
     <!-- 自定义js -->
     <script src="js/hplus.js?v=4.1.0"></script>
-    <script type="text/javascript" src="js/contabs.js"></script>
+
 
     <!-- 第三方插件 -->
     <script src="js/plugins/pace/pace.min.js"></script>
@@ -239,6 +145,7 @@
                 boxUrlView:boxUrlView(),
                 addressUrlView:addressUrlView(),
                 foot:getFootInfo(),
+                PowerList:[],
                 user:{
                     name:JSON.parse(sessionStorage.getItem("User")).name,
                     headImg:JSON.parse(sessionStorage.getItem("User")).headImg,
@@ -253,11 +160,28 @@
                     var url = "../Admin/modifyPassword.html?";
                     url+= "id="+JSON.parse(sessionStorage.getItem("User")).iD;
                     modifyShow(this,url,"500px","400px","修改密码");
+                },
+                getPowerAll:function(){
+                    var that=this;
+                    console.log("准备获取参数")
+                    $.ajax({url:"../Power/queryPowerAll?RoleID="+JSON.parse(sessionStorage.getItem("User")).roleID+"&Type=0", headers: {Token: getToken()},async:false,success:function(json){
+                        console.log(json)
+                        that.PowerList=json.data;
+
+                    }});
+                },
+                person:function(){
+                    var url = "../Admin/addAdmin.html?";
+                    url+= "id="+JSON.parse(sessionStorage.getItem("User")).iD+"&f=1";
+                    modifyShow(this,url,"80%","80%","设置管理员");
                 }
             },
             mounted: function () {
                 bindImgError();
                 tempApp=this;
+
+                this.getPowerAll();
+                $('#side-menu').metisMenu();
             }
         })
         function closes(message) {
@@ -265,7 +189,7 @@
             success(message)
         }
     </script>
-
+    <script type="text/javascript" src="js/contabs.js"  ></script>
 </body>
 
 </html>
