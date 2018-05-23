@@ -104,8 +104,8 @@ public class ScreenController extends BaseController {
         obj.setTitle(temp.getTitle());
         obj.setUrl(temp.getUrl());
         obj.setType(temp.getType());
-        obj.setStartTime(temp.getStartTime());
-        obj.setEndTime(temp.getEndTime());
+//        obj.setStartTime(temp.getStartTime());
+//        obj.setEndTime(temp.getEndTime());
         obj.setModifyTime(temp.getModifyTime());
         obj.setAdminID(temp.getAdminID());
         obj.setClickUrl(temp.getClickUrl());

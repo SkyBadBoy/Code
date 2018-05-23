@@ -155,6 +155,7 @@
                         $('#treeview12').treeview({
                             data: JSON.stringify(json),
                             onNodeSelected: function (event, node){
+                                $("#overlay").show()
                                 that.MenuContentID=node.id;
                                 tableRefresh();
                             }

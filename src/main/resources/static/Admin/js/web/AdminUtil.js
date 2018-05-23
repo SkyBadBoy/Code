@@ -264,7 +264,8 @@ function getDataTable(obj,url,columns,queryParams){
             headers: {"Token": getToken()},
         },
         onLoadSuccess: function(){  //加载成功时执行
-            bindImgError()
+            bindImgError();
+            $("#overlay").hide();
         },
 
     });
@@ -331,6 +332,7 @@ function findByID(that,id,url){
  * @param url
  */
 function savaData(that,url) {
+    scrollTo(0,0)
     $("#overlay").show()
     $.ajax({
         url: url,
