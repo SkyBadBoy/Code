@@ -93,7 +93,6 @@ public class BaseController {
 	@Autowired
 	protected ReadPowerService ReadPowerService;
 
-
 	@Autowired
 	protected AmqpTemplate RabbitTemplate;
 

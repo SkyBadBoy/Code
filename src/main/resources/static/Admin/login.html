@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>杭州互办网络科技有限公司 - 登录</title>
+    <title>杭州xxx有限公司- 登录</title>
     <script src="js/web/include.js?v=1.0.6"></script>
        <style>
            #overlay {
@@ -27,7 +27,7 @@
 
 <body class="gray-bg">
 
-    <div id="huban" class="middle-box text-center loginscreen  animated fadeInDown">
+    <div id="app" class="middle-box text-center loginscreen  animated fadeInDown">
         <div>
             <div>
                 <h1 class="logo-name">C+</h1>
@@ -49,9 +49,8 @@
         var tempApp="";//一定要写这个 ,约定
         window.onload=function () {
             var app = new Vue({
-                el: "#huban",
+                el: "#app",
                 data: {
-                    title: "福来了",
                     username: "",
                     password: "",
                     foot: getFootInfo(),

@@ -53,34 +53,51 @@ public class RabbitHandler {
     @org.springframework.amqp.rabbit.annotation.RabbitHandler
     @RabbitListener(queues = "WEBLOG")
     public void WebLogHandler(Access access) {
-        access.setArgs(access.getArgs().length()>800?access.getArgs().substring(0,800):access.getArgs());
-        accessService.insert(access);
+        try{
+            access.setArgs(access.getArgs().length()>800?access.getArgs().substring(0,800):access.getArgs());
+            accessService.insert(access);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
     }
 
     /**错误日志 */
     @org.springframework.amqp.rabbit.annotation.RabbitHandler
     @RabbitListener(queues = "ERRORLOG")
     public void ErrorLogHandler(Error error) {
-        errorService.insert(error);
+        try{
+            errorService.insert(error);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
     }
 
     /**用户操作日志 */
     @org.springframework.amqp.rabbit.annotation.RabbitHandler
     @RabbitListener(queues = "OPERATIONLOG")
     public void OPERATIONLOG(Map query) {
-        String token=query.get("token").toString();
-        String message=query.get("message").toString();
-        CommonUntil.getInstance().CreateOperation(token,message,readOnlineService,operationService,readUserService);
+        try{
+            String token=query.get("token").toString();
+            String message=query.get("message").toString();
+            CommonUntil.getInstance().CreateOperation(token,message,readOnlineService,operationService,readUserService);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
     }
 
     /**用户登录日志 */
     @org.springframework.amqp.rabbit.annotation.RabbitHandler
     @RabbitListener(queues = "USERLOGINLOG")
     public void UserLoginLogHandler(Map query) {
-        String sessionID=query.get("sessionID").toString();
-        String userID=query.get("userID").toString();
-        int onLineType=Integer.parseInt(query.get("onLineType").toString());
-        Online Online= CommonUntil.getInstance().CreateOnline(sessionID,userID,onLineType,readOnlineService,onlineService);
+        try{
+            String sessionID=query.get("sessionID").toString();
+            String userID=query.get("userID").toString();
+            int onLineType=Integer.parseInt(query.get("onLineType").toString());
+            Online Online= CommonUntil.getInstance().CreateOnline(sessionID,userID,onLineType,readOnlineService,onlineService);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
     }
 
 
