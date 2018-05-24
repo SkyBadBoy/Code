@@ -36,7 +36,11 @@
 <if test="Title!=null">
 				 and Authorize_Title = #{Title}
 </if>
-
+		<if test="search != null">
+			and (
+			Authorize_Title like CONCAT(CONCAT('%', #{search,jdbcType=VARCHAR}),'%')
+			)
+		</if>
 	</sql>
 	<!-- 根据ID 查找-->
 	<select id="findById" resultMap="authorize" parameterType="long">

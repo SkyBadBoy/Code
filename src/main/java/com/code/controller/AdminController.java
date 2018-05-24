@@ -164,7 +164,7 @@ public class AdminController extends BaseController {
             queryMap.put(Admin.COLUMN_Status,CommonStatus.Status.Ectivity.getid());
             List<Admin> admins=ReadAdminService.query(queryMap);
             if(admins.size()>0){
-                String pass=CommonUntil.getInstance().MD5(PassWord);
+                String pass=PassWord;
                 if(CommonUntil.CheckIsNull(pass)){
                     admins.get(0).setPassWord(pass);
                     Admin a=AdminService.update(admins.get(0));
@@ -177,7 +177,7 @@ public class AdminController extends BaseController {
                     returnMap=CommonUntil.ReturnMap(-1,"设置异常",null);
                 }
             }else{
-                returnMap=CommonUntil.ReturnMap(-1,"改用户不存在哦",null);
+                returnMap=CommonUntil.ReturnMap(-1,"该用户不存在哦",null);
             }
         }else{
             returnMap=CommonUntil.ReturnMap(-1,"密码不能为空",null);

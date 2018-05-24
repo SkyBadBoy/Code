@@ -6,7 +6,7 @@
     <title>代码生成工具- majian</title>
     <meta name="keywords" content="马健">
     <meta name="description" content="马健">
-    <script src="js/web/include.js?v=1.0.5"></script>
+    <script src="js/web/include.js?v=1.0.6"></script>
 </head>
 <body class="gray-bg">
 <div class="wrapper wrapper-content" id="app">
@@ -20,14 +20,14 @@
                     <div class="ibox-content">
                         <div class="form-horizontal">
 	                            <div class="form-group">
-	                                <label class="col-sm-2 control-label" >标题</label>
+	                                <label class="col-sm-2 control-label" v-text="title" ></label>
 	                                <div class="col-sm-10">
 	                                    <input type="text" v-model="data.title" class="form-control">
 	                            </div>
                             </div>
 							    <div class="hr-line-dashed" ></div>
                             <div class="form-group">
-	                                <label class="col-sm-2 control-label" >地址</label>
+	                                <label class="col-sm-2 control-label" v-text="url"></label>
 	                                <div class="col-sm-10">
                                         <div class="input-group col-sm-12">
                                             <input type="text" v-model="data.url" class="form-control">
@@ -38,7 +38,7 @@
                             </div>
 							    <div class="hr-line-dashed" ></div>
 	                            <div class="form-group">
-	                                <label class="col-sm-2 control-label" >类型</label>
+	                                <label class="col-sm-2 control-label" v-text="type" ></label>
 	                                <div class="col-sm-10">
                                         <select class="form-control m-b" v-model="data.type" name="account">
                                             <option value="0">请选择类型</option>
@@ -48,7 +48,7 @@
                             </div>
 							    <div class="hr-line-dashed" ></div>
 	                            <div class="form-group">
-	                                <label class="col-sm-2 control-label" >网页地址</label>
+	                                <label class="col-sm-2 control-label" v-text="clickUrl"></label>
 	                                <div class="col-sm-10">
 	                                    <input type="text" v-model="data.clickUrl" class="form-control">
 	                            </div>
@@ -82,11 +82,16 @@
                     	url:"",
                     	type:0,
                     	clickUrl:"",
-                }
+                },
+                title:"标题",
+                url:"地址",
+                type:"类型",
+                clickUrl:"网页地址"
             },
             methods: {
                 save: function () {
-                    savaData(this,"../Screen/modifyScreen")
+                    if(validate()){return};
+                    savaData(this,"../Screen/modifyScreen");
                 },
                 addImage:function(){
                     var url = "../Admin/addPicture.html?type=1&url=" +  this.data.url;
@@ -105,6 +110,26 @@
     function saveImage(type,url){
         closes("上传成功");
         tempApp.data.url=url;
+    }
+    function validate(){
+        var message="不允许为空。"
+        if(!chechIsUnll(tempApp.data.title)){
+            error(tempApp.title+message);
+            return true;
+        }
+        if(!chechIsUnll(tempApp.data.url)){
+            error(tempApp.url+message);
+            return true;
+        }
+        if(!chechIsUnll(tempApp.data.type)){
+            error("请选择"+tempApp.type);
+            return true;
+        }
+        if(!chechIsUnll(tempApp.data.clickUrl)){
+            error(tempApp.clickUrl+message);
+            return true;
+        }
+        return false;
     }
 </script>
 </body>

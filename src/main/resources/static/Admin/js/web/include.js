@@ -53,11 +53,14 @@ linkScriptDOMLoaded([
     "js/plugins/layer/laydate/laydate.js",
     "js/plugins/toastr/toastr.min.js",
     "js/plugins/treeview/bootstrap-treeview.js",
+    //"js/plugins/validate/jquery.validate.min.js",
+    //"js/plugins/validate/messages_zh.min.js",
     "js/web/commonUrl.js",
     "js/web/commonUtil.js",
     "js/web/AdminUtil.js",
     "js/web/md5.js"
 ])
+
 
 //文件全部加载完成显示DOM
 function linkScriptDOMLoaded(parm){

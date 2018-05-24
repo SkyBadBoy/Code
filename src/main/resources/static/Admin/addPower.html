@@ -65,6 +65,8 @@
             },
             methods: {
                 save: function () {
+                    scrollTo(0,0)
+                    $("#overlay").show()
                     var that=this;
                     var d={
                         RoleID:this.RoleID,
@@ -72,10 +74,12 @@
                     }
                     $.ajax({url:"../Power/setPower",type:"post",data:{data:JSON.stringify(d)},headers: {Token: getToken()},async:true,success:function(json){
                         parent.closesRole(json.message)
+                        $("#overlay").hide()
                     }});
                 },
                 getMenuContents:function(){
                     var that=this;
+                    $("#overlay").show()
                     $.ajax({url:"../Menu/queryMenuContentAll", headers: {Token: getToken()},async:false,success:function(json){
                         that.MenuList=json.data;
                         for(var i=0;i<that.MenuList.length;i++){//先遍历目录,然后菜单
@@ -93,6 +97,7 @@
                                 show.subShow.push(showM);
                             }
                             that.ShowList.push(show);
+                            $("#overlay").hide()
                         }
                     }});
                 },

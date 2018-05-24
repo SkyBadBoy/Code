@@ -96,6 +96,17 @@
 <if test="Address!=null">
 				 and User_Address = #{Address}
 </if>
+		<if test="search != null">
+			and (
+			User_Address like CONCAT(CONCAT('%', #{search,jdbcType=VARCHAR}),'%') or
+			User_LongAddress like CONCAT(CONCAT('%', #{search,jdbcType=VARCHAR}),'%') or
+			User_Phone like CONCAT(CONCAT('%', #{search,jdbcType=VARCHAR}),'%') or
+			User_Email like CONCAT(CONCAT('%', #{search,jdbcType=VARCHAR}),'%') or
+			User_NikeName like CONCAT(CONCAT('%', #{search,jdbcType=VARCHAR}),'%') or
+			User_Name like CONCAT(CONCAT('%', #{search,jdbcType=VARCHAR}),'%') or
+			User_LoginName like CONCAT(CONCAT('%', #{search,jdbcType=VARCHAR}),'%')
+			)
+		</if>
 
 	</sql>
 	<!-- 根据ID 查找-->

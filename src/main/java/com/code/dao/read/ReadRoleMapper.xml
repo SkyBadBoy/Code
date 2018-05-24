@@ -36,7 +36,11 @@
 <if test="AdminID!=null">
 				 and Role_AdminID = #{AdminID}
 </if>
-
+		<if test="search != null">
+			and (
+			Role_Name like CONCAT(CONCAT('%', #{search,jdbcType=VARCHAR}),'%')
+			)
+		</if>
 	</sql>
 	<!-- 根据ID 查找-->
 	<select id="findById" resultMap="role" parameterType="long">

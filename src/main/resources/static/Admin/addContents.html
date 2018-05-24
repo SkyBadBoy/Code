@@ -20,21 +20,25 @@
                     <div class="ibox-content">
                         <div class="form-horizontal">
 	                            <div class="form-group">
-	                                <label class="col-sm-2 control-label" >目录名字</label>
+	                                <label class="col-sm-2 control-label" v-text="name" >目录名字</label>
 	                                <div class="col-sm-10">
 	                                    <input type="text" v-model="data.name" class="form-control">
 	                            </div>
                             </div>
 							<div class="hr-line-dashed" ></div>
 							<div class="form-group">
-								<label class="col-sm-2 control-label" >目录图标</label>
+								<label class="col-sm-2 control-label" v-text="logo" >目录图标</label>
 								<div class="col-sm-10">
-									<input type="text" v-model="data.logo" class="form-control">
+                                    <div class="input-group m-b">
+                                        <span class="input-group-addon"><i :class="data.logo==''?'glyphicon glyphicon-stop':data.logo"></i></span>
+                                        <input type="text" v-model="data.logo"  class="form-control">
+                                    </div>
 								</div>
+
 							</div>
 							<div class="hr-line-dashed" ></div>
 	                            <div class="form-group">
-	                                <label class="col-sm-2 control-label" >目录备注</label>
+	                                <label class="col-sm-2 control-label"  >目录备注</label>
 	                                <div class="col-sm-10">
 	                                    <input type="text" v-model="data.memo" class="form-control">
 	                            </div>
@@ -42,21 +46,24 @@
 
 							<div class="hr-line-dashed" ></div>
 	                            <div class="form-group">
-	                                <label class="col-sm-2 control-label" >点击地址(可为空)</label>
-	                                <div class="col-sm-10">
-	                                    <input type="text" v-model="data.url" class="form-control">
-	                            </div>
+	                                <label class="col-sm-2 control-label" >点击地址</label>
+                                    <div class="col-sm-10">
+                                        <div class="input-group m-b">
+                                            <span class="input-group-addon" v-text="urlPrefix"></span>
+                                            <input type="text" v-model="data.url"  class="form-control">
+                                        </div>
+                                    </div>
                             </div>
 							    <div class="hr-line-dashed" ></div>
 	                            <div class="form-group">
-	                                <label class="col-sm-2 control-label" >排序</label>
+	                                <label class="col-sm-2 control-label" v-text="order" >排序</label>
 	                                <div class="col-sm-10">
 	                                    <input type="text" v-model="data.order" class="form-control">
 	                            </div>
                             </div>
 							    <div class="hr-line-dashed" ></div>
 	                            <div class="form-group">
-	                                <label class="col-sm-2 control-label" >目录类型</label>
+	                                <label class="col-sm-2 control-label" v-text="urlType">目录类型</label>
 	                                <div class="col-sm-10">
 										<select class="form-control m-b" v-model="data.urlType" >
 											<option value="0">后台</option>
@@ -79,6 +86,7 @@
     </div>
 </div>
 <script>
+    var tempApp="";
     window.onload=function () {
         var app = new Vue({
             el: "#app",
@@ -95,10 +103,16 @@
                     	adminID:0,
                     	end:1,
                     	urlType:0,
-                }
+                },
+                name:"目录名字",
+                logo:"目录图标",
+                order:"排序",
+                urlType:"目录类型",
+                urlPrefix:getUrlPrefix()
             },
             methods: {
                 save: function () {
+                    if(validate()){return};
                     var that=this;
                     scrollTo(0,0);
                     $("#overlay").show()
@@ -130,6 +144,7 @@
                 }
             },
             mounted: function () {
+                tempApp=this;
                 if(this.data.iD!=0){
                     findByID(this,this.data.iD,"../Menu/findMenu/")
                 }
@@ -169,6 +184,18 @@
                 error("网络异常哦,请稍后重试");
             }
         })
+    }
+    function validate(){
+        var message="不允许为空。"
+        if(!chechIsUnll(tempApp.data.name)){
+            error(tempApp.name+message);
+            return true;
+        }
+        if(!chechIsUnll(tempApp.data.logo)){
+            error(tempApp.logo+message);
+            return true;
+        }
+        return false;
     }
 </script>
 </body>

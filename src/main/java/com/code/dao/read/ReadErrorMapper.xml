@@ -43,7 +43,14 @@
 <if test="Status!=null">
 				 and Error_Status = #{Status}
 </if>
+		<if test="search != null">
+			and (
+			Error_Name like CONCAT(CONCAT('%', #{search,jdbcType=VARCHAR}),'%') or
+			Error_ClassName like CONCAT(CONCAT('%', #{search,jdbcType=VARCHAR}),'%') or
+			Error_Message like CONCAT(CONCAT('%', #{search,jdbcType=VARCHAR}),'%')
 
+			)
+		</if>
 	</sql>
 	
 

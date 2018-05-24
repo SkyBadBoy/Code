@@ -40,6 +40,7 @@
     </div>
 </div>
 <script>
+    var tempApp="";
     window.onload=function () {
         var app = new Vue({
             el: "#app",
@@ -47,11 +48,14 @@
                 data:{
                     iD:getUrlKey("id"),
                     name:"",
-
                 }
             },
             methods: {
                 save: function () {
+                    if(!chechIsUnll(this.data.name)){
+                        error("角色名称不能为空");
+                        return ;
+                    }
                     var that=this;
                     $("#overlay").show()
                     $.ajax({
@@ -80,6 +84,7 @@
                 }
             },
             mounted: function () {
+                tempApp=this;
                 if(this.data.iD!=0){
                     findByID(this,this.data.iD,"../Role/findRole/")
                 }

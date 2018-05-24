@@ -105,6 +105,10 @@
             },
             methods: {
                 save: function () {
+					if(!chechIsUnll(this.data.content)){
+						error("原因不能为空")
+						return ;
+					}
 					this.data.time=this.time?1:0;
                     savaData(this,"../Crime/modifyCrime")
                 },

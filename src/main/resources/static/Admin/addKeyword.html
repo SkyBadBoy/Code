@@ -51,6 +51,10 @@
             },
             methods: {
                 save: function () {
+                    if(!chechIsUnll(this.data.keyWord)){
+                        error("不能为空")
+                        return;
+                    }
                     savaData(this,"../Keyword/modifyKeyword")
                 }
             },

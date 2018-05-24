@@ -65,6 +65,11 @@
 <if test="EndTime!=null">
 				 and Crime_EndTime = #{EndTime}
 </if>
+		<if test="search != null">
+			and (
+			Content like CONCAT(CONCAT('%', #{search,jdbcType=VARCHAR}),'%')
+			)
+		</if>
 
 	</sql>
 	<!-- 根据ID 查找-->

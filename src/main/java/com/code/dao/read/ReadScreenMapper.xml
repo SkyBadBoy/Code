@@ -56,7 +56,11 @@
 <if test="ClickUrl!=null">
 				 and Screen_ClickUrl = #{ClickUrl}
 </if>
-
+		<if test="search != null">
+			and (
+			Screen_Title like CONCAT(CONCAT('%', #{search,jdbcType=VARCHAR}),'%')
+			)
+		</if>
 	</sql>
 	<!-- 根据ID 查找-->
 	<select id="findById" resultMap="screen" parameterType="long">

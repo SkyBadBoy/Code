@@ -73,6 +73,15 @@
 		<if test="Status!=null">
 			and Region_Status = #{Status}
 		</if>
+		<if test="search != null">
+			and (
+			Region_Name like CONCAT(CONCAT('%', #{search,jdbcType=VARCHAR}),'%') or
+			Region_NameEn like CONCAT(CONCAT('%', #{search,jdbcType=VARCHAR}),'%') or
+			Region_ProvinceName like CONCAT(CONCAT('%', #{search,jdbcType=VARCHAR}),'%') or
+			Region_CityName like CONCAT(CONCAT('%', #{search,jdbcType=VARCHAR}),'%') or
+			Region_AreaName like CONCAT(CONCAT('%', #{search,jdbcType=VARCHAR}),'%')
+			)
+		</if>
 	</sql>
 	<!-- 根据ID 查找-->
 	<select id="findById" resultMap="region" parameterType="long">

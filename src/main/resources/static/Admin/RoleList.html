@@ -72,17 +72,20 @@
                 },
                 getRoleAll:function(){
                     //获取所有的左边菜单
+                    $("#overlay").show()
                     var that=this;
                     $.ajax({url:"../Role/queryRolePageAll", headers: {Token: getToken()},async:false,success:function(json){
                         that.RoleList=json.data
                         if(that.RoleList.length>0){
                             that.RoleID=that.RoleList[0].iD
                         }
+                        $("#overlay").hide()
                     }});
                 },
                 initTree:function(){
                     //初始化左边的参数
                     var that=this;
+                    $("#overlay").show()
                     if(this.RoleList.length!=null&&this.RoleList.length>0){
                         var json=[];
                         for(var i=0;i<this.RoleList.length;i++ ){
@@ -102,9 +105,11 @@
                     }else{
                         error("当前还未创建目录")
                     }
+                    $("#overlay").hide()
 
                 },
                 initShowList:function(){
+                    $("#overlay").show()
                     var that=this;
                     $.ajax({url:"../Power/queryPowerAll?RoleID="+that.RoleID+"&Type=0", headers: {Token: getToken()},async:true,success:function(json){
                         console.log(json)
@@ -134,6 +139,7 @@
                                 that.RoleID=node.id;
                             }
                         });
+                        $("#overlay").hide()
                     }});
                 },
                 power:function(){

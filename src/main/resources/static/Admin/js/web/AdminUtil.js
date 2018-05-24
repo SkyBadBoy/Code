@@ -39,7 +39,7 @@ function modifyShow(that,url,w,h,title){
  * @returns {boolean}
  */
 function chechIsUnll(content){
-    if(content==null || content == "null" || content == undefined || content == "undefined"){
+    if(content==null || content == "null" || content == undefined || content == "undefined" || content == ""){
         return false;
     }else{
         return true;
@@ -480,5 +480,17 @@ function laterTime(time){
     var myDate=new Date()
     myDate.setDate(myDate.getDate()+time)
     return myDate;
+}
+
+/**
+ * 获取URL 前缀
+ */
+function getUrlPrefix(){
+    var pathnames=location.pathname.split("/");
+    var project="/"
+    if(pathnames.length>=2&&pathnames[0]==""){
+        project+=pathnames[1];
+    }
+    return location.origin+project;
 }
 

@@ -21,28 +21,31 @@
                         <div class="form-horizontal">
 
 	                            <div class="form-group">
-	                                <label class="col-sm-2 control-label" >菜单名字</label>
+	                                <label class="col-sm-2 control-label" v-text="name"></label>
 	                                <div class="col-sm-10">
 	                                    <input type="text" v-model="data.name" class="form-control">
 	                            </div>
                             </div>
 							    <div class="hr-line-dashed" ></div>
 	                            <div class="form-group">
-	                                <label class="col-sm-2 control-label" >菜单备注</label>
+	                                <label class="col-sm-2 control-label" v-text="memo"></label>
 	                                <div class="col-sm-10">
 	                                    <input type="text" v-model="data.memo" class="form-control">
 	                            </div>
                             </div>
 							    <div class="hr-line-dashed" ></div>
 	                            <div class="form-group">
-	                                <label class="col-sm-2 control-label" >点击地址</label>
-	                                <div class="col-sm-10">
-	                                    <input type="text" v-model="data.url" class="form-control">
-	                            </div>
+	                                <label class="col-sm-2 control-label" v-text="url"></label>
+                                    <div class="col-sm-10">
+                                        <div class="input-group m-b">
+                                            <span class="input-group-addon" v-text="urlPrefix"></span>
+                                            <input type="text" v-model="data.url"  class="form-control">
+                                        </div>
+                                    </div>
                             </div>
 							    <div class="hr-line-dashed" ></div>
 	                            <div class="form-group">
-	                                <label class="col-sm-2 control-label" >排序</label>
+	                                <label class="col-sm-2 control-label" v-text="order"></label>
 	                                <div class="col-sm-10">
 	                                    <input type="text" v-model="data.order" class="form-control">
 	                            </div>
@@ -61,6 +64,7 @@
     </div>
 </div>
 <script>
+    var tempApp="";
     window.onload=function () {
         var app = new Vue({
             el: "#app",
@@ -75,19 +79,38 @@
                     	order:0,
                     	end:0,
                     	urlType:0,
-                }
+                },
+                urlPrefix:getUrlPrefix(),
+                name:"菜单名字",
+                memo:"菜单备注",
+                url:"点击地址",
+                order:"排序"
             },
             methods: {
                 save: function () {
+                    if(validate()){return};
                     savaData(this,"../Menu/modifyMenu")
                 }
             },
             mounted: function () {
+                tempApp=this;
                 if(this.data.iD!=0){
                     findByID(this,this.data.iD,"../Menu/findMenu/")
                 }
             }
         })
+    }
+    function validate(){
+        var message="不允许为空。"
+        if(!chechIsUnll(tempApp.data.name)){
+            error(tempApp.name+message);
+            return true;
+        }
+        if(!chechIsUnll(tempApp.data.url)){
+            error(tempApp.url+message);
+            return true;
+        }
+        return false;
     }
 </script>
 </body>

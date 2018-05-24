@@ -65,6 +65,10 @@
             },
             methods: {
                 save: function () {
+                    if(chechIsUnll(data.title)){
+                        error("标题不能为空")
+                       return;
+                    }
                     savaData(this,"../Authorize/modifyAuthorize")
                 }
             },

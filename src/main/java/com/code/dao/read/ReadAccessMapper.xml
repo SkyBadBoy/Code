@@ -49,7 +49,14 @@
 <if test="Time!=null">
 				 and Access_Time = #{Time}
 </if>
-
+		<if test="search != null">
+			and (
+			Access_RequestURL like CONCAT(CONCAT('%', #{search,jdbcType=VARCHAR}),'%') or
+			Access_ClassName like CONCAT(CONCAT('%', #{search,jdbcType=VARCHAR}),'%') or
+			Access_RemoteAddr like CONCAT(CONCAT('%', #{search,jdbcType=VARCHAR}),'%') or
+			Access_Method like CONCAT(CONCAT('%', #{search,jdbcType=VARCHAR}),'%')
+			)
+		</if>
 	</sql>
 	<!-- 根据ID 查找-->
 	<select id="findById" resultMap="access" parameterType="long">
