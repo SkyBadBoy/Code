@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.code.dao.read.ReadArticleMapper">
+	<!-- 返回的map -->
+	<resultMap id="article" type="com.code.domain.Article">
+		<result property="ID" column="Article_ID" />
+		<result property="CreateTime" column="Article_CreateTime" />
+		<result property="ModifyTime" column="Article_ModifyTime" />
+		<result property="Status" column="Article_Status" />
+		<result property="Name" column="Article_Name" />
+		<result property="Memo" column="Article_Memo" />
+		<result property="BaseInfoID" column="Article_BaseInfoID" />
+		<result property="UserID" column="Article_UserID" />
+		<result property="Content" column="Article_Content" typeHandler="com.code.until.expression.MyBlobTypeHandler" />
+		<result property="Cover" column="Article_Cover" />
+		<result property="Author" column="Article_Author" />
+		<result property="ProvinceID" column="Article_ProvinceID" />
+		<result property="AreaID" column="Article_AreaID" />
+		<result property="CityID" column="Article_CityID" />
+		<result property="Read" column="Article_Read" />
+		<result property="Like" column="Article_Like" />
+		<result property="Comment" column="Article_Comment" />
+	</resultMap>
+	<!-- sql查询语句-->
+	<sql id="sql">
+		Article_ID,Article_CreateTime,Article_ModifyTime,Article_Status,Article_Name,Article_Memo,Article_BaseInfoID,Article_UserID,Article_Content,Article_Cover,Article_Author,Article_ProvinceID,Article_AreaID,Article_CityID,Article_Read,Article_Like,Article_Comment
+	</sql>
+	<!-- sql查询条件-->
+	<sql id="where">
+		1=1 
+		<if test="ID!=null">
+				 and Article_ID = #{ID}
+</if>
+<if test="CreateTime!=null">
+				 and Article_CreateTime = #{CreateTime}
+</if>
+<if test="ModifyTime!=null">
+				 and Article_ModifyTime = #{ModifyTime}
+</if>
+<if test="Status!=null">
+				 and Article_Status = #{Status}
+</if>
+<if test="Name!=null">
+				 and Article_Name = #{Name}
+</if>
+<if test="Memo!=null">
+				 and Article_Memo = #{Memo}
+</if>
+<if test="BaseInfoID!=null">
+				 and Article_BaseInfoID = #{BaseInfoID}
+</if>
+<if test="UserID!=null">
+				 and Article_UserID = #{UserID}
+</if>
+<if test="Content!=null">
+				 and Article_Content = #{Content}
+</if>
+<if test="Cover!=null">
+				 and Article_Cover = #{Cover}
+</if>
+<if test="Author!=null">
+				 and Article_Author = #{Author}
+</if>
+<if test="ProvinceID!=null">
+				 and Article_ProvinceID = #{ProvinceID}
+</if>
+<if test="AreaID!=null">
+				 and Article_AreaID = #{AreaID}
+</if>
+<if test="CityID!=null">
+				 and Article_CityID = #{CityID}
+</if>
+
+		<!-- 这边要数据自己处理 -->
+		<if test="search != null">
+			and (
+				Article_ID like binary CONCAT(CONCAT('%', #{search,jdbcType=VARCHAR}),'%') or
+				Article_CreateTime like binary CONCAT(CONCAT('%', #{search,jdbcType=VARCHAR}),'%') or
+				Article_ModifyTime like binary CONCAT(CONCAT('%', #{search,jdbcType=VARCHAR}),'%') or
+				Article_Status like binary CONCAT(CONCAT('%', #{search,jdbcType=VARCHAR}),'%') or
+				Article_Name like binary CONCAT(CONCAT('%', #{search,jdbcType=VARCHAR}),'%') or
+				Article_Memo like binary CONCAT(CONCAT('%', #{search,jdbcType=VARCHAR}),'%') or
+				Article_BaseInfoID like binary CONCAT(CONCAT('%', #{search,jdbcType=VARCHAR}),'%') or
+				Article_UserID like binary CONCAT(CONCAT('%', #{search,jdbcType=VARCHAR}),'%') or
+				Article_Content like binary CONCAT(CONCAT('%', #{search,jdbcType=VARCHAR}),'%') or
+				Article_Cover like binary CONCAT(CONCAT('%', #{search,jdbcType=VARCHAR}),'%') or
+				Article_Author like binary CONCAT(CONCAT('%', #{search,jdbcType=VARCHAR}),'%') or
+				Article_ProvinceID like binary CONCAT(CONCAT('%', #{search,jdbcType=VARCHAR}),'%') or
+				Article_AreaID like binary CONCAT(CONCAT('%', #{search,jdbcType=VARCHAR}),'%') or
+				Article_CityID like binary CONCAT(CONCAT('%', #{search,jdbcType=VARCHAR}),'%') or
+				
+				1 != 1
+			)
+		</if>
+	</sql>
+	<!-- 根据ID 查找-->
+	<select id="findById" resultMap="article" parameterType="long">
+		SELECT
+		<include refid="sql"></include>
+		FROM t_Article
+		<where>
+			Article_ID = #{_parameter} 
+		</where>
+	</select>
+	<!-- 根据条件 查找-->
+	<select id="query"  resultMap="article"
+		parameterType="java.util.Map">
+		SELECT
+		<include refid="sql"></include>
+		FROM t_Article
+		<where>
+			<include refid="where"></include>
+		</where>
+	
+	</select>
+	<!-- 根据条件总数-->
+	<select id="queryCount" parameterType="map" resultType="int">
+		SELECT
+			Count(1)
+			FROM t_Article
+			<where>
+				<include refid="where"></include>
+			</where>
+	</select>
+
+
+
+</mapper>

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.code.dao.read.ReadBaseinfoMapper">
+	<!-- 返回的map -->
+	<resultMap id="baseinfo" type="com.code.domain.Baseinfo">
+		<result property="ID" column="BaseInfo_ID" />
+		<result property="CreateTime" column="BaseInfo_CreateTime" />
+		<result property="ModifyTime" column="BaseInfo_ModifyTime" />
+		<result property="Status" column="BaseInfo_Status" />
+		<result property="Name" column="BaseInfo_Name" />
+		<result property="Memo" column="BaseInfo_Memo" />
+		<result property="ParentID" column="BaseInfo_ParentID" />
+	</resultMap>
+	<!-- sql查询语句-->
+	<sql id="sql">
+		BaseInfo_ID,BaseInfo_CreateTime,BaseInfo_ModifyTime,BaseInfo_Status,BaseInfo_Name,BaseInfo_Memo,BaseInfo_ParentID
+	</sql>
+	<!-- sql查询条件-->
+	<sql id="where">
+		1=1 
+		<if test="ID!=null">
+				 and BaseInfo_ID = #{ID}
+</if>
+<if test="CreateTime!=null">
+				 and BaseInfo_CreateTime = #{CreateTime}
+</if>
+<if test="ModifyTime!=null">
+				 and BaseInfo_ModifyTime = #{ModifyTime}
+</if>
+<if test="Status!=null">
+				 and BaseInfo_Status = #{Status}
+</if>
+<if test="Name!=null">
+				 and BaseInfo_Name = #{Name}
+</if>
+<if test="Memo!=null">
+				 and BaseInfo_Memo = #{Memo}
+</if>
+<if test="ParentID!=null">
+				 and BaseInfo_ParentID = #{ParentID}
+</if>
+
+		<!-- 这边要数据自己处理 -->
+		<if test="search != null">
+			and (
+				BaseInfo_ID like binary CONCAT(CONCAT('%', #{search,jdbcType=VARCHAR}),'%') or
+				BaseInfo_CreateTime like binary CONCAT(CONCAT('%', #{search,jdbcType=VARCHAR}),'%') or
+				BaseInfo_ModifyTime like binary CONCAT(CONCAT('%', #{search,jdbcType=VARCHAR}),'%') or
+				BaseInfo_Status like binary CONCAT(CONCAT('%', #{search,jdbcType=VARCHAR}),'%') or
+				BaseInfo_Name like binary CONCAT(CONCAT('%', #{search,jdbcType=VARCHAR}),'%') or
+				BaseInfo_Memo like binary CONCAT(CONCAT('%', #{search,jdbcType=VARCHAR}),'%') or
+				BaseInfo_ParentID like binary CONCAT(CONCAT('%', #{search,jdbcType=VARCHAR}),'%') or
+				
+				1 != 1
+			)
+		</if>
+	</sql>
+	<!-- 根据ID 查找-->
+	<select id="findById" resultMap="baseinfo" parameterType="long">
+		SELECT
+		<include refid="sql"></include>
+		FROM t_BaseInfo
+		<where>
+			BaseInfo_ID = #{_parameter} 
+		</where>
+	</select>
+	<!-- 根据条件 查找-->
+	<select id="query"  resultMap="baseinfo"
+		parameterType="java.util.Map">
+		SELECT
+		<include refid="sql"></include>
+		FROM t_BaseInfo
+		<where>
+			<include refid="where"></include>
+		</where>
+	
+	</select>
+	<!-- 根据条件总数-->
+	<select id="queryCount" parameterType="map" resultType="int">
+		SELECT
+			Count(1)
+			FROM t_BaseInfo
+			<where>
+				<include refid="where"></include>
+			</where>
+	</select>
+
+
+
+</mapper>

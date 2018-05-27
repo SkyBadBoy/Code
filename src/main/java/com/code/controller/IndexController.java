@@ -1,5 +1,6 @@
 package com.code.controller;
 
+import com.code.until.CommonUntil;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,13 +23,6 @@ public class IndexController extends BaseController{
     @GetMapping("")
     public String index(){
         return "index";
-    }
-
-    @GetMapping("test")
-    @ResponseBody
-    public String indexs(){
-
-        return "index"+1/0;
     }
     /**
      * 主页的数据接口

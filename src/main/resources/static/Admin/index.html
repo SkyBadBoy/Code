@@ -32,7 +32,7 @@
                             <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                                 <span class="clear">
                                <span class="block m-t-xs"><strong class="font-bold" v-text="user.name"></strong></span>
-                                <span class="text-muted text-xs block">{{user.roleName}}<b class="caret"></b></span>
+                                <span class="text-muted text-xs block" >{{user.roleName}}<b class="caret"></b></span>
                                 </span>
                             </a>
                             <ul class="dropdown-menu animated fadeInRight m-t-xs">
@@ -165,7 +165,9 @@
                     var that=this;
                     console.log("准备获取参数")
                     $.ajax({url:"../Power/queryPowerAll?RoleID="+JSON.parse(sessionStorage.getItem("User")).roleID+"&Type=0", headers: {Token: getToken()},async:false,success:function(json){
-                        console.log(json)
+                        if(json.code==1){
+                            location.href="../Admin/login.html";
+                        }
                         that.PowerList=json.data;
 
                     }});

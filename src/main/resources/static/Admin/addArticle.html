@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>代码生成工具- majian</title>
+    <meta name="keywords" content="马健">
+    <meta name="description" content="马健">
+    <script src="js/web/include.js?v=1.0.5"></script>
+</head>
+<body class="gray-bg">
+<div class="wrapper wrapper-content" id="app">
+     <!-- loading 固定格式不要删除-->
+    <div id="overlay" style="background:#000;filter:alpha(opacity=50);opacity:0.5;display:none;position:absolute;top:0px;left:0px;width:100%;height:100%;z-index:100;display:none;"><div class="sk-spinner sk-spinner-double-bounce" style="margin-top: 300px;"><div class="sk-double-bounce1"></div> <div class="sk-double-bounce2"></div></div></div>
+    <!-- Panel Other -->
+    <div class="ibox float-e-margins">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-content">
+                        <div class="form-horizontal">
+
+	                            <div class="form-group">
+	                                <label class="col-sm-2 control-label" v-text="name"></label>
+	                                <div class="col-sm-10">
+	                                    <input type="text" v-model="data.name" class="form-control">
+	                            </div>
+                            </div>
+                            <div class="hr-line-dashed" ></div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" v-text="author"></label>
+                                <div class="col-sm-10">
+                                    <input type="text" v-model="data.author" class="form-control">
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed" ></div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" v-text="cover"></label>
+                                <div class="col-sm-10">
+                                    <div class="input-group col-sm-12">
+                                        <input type="text" v-model="data.cover" class="form-control">
+                                        <span class="input-group-btn"> <button type="button" class="btn btn-primary" @click="addImage">选择图片 </button></span>
+                                    </div>
+                                    <img :src="data.cover" style="width: 150px;height: 150px;">
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed" ></div>
+	                            <div class="form-group">
+	                                <label class="col-sm-2 control-label" v-text="baseInfoID"></label>
+	                                <div class="col-sm-10">
+                                        <select class="form-control m-b" v-model="data.baseInfoID" >
+                                            <option value="0">请选择分类</option>
+                                            <option v-for="item in BaseinfoList" :value="item.iD" v-text="item.name"></option>
+                                        </select>
+	                            </div>
+                            </div>
+							    <div class="hr-line-dashed" ></div>
+	                            <div class="form-group">
+	                                <label class="col-sm-2 control-label" v-text="content"></label>
+	                                <div class="col-sm-10">
+                                        <div class="summernote"></div>
+	                            </div>
+                            </div>
+
+                          
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <div class="col-sm-4 col-sm-offset-2">
+                                    <button class="btn btn-primary" @click="save" type="submit">保存内容</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    var tempApp="";
+    window.onload=function () {
+        var app = new Vue({
+            el: "#app",
+            data: {
+                    name:"标题",
+                    baseInfoID:"分类",
+                    content:"内容",
+                    cover:"封面",
+                    author:"作者",
+                    BaseinfoList:[],
+                    parentID:getArticleType(),
+                data:{
+                    iD:getUrlKey("id"),
+                    	name:"",
+                    	memo:0,
+                    	baseInfoID:0,
+                    	content:"",
+                    	cover:"",
+                    	author:"",
+                    	provinceID:0,
+                    	areaID:0,
+                    	cityID:0,
+                }
+            },
+            methods: {
+                save: function () {
+                    if(validate()){return};
+                    this.data.content=$('.summernote').code();
+                    savaData(this,"../Article/modifyArticle")
+                },
+                addImage:function(){
+                    var url = "../Admin/addPicture.html?type=1&url=" +  this.data.cover;
+                    modifyShow(this,url,"1000px","420px","选择图片");
+                },
+                getBaseInfo:function(){
+                    //获取所有的左边菜单
+                    var that=this;
+                    $.ajax({url:"../Baseinfo/queryBaseinfoAll?parentID="+this.parentID, headers: {Token: getToken()},async:true,success:function(json){
+                        that.BaseinfoList=json.data;
+                    }});
+                },
+            },
+            mounted: function () {
+                tempApp=this;
+                initSummernote("300px");
+                this.getBaseInfo()
+                if(this.data.iD!=0){
+                    findByIDWithSummernote(this,this.data.iD,"../Article/findArticle/")
+                }
+                bindImgError();
+
+            }
+        })
+    }
+    function validate(){
+        var message="不允许为空。"
+        if(!chechIsUnll(tempApp.data.name)){
+            error(tempApp.name+message);
+            return true;
+        }
+        if(!chechIsUnll(tempApp.data.content)){
+            error(tempApp.content+message);
+            return true;
+        }
+        if(!chechIsUnll(tempApp.data.cover)){
+            error(tempApp.cover+message);
+            return true;
+        }
+        return false;
+    }
+    function saveImage(type,url){
+        closes("上传成功");
+        tempApp.data.cover=url;
+    }
+</script>
+</body>
+</html>

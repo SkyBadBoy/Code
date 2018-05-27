@@ -12,7 +12,7 @@
 		<result property="Method" column="Access_Method" />
 		<result property="RemoteAddr" column="Access_RemoteAddr" />
 		<result property="ClassName" column="Access_ClassName" />
-		<result property="Args" column="Access_Args" />
+		<result property="Args" column="Access_Args" typeHandler="com.code.until.expression.MyBlobTypeHandler"/>
 		<result property="Time" column="Access_Time" />
 	</resultMap>
 	<!-- sql查询语句-->

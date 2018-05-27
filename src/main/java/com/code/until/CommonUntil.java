@@ -129,7 +129,7 @@ public class CommonUntil {
         if(requestUrl.contains("druid")){
             return true;
         }
-        List<String> pass= Arrays.asList("js","css","jpg","png","jpeg","ico","mp3","pdf","mp4","html","json","ttf","woff2","map","woff");
+        List<String> pass= Arrays.asList("js","css","jpg","png","jpeg","ico","mp3","pdf","mp4","html","json","ttf","woff2","map","woff","svg");
         if(requestUrl.contains(".")){
             if(pass.contains(requestUrl.split("\\.")[requestUrl.split("\\.").length-1])){
                 f=true;
@@ -279,4 +279,29 @@ public class CommonUntil {
         }
 
     }
+    public static String getProjectBaseUrlNoProject(HttpServletRequest req){
+
+        String scheme=req.getHeader("X-Forwarded-Scheme");
+        if(scheme==null || scheme.equals("")){
+            scheme=req.getScheme();
+        }
+        String port="";
+        if(req.getServerPort()!=80 && req.getServerPort()!=443){
+            port = ":"+req.getServerPort();
+        }
+        String basePath=req.getScheme() + "://"
+                + req.getServerName() +port+ "/";
+
+        return basePath;
+    }
+
+    public static String getProjectBaseUrl(HttpServletRequest request){
+        String ContextPath = request.getContextPath();
+        if(ContextPath.length()>1&& ContextPath.substring(0,1).equals("/")){
+            ContextPath = ContextPath.substring(1,ContextPath.length())+"/";
+        }
+        String basePath=getProjectBaseUrlNoProject(request)+ ContextPath  ;
+        return basePath;
+    }
+
 }

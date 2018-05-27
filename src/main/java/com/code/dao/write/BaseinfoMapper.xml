@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.code.dao.write.BaseinfoMapper">
+	<sql id="sql">
+		BaseInfo_ID,BaseInfo_CreateTime,BaseInfo_ModifyTime,BaseInfo_Status,BaseInfo_Name,BaseInfo_Memo,BaseInfo_ParentID
+	</sql>
+	<sql id="where">
+		1=1 
+		<if test="ID!=null">
+				 and BaseInfo_ID = #{ID}
+</if>
+<if test="CreateTime!=null">
+				 and BaseInfo_CreateTime = #{CreateTime}
+</if>
+<if test="ModifyTime!=null">
+				 and BaseInfo_ModifyTime = #{ModifyTime}
+</if>
+<if test="Status!=null">
+				 and BaseInfo_Status = #{Status}
+</if>
+<if test="Name!=null">
+				 and BaseInfo_Name = #{Name}
+</if>
+<if test="Memo!=null">
+				 and BaseInfo_Memo = #{Memo}
+</if>
+<if test="ParentID!=null">
+				 and BaseInfo_ParentID = #{ParentID}
+</if>
+
+	</sql>
+
+	<!-- 插入数据 -->
+	<insert id="insert" parameterType="com.code.domain.Baseinfo"  useGeneratedKeys="true">
+		insert into t_BaseInfo( <include refid="sql"></include> )
+		values(
+				#{ID},
+now(),
+now(),
+#{Status},
+#{Name},
+#{Memo},
+#{ParentID}
+				)
+	</insert>
+	<update id="update" parameterType="com.code.domain.Baseinfo">
+		update t_BaseInfo set BaseInfo_ModifyTime = now(),BaseInfo_Status = #{Status},BaseInfo_Name = #{Name},BaseInfo_Memo = #{Memo},BaseInfo_ParentID = #{ParentID}
+		<where>
+			BaseInfo_ID= #{ID} 
+		</where>
+	</update>
+
+
+	<!-- 根据编号删除 by majian-->
+	<update id="deleteById" parameterType="com.code.domain.Baseinfo">
+		update t_BaseInfo set BaseInfo_Status=88 where BaseInfo_ID = #{_parameter} 
+	</update>
+
+	<!-- 根据编号恢复 by majian-->
+	<update id="recoverByID" parameterType="com.code.domain.Baseinfo">
+		update t_BaseInfo set BaseInfo_Status=1 where BaseInfo_ID = #{_parameter} 
+	</update>
+
+	<!-- 根据条件删除 by majian-->
+	<update id="deleteByCondition" parameterType="com.code.domain.Baseinfo">
+		update t_BaseInfo set BaseInfo_Status=88 
+		<where>
+			<include refid="where"></include>
+		</where>
+	</update>
+
+	<!-- 根据条件恢复 by majian-->
+	<update id="recoverByCondition" parameterType="com.code.domain.Baseinfo">
+		update t_BaseInfo set BaseInfo_Status=1 
+		<where>
+			<include refid="where"></include>
+		</where>
+	</update>
+
+
+</mapper>

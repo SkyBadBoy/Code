@@ -3,9 +3,7 @@ package com.code.config.aspect;
 import com.code.config.rabbit.RabbitUtil;
 import com.code.domain.Access;
 import com.code.service.write.AccessService;
-import com.code.until.CommonStatus;
 import com.code.until.CommonUntil;
-import com.code.until.SpringUtil;
 import org.apache.log4j.Logger;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
@@ -21,9 +19,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.Arrays;
-import java.util.Enumeration;
 
 /**
  * Web层日志切面

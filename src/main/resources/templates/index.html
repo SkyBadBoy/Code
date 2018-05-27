@@ -6,12 +6,13 @@
 <script src="Admin/js/jquery.min.js?v=2.1.4"></script>
 <!-- 自定义工具类 -->
 <script src="Admin/js/web/commonUrl.js?v=1.0.3"></script>
+<script src="Admin/js/web/AdminUtil.js?v=1.0.3"></script>
 <script>
    var login= sessionStorage.getItem("Login");
    if(login==1){
-       location.href=indexUrlView();
+       location.href=getUrlPrefix()+"/"+indexUrlView();
    }else{
-       location.href=loginUrlView();
+       location.href=getUrlPrefix()+"/"+loginUrlView();
        //location.href="Admin/login.html"
    }
 </script>

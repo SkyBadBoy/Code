@@ -59,6 +59,10 @@ public class BaseController {
 	protected OperationService OperationService;
 	@Autowired
 	protected PowerService PowerService;
+	@Autowired
+	protected BaseinfoService BaseinfoService;
+	@Autowired
+	protected ArticleService ArticleService;
 
 	@Autowired
 	protected ReadErrorService ReadErrorService;
@@ -92,6 +96,10 @@ public class BaseController {
 	protected ReadOperationService ReadOperationService;
 	@Autowired
 	protected ReadPowerService ReadPowerService;
+	@Autowired
+	protected ReadBaseinfoService ReadBaseinfoService;
+	@Autowired
+	protected ReadArticleService ReadArticleService;
 
 
 

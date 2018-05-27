@@ -326,6 +326,33 @@ function findByID(that,id,url){
     })
 }
 
+function findByIDWithSummernote(that,id,url){
+    $("#overlay").show()
+    $.ajax({
+        url: url+id,
+        headers: {
+            Token: getToken()
+        },
+        success: function (json) {
+            $("#overlay").hide()
+            console.log("获取查找数据",json)
+            if (json.code == 1) {
+                top.location.href="../Admin/login.html"
+            }
+            if (json.code == 0) {
+                that.data=json.data;
+                $('.summernote').code(that.data.content)
+            } else {
+                error(json.message);
+            }
+        },
+        error: function () {
+            $("#overlay").hide();
+            error("网络异常哦,请稍后重试");
+        }
+    })
+}
+
 /**
  * 修改的方法
  * @param that
@@ -494,3 +521,62 @@ function getUrlPrefix(){
     return location.origin+project;
 }
 
+/**
+ * 文章分类编号
+ * @returns {string}
+ */
+function getArticleType(){
+    return "999914071648243712";
+}
+
+function sendFile(file, editor,welEditable) {
+    var data = new FormData();
+    data.append("file", file);
+    console.log(data);
+    $.ajax({
+        data: data,
+        type: "POST",
+        url: Picture,
+        cache: false,
+        contentType: false,
+        processData: false,
+        success: function(json) {
+            console.log(json);
+            if(json.code==0){
+                editor.insertImage(welEditable, json.data.url);//比较老得版本的做法
+            }else{
+                error(json.message);
+            }
+
+        }
+    });
+}
+
+/**
+ * 生成6位数字
+ * @returns {string}
+ * @constructor
+ */
+function MathRand()
+{
+    var Num="";
+    for(var i=0;i<6;i++)
+    {
+        Num+=Math.floor(Math.random()*10);
+    }
+  return Num;
+}
+
+function initSummernote(H){
+    $('.summernote').summernote({
+        lang: 'zh-CN',
+        height: H,
+        //callbacks: { //版本太低智能用这个东西
+        onImageUpload: function(files,editor, $editable) { //the onImageUpload API
+            img = sendFile(files[0],editor,$editable);
+        },
+        //  }
+        //toolbar:[["style",["style"]],["font",["bold","italic","underline","clear"]],["fontname",["fontname"]],["color",["color"]],["para",["ul","ol","paragraph"]],["height",["height"]],["table",["table"]],["insert",["link"]],["view",["fullscreen","codeview"]],["help",["help"]]]
+    });
+
+}

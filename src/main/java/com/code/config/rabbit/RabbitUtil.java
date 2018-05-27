@@ -8,10 +8,7 @@ import com.code.service.write.*;
 import com.code.until.CommonStatus;
 import com.code.until.CommonUntil;
 import org.springframework.amqp.core.AmqpTemplate;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 
-import javax.annotation.PostConstruct;
 import java.util.HashMap;
 import java.util.Map;
 

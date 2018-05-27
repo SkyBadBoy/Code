@@ -13,9 +13,8 @@ public class IdWorker {
     private static long workerId;
     private static long datacenterId;
     private long sequence = 0L;
- 
-    private long twepoch = 1288834974657L;
- 
+//    private long twepoch = 1288834974657L;
+    private long twepoch = 1499999000000L;
     private static long workerIdBits = 5L;
     private static long datacenterIdBits = 5L;
     private static long maxWorkerId = -1L ^ (-1L << workerIdBits);

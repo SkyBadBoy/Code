@@ -6,6 +6,7 @@
 
 
 var PictureBase64="http://www.jnrrxc.com/FileSystem/Code/UploadBase64";//图片路径 /{Project}/UploadBase64
+var Picture="http://www.jnrrxc.com/FileSystem/Code/Upload";//图片路径 /{Project}/UploadBase64
 
 var basePath="../";
 var viewPath=""
