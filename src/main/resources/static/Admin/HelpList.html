@@ -16,12 +16,22 @@
         <div class="ibox-content">
             <div class="row row-lg">
                 <div class="col-sm-2" style="margin-top: 10px;">
-                    <h4 class="example-title">角色</h4>
+                    <h4 class="example-title">分类</h4>
+                    <button type="button" @click="modifyM(0)" class="btn btn-primary btn-sm">
+                        新增
+                    </button>
+                    <button type="button" @click="modifyM(1)"  class="btn  btn-success btn-sm">
+                        修改
+                    </button>
+                    <button type="button" @click="recoverM" class="btn btn-danger btn-sm">
+                        删除
+                    </button>
+                    <br>
                     <div id="treeview12" class="test" style="margin-top: 10px;"></div>
                 </div>
                 <div class="col-sm-10">
                     <div class="example-wrap">
-                        <h4 class="example-title">管理员</h4>
+                        <h4 class="example-title">帮助文章</h4>
                         <div class="example">
                             <div class="btn-group hidden-xs" id="exampleTableEventsToolbar" role="group">
                                 <button type="button"   @click="modify(0)" class="btn btn-primary ">
@@ -35,12 +45,6 @@
                                 </button>
                                 <button type="button"  @click="recover(1)" class="btn btn-primary ">
                                     <i class="glyphicon glyphicon-play" aria-hidden="true">恢复</i>
-                                </button>
-                                <button type="button"  @click="reset" class="btn btn-warning ">
-                                    <i class="fa fa-lock" aria-hidden="true">重置密码</i>
-                                </button>
-                                <button type="button"  @click="operation" class="btn btn-info ">
-                                    <i class="fa fa-hand-o-up" aria-hidden="true">操作日志</i>
                                 </button>
                             </div>
                             <table id="exampleTableEvents" >
@@ -61,82 +65,110 @@
             data: {
                 status: -1,
                 index:0,
-                RoleList:[],
-                RoleID:-1,
+                parentID:getHelpType(),//分类编号
+                BaseinfoID:-1
             },
             methods: {
                 recover: function (val) {
                     setStatus(this,val)
                 },
-                modify: function (flag) {
-                    var url = "../Admin/addAdmin.html?";
+                modifyM: function (flag) {
+                    var url = "../Admin/addBaseinfo.html?parentID="+this.parentID+"&";
                     if(flag==0){//新增
-                        url+= "id=0&f=0";
+                        url+= "id=0";
+                    }else{//修改
+                        if(this.BaseinfoID==-1||this.BaseinfoID==0){
+                            error("请选择分类")
+                            return
+                        };
+                        url+= "id="+this.BaseinfoID;
+                    }
+                    modifyShow(this,url,"500px","350px","字典设置");
+
+                },
+                recoverM: function () {
+                    if(this.BaseinfoID!=-1&&this.BaseinfoID!=0){
+                        $("#overlay").show()
+                        var data = {
+                            ID:this.BaseinfoID,
+                            status: status
+                        }
+                        var that=this;
+                        $.ajax({url: "../Baseinfo/setBaseinfoStatus",
+                            type: "POST",
+                            headers: {Token: getToken()},data: {data: JSON.stringify(data)},
+                            success: function (json) {
+                                $("#overlay").hide()
+                                if (json.code == 1) {
+                                    top.location.href="../Admin/login.html"
+                                }
+                                if (json.code == 0) {
+                                    success(json.message)
+                                    that.getBaseInfo();//获取所有的目录内容
+                                    that.initTree();//初始化左边的内容
+                                } else {
+                                    error(json.message);
+                                }
+                            }
+                        })
+                    }else{
+                        error("请选择分类")
+                    }
+                },
+                modify: function (flag) {
+                    var url = "../Admin/addHelp.html?";
+                    if(flag==0){//新增
+                        url+= "id=0";
                     }else{//修改
                         if(checkIsSelection()){return};
-                        url+= "id="+getRecordIDForFastJson($('#exampleTableEvents'))+"&f=0";
+                        url+= "id="+getRecordIDForFastJson($('#exampleTableEvents'));
                     }
-                    modifyShow(this,url,"100%","100%","设置管理员");
+                    modifyShow(this,url,"100%","100%","Help");
                 },
-                reset:function(){
-                    if(checkIsSelection()){return};
-                    var url = "../Admin/modifyPassword.html?";
-                    url+= "id="+getRecordIDForFastJson($('#exampleTableEvents'));
-                    modifyShow(this,url,"500px","400px","修改密码");
-                },
-                operation:function(){
-                    if(checkIsSelection()){return};
-                    var url = "../Admin/OperationList.html?";
-                    url+= "id="+getRecordIDForFastJson($('#exampleTableEvents'));
-                    modifyShow(this,url,"100%","100%","用户操作日志");
-                },
-                getRoleAll:function(){
+                getBaseInfo:function(){
                     //获取所有的左边菜单
-                    $("#overlay").show()
                     var that=this;
-                    $.ajax({url:"../Role/queryRolePageAll", headers: {Token: getToken()},async:false,success:function(json){
-                        that.RoleList=json.data
-                        $("#overlay").hide()
+                    $.ajax({url:"../Baseinfo/queryBaseinfoAll?parentID="+this.parentID, headers: {Token: getToken()},async:false,success:function(json){
+                        that.BaseinfoList=json.data;
                     }});
                 },
                 initTree:function(){
                     //初始化左边的参数
                     var that=this;
-                    $("#overlay").show()
-                    if(this.RoleList.length!=null&&this.RoleList.length>0){
-                        var json=[];
-                        for(var i=0;i<this.RoleList.length;i++ ){
+                    var json=[{text:"未设置",id:"0"}];
+                    if(this.BaseinfoList.length!=null&&this.BaseinfoList.length>0){
+                        for(var i=0;i<this.BaseinfoList.length;i++ ){
                             var sub={};
-                            sub.text=this.RoleList[i].name;
-                            sub.id=this.RoleList[i].iD;
+                            sub.text=this.BaseinfoList[i].name;
+                            sub.id=this.BaseinfoList[i].iD;
                             json.push(sub);
                         }
-                        $('#treeview12').treeview({
-                            data: JSON.stringify(json),
-                            onNodeSelected: function (event, node){
-                                that.RoleID=node.id;
-                                tableRefresh();
-                            }
-                        });
+                        console.log(json)
 
-                    }else{
-                        error("当前还未创建目录")
                     }
-                    $("#overlay").hide()
+                    $('#treeview12').treeview({
+                        data: JSON.stringify(json),
+                        onNodeSelected: function (event, node){
+                            $("#overlay").show()
+                            that.BaseinfoID=node.id;
+                            tableRefresh();
+                        }
+                    });
 
-                },
+                }
+
             },
             mounted: function () {
                 bindImgError()
                 tempApp=this;
-                this.getRoleAll();
-                this.initTree();
+                this.getBaseInfo();//获取所有的目录内容
+                this.initTree();//初始化左边的内容
             }
 
         })
         /** 固定写法 by majian*/
         function setStatus(that,status) {
-            setAdminStatus(that,status,"../Admin/setAdminStatus")
+            setAdminStatus(that,status,"../Help/setHelpStatus")
         }
         /** 初始化表格*/
         (function(document, window, $) {
@@ -153,45 +185,25 @@
                         field: 'iD',
                     },
                     {
-                        title: '头像',
-                        align: 'center',
-                        field: 'headImg',
-                        formatter:headImgFormatter
-                    },
-                    {
-                        title: '名字',
+                        title: '标题',
                         align: 'center',
                         field: 'name',
                     },
                     {
-                        title: '登录名',
+                        title: '封面',
                         align: 'center',
-                        field: 'loginName',
+                        field: 'cover',
+                        formatter:headImgFormatter
                     },
                     {
-                        title: '手机号',
+                        title: '作者',
                         align: 'center',
-                        field: 'phone',
+                        field: 'author',
                     },
                     {
                         title: '创建时间',
                         align: 'center',
                         field: 'createTime',
-                    },
-                    {
-                        title: '地址',
-                        align: 'center',
-                        field: 'longAddress',
-                    },
-                    {
-                        title: '管理员角色',
-                        align: 'center',
-                        field: 'role',
-                        formatter:function(val){
-                            if(val!=null){
-                                return '<small class="label label-primary"> '+val.name+'</small>'
-                            }
-                        }
                     },
                     {
                         title: getStatus(),
@@ -201,7 +213,7 @@
                         formatter: statusFormatter
                     },
                 ];
-                getDataTable($('#exampleTableEvents'),"../Admin/queryAdminPage",columns,queryParams,false);
+                getDataTable($('#exampleTableEvents'),"../Help/queryHelpPage",columns,queryParams,false);
             })();
             function queryParams(params) {
                 var temp={}
@@ -209,11 +221,19 @@
                 temp.pageNumber=params.offset/params.limit+1;
                 temp.search=params.search;
                 temp.status=app.status;
-                temp.roleID=app.RoleID;
+                temp.baseinfoID=app.BaseinfoID;
                 return temp;
             }
 
         })(document, window, jQuery);
+    }
+
+    function closes(message) {
+        console.log("asdfasdfa")
+        layer.close(tempApp.index);
+        success(message)
+        tempApp.getBaseInfo();//获取所有的目录内容
+        tempApp.initTree();//初始化左边的内容
     }
 </script>
 </body>

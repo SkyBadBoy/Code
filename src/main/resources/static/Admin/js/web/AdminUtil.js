@@ -528,7 +528,13 @@ function getUrlPrefix(){
 function getArticleType(){
     return "999914071648243712";
 }
-
+/**
+ * 帮助分类
+ * @returns {string}
+ */
+function getHelpType(){
+    return "115080258167902208";
+}
 function sendFile(file, editor,welEditable) {
     var data = new FormData();
     data.append("file", file);

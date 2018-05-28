@@ -31,12 +31,15 @@ public class AdminController extends BaseController {
 
     @GetMapping("/queryAdminPage")
     @ApiOperation(value = "获取列表")
-    public Map queryAdminPage(int status,String search,int pageNumber, int pageSize,HttpServletRequest request) {
+    public Map queryAdminPage(int status,String search,long roleID,int pageNumber, int pageSize,HttpServletRequest request) {
         Map<String, Object> returnMap = new HashMap<>(2);
         Map<String, Object> queryMap = new HashMap<>(3);
         queryMap.put("search", search);
         if(status!=-1){
             queryMap.put("Status", status);
+        }
+        if(roleID!=-1){
+            queryMap.put(Admin.COLUMN_RoleID, roleID);
         }
         PageInfo<Admin> page = this.ReadAdminService.queryPage(queryMap, pageNumber, pageSize);
         returnMap.put("rows", page.getList());

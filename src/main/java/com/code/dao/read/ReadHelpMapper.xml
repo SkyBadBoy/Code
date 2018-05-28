@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.code.dao.read.ReadHelpMapper">
+	<!-- 返回的map -->
+	<resultMap id="help" type="com.code.domain.Help">
+		<result property="ID" column="Help_ID" />
+		<result property="CreateTime" column="Help_CreateTime" />
+		<result property="ModifyTime" column="Help_ModifyTime" />
+		<result property="Status" column="Help_Status" />
+		<result property="Name" column="Help_Name" />
+		<result property="Memo" column="Help_Memo" />
+		<result property="BaseInfoID" column="Help_BaseInfoID" />
+		<result property="UserID" column="Help_UserID" />
+		<result property="Content" column="Help_Content" typeHandler="com.code.until.expression.MyBlobTypeHandler" />
+		<result property="Cover" column="Help_Cover" />
+		<result property="Author" column="Help_Author" />
+		<result property="Read" column="Help_Read" />
+		<result property="Useful" column="Help_Useful" />
+		<result property="Nouse" column="Help_Nouse" />
+	</resultMap>
+	<!-- sql查询语句-->
+	<sql id="sql">
+		Help_ID,Help_CreateTime,Help_ModifyTime,Help_Status,Help_Name,Help_Memo,Help_BaseInfoID,Help_UserID,Help_Content,Help_Cover,Help_Author,Help_Read,Help_Useful,Help_Nouse
+	</sql>
+	<!-- sql查询条件-->
+	<sql id="where">
+		1=1 
+		<if test="ID!=null">
+				 and Help_ID = #{ID}
+</if>
+<if test="CreateTime!=null">
+				 and Help_CreateTime = #{CreateTime}
+</if>
+<if test="ModifyTime!=null">
+				 and Help_ModifyTime = #{ModifyTime}
+</if>
+<if test="Status!=null">
+				 and Help_Status = #{Status}
+</if>
+<if test="Name!=null">
+				 and Help_Name = #{Name}
+</if>
+<if test="Memo!=null">
+				 and Help_Memo = #{Memo}
+</if>
+<if test="BaseInfoID!=null">
+				 and Help_BaseInfoID = #{BaseInfoID}
+</if>
+<if test="UserID!=null">
+				 and Help_UserID = #{UserID}
+</if>
+<if test="Content!=null">
+				 and Help_Content = #{Content}
+</if>
+<if test="Cover!=null">
+				 and Help_Cover = #{Cover}
+</if>
+<if test="Author!=null">
+				 and Help_Author = #{Author}
+</if>
+<if test="Read!=null">
+				 and Help_Read = #{Read}
+</if>
+<if test="Useful!=null">
+				 and Help_Useful = #{Useful}
+</if>
+<if test="Nouse!=null">
+				 and Help_Nouse = #{Nouse}
+</if>
+
+		<!-- 这边要数据自己处理 -->
+		<if test="search != null">
+			and (
+				Help_ID like binary CONCAT(CONCAT('%', #{search,jdbcType=VARCHAR}),'%') or 
+				Help_CreateTime like binary CONCAT(CONCAT('%', #{search,jdbcType=VARCHAR}),'%') or 
+				Help_ModifyTime like binary CONCAT(CONCAT('%', #{search,jdbcType=VARCHAR}),'%') or 
+				Help_Status like binary CONCAT(CONCAT('%', #{search,jdbcType=VARCHAR}),'%') or 
+				Help_Name like binary CONCAT(CONCAT('%', #{search,jdbcType=VARCHAR}),'%') or 
+				Help_Memo like binary CONCAT(CONCAT('%', #{search,jdbcType=VARCHAR}),'%') or 
+				Help_BaseInfoID like binary CONCAT(CONCAT('%', #{search,jdbcType=VARCHAR}),'%') or 
+				Help_UserID like binary CONCAT(CONCAT('%', #{search,jdbcType=VARCHAR}),'%') or 
+				Help_Content like binary CONCAT(CONCAT('%', #{search,jdbcType=VARCHAR}),'%') or 
+				Help_Cover like binary CONCAT(CONCAT('%', #{search,jdbcType=VARCHAR}),'%') or 
+				Help_Author like binary CONCAT(CONCAT('%', #{search,jdbcType=VARCHAR}),'%') or 
+				Help_Read like binary CONCAT(CONCAT('%', #{search,jdbcType=VARCHAR}),'%') or 
+				Help_Useful like binary CONCAT(CONCAT('%', #{search,jdbcType=VARCHAR}),'%') or 
+				Help_Nouse like binary CONCAT(CONCAT('%', #{search,jdbcType=VARCHAR}),'%') or 
+				
+				1 != 1
+			)
+		</if>
+	</sql>
+	<!-- 根据ID 查找-->
+	<select id="findById" resultMap="help" parameterType="long">
+		SELECT
+		<include refid="sql"></include>
+		FROM t_Help
+		<where>
+			Help_ID = #{_parameter} 
+		</where>
+	</select>
+	<!-- 根据条件 查找-->
+	<select id="query"  resultMap="help"
+		parameterType="java.util.Map">
+		SELECT
+		<include refid="sql"></include>
+		FROM t_Help
+		<where>
+			<include refid="where"></include>
+		</where>
+	
+	</select>
+	<!-- 根据条件总数-->
+	<select id="queryCount" parameterType="map" resultType="int">
+		SELECT
+			Count(1)
+			FROM t_Help
+			<where>
+				<include refid="where"></include>
+			</where>
+	</select>
+
+
+
+</mapper>

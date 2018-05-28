@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.code.dao.write.HelpMapper">
+	<sql id="sql">
+		Help_ID,Help_CreateTime,Help_ModifyTime,Help_Status,Help_Name,Help_Memo,Help_BaseInfoID,Help_UserID,Help_Content,Help_Cover,Help_Author,Help_Read,Help_Useful,Help_Nouse
+	</sql>
+	<sql id="where">
+		1=1 
+		<if test="ID!=null">
+				 and Help_ID = #{ID}
+</if>
+<if test="CreateTime!=null">
+				 and Help_CreateTime = #{CreateTime}
+</if>
+<if test="ModifyTime!=null">
+				 and Help_ModifyTime = #{ModifyTime}
+</if>
+<if test="Status!=null">
+				 and Help_Status = #{Status}
+</if>
+<if test="Name!=null">
+				 and Help_Name = #{Name}
+</if>
+<if test="Memo!=null">
+				 and Help_Memo = #{Memo}
+</if>
+<if test="BaseInfoID!=null">
+				 and Help_BaseInfoID = #{BaseInfoID}
+</if>
+<if test="UserID!=null">
+				 and Help_UserID = #{UserID}
+</if>
+<if test="Content!=null">
+				 and Help_Content = #{Content}
+</if>
+<if test="Cover!=null">
+				 and Help_Cover = #{Cover}
+</if>
+<if test="Author!=null">
+				 and Help_Author = #{Author}
+</if>
+<if test="Read!=null">
+				 and Help_Read = #{Read}
+</if>
+<if test="Useful!=null">
+				 and Help_Useful = #{Useful}
+</if>
+<if test="Nouse!=null">
+				 and Help_Nouse = #{Nouse}
+</if>
+
+	</sql>
+
+	<!-- 插入数据 -->
+	<insert id="insert" parameterType="com.code.domain.Help"  useGeneratedKeys="true">
+		insert into t_Help( <include refid="sql"></include> )
+		values(
+				#{ID},
+now(),
+now(),
+#{Status},
+#{Name},
+#{Memo},
+#{BaseInfoID},
+#{UserID},
+#{Content},
+#{Cover},
+#{Author},
+#{Read},
+#{Useful},
+#{Nouse}
+				)
+	</insert>
+	<update id="update" parameterType="com.code.domain.Help">
+		update t_Help set Help_ModifyTime = now(),Help_Status = #{Status},Help_Name = #{Name},Help_Memo = #{Memo},Help_BaseInfoID = #{BaseInfoID},Help_UserID = #{UserID},Help_Content = #{Content},Help_Cover = #{Cover},Help_Author = #{Author},Help_Read = #{Read},Help_Useful = #{Useful},Help_Nouse = #{Nouse}
+		<where>
+			Help_ID= #{ID} 
+		</where>
+	</update>
+
+
+	<!-- 根据编号删除 by majian-->
+	<update id="deleteById" parameterType="com.code.domain.Help">
+		update t_Help set Help_Status=88 where Help_ID = #{_parameter} 
+	</update>
+
+	<!-- 根据编号恢复 by majian-->
+	<update id="recoverByID" parameterType="com.code.domain.Help">
+		update t_Help set Help_Status=1 where Help_ID = #{_parameter} 
+	</update>
+
+	<!-- 根据条件删除 by majian-->
+	<update id="deleteByCondition" parameterType="com.code.domain.Help">
+		update t_Help set Help_Status=88 
+		<where>
+			<include refid="where"></include>
+		</where>
+	</update>
+
+	<!-- 根据条件恢复 by majian-->
+	<update id="recoverByCondition" parameterType="com.code.domain.Help">
+		update t_Help set Help_Status=1 
+		<where>
+			<include refid="where"></include>
+		</where>
+	</update>
+
+
+</mapper>

@@ -63,6 +63,8 @@ public class BaseController {
 	protected BaseinfoService BaseinfoService;
 	@Autowired
 	protected ArticleService ArticleService;
+	@Autowired
+	protected HelpService HelpService;
 
 	@Autowired
 	protected ReadErrorService ReadErrorService;
@@ -100,6 +102,9 @@ public class BaseController {
 	protected ReadBaseinfoService ReadBaseinfoService;
 	@Autowired
 	protected ReadArticleService ReadArticleService;
+	@Autowired
+	protected ReadHelpService ReadHelpService;
+
 
 
 
