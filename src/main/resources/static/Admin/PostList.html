@@ -57,24 +57,25 @@
                     setStatus(this,val)
                 },
                 modify: function (flag) {
-                    var url = "../Admin/addRole.html?";
+                    var url = "../Admin/addPost.html?";
                     if(flag==0){//新增
                         url+= "id=0";
                     }else{//修改
                         if(checkIsSelection()){return};
                         url+= "id="+getRecordIDForFastJson($('#exampleTableEvents'));
                     }
-                    modifyShow(this,url,"500px","300px","角色管理");
+                    modifyShow(this,url,"800px","340px","设置岗位");
                 },
             },
             mounted: function () {
+                bindImgError()
                 tempApp=this;
             }
 
         })
         /** 固定写法 by majian*/
         function setStatus(that,status) {
-            setAdminStatus(that,status,"../Role/setRoleStatus")
+            setAdminStatus(that,status,"../Post/setPostStatus")
         }
         /** 初始化表格*/
         (function(document, window, $) {
@@ -91,9 +92,14 @@
                         field: 'iD',
                     },
                     {
-                        title: '角色名字',
+                        title: '岗位名字',
                         align: 'center',
                         field: 'name',
+                    },
+                    {
+                        title: '备注',
+                        align: 'center',
+                        field: 'memo',
                     },
                     {
                         title: '创建时间',
@@ -113,7 +119,7 @@
                         formatter: statusFormatter
                     },
                 ];
-                getDataTable($('#exampleTableEvents'),"../Role/queryRolePage",columns,queryParams,false);
+                getDataTable($('#exampleTableEvents'),"../Post/queryPostPage",columns,queryParams,false);
             })();
             function queryParams(params) {
                 var temp={}

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.code.dao.read.ReadDepartmentMapper">
+	<!-- 返回的map -->
+	<resultMap id="department" type="com.code.domain.Department">
+		<result property="ID" column="Department_ID" />
+		<result property="CreateTime" column="Department_CreateTime" />
+		<result property="ModifyTime" column="Department_ModifyTime" />
+		<result property="Status" column="Department_Status" />
+		<result property="Name" column="Department_Name" />
+		<result property="Memo" column="Department_Memo" />
+		<result property="ParentID" column="Department_ParentID" />
+	</resultMap>
+	<!-- sql查询语句-->
+	<sql id="sql">
+		Department_ID,Department_CreateTime,Department_ModifyTime,Department_Status,Department_Name,Department_Memo,Department_ParentID
+	</sql>
+	<!-- sql查询条件-->
+	<sql id="where">
+		1=1 
+		<if test="ID!=null">
+				 and Department_ID = #{ID}
+</if>
+<if test="CreateTime!=null">
+				 and Department_CreateTime = #{CreateTime}
+</if>
+<if test="ModifyTime!=null">
+				 and Department_ModifyTime = #{ModifyTime}
+</if>
+<if test="Status!=null">
+				 and Department_Status = #{Status}
+</if>
+<if test="Name!=null">
+				 and Department_Name = #{Name}
+</if>
+<if test="Memo!=null">
+				 and Department_Memo = #{Memo}
+</if>
+<if test="ParentID!=null">
+				 and Department_ParentID = #{ParentID}
+</if>
+
+		<!-- 这边要数据自己处理 -->
+		<if test="search != null">
+			and (
+				Department_ID like binary CONCAT(CONCAT('%', #{search,jdbcType=VARCHAR}),'%') or 
+				Department_CreateTime like binary CONCAT(CONCAT('%', #{search,jdbcType=VARCHAR}),'%') or 
+				Department_ModifyTime like binary CONCAT(CONCAT('%', #{search,jdbcType=VARCHAR}),'%') or 
+				Department_Status like binary CONCAT(CONCAT('%', #{search,jdbcType=VARCHAR}),'%') or 
+				Department_Name like binary CONCAT(CONCAT('%', #{search,jdbcType=VARCHAR}),'%') or 
+				Department_Memo like binary CONCAT(CONCAT('%', #{search,jdbcType=VARCHAR}),'%') or 
+				Department_ParentID like binary CONCAT(CONCAT('%', #{search,jdbcType=VARCHAR}),'%') or 
+				
+				1 != 1
+			)
+		</if>
+	</sql>
+	<!-- 根据ID 查找-->
+	<select id="findById" resultMap="department" parameterType="long">
+		SELECT
+		<include refid="sql"></include>
+		FROM t_Department
+		<where>
+			Department_ID = #{_parameter} 
+		</where>
+	</select>
+	<!-- 根据条件 查找-->
+	<select id="query"  resultMap="department"
+		parameterType="java.util.Map">
+		SELECT
+		<include refid="sql"></include>
+		FROM t_Department
+		<where>
+			<include refid="where"></include>
+		</where>
+	
+	</select>
+	<!-- 根据条件总数-->
+	<select id="queryCount" parameterType="map" resultType="int">
+		SELECT
+			Count(1)
+			FROM t_Department
+			<where>
+				<include refid="where"></include>
+			</where>
+	</select>
+
+
+
+</mapper>

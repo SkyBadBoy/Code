@@ -1,6 +1,7 @@
 package com.code.config.filter;
 
 import com.code.service.read.ReadAuthorizeService;
+import com.code.service.read.ReadBlacklistService;
 import com.code.service.read.ReadOnlineService;
 import com.code.until.CommonStatus;
 import com.code.until.CommonUntil;
@@ -37,6 +38,8 @@ public class CustomFilter implements Filter{
     private ReadAuthorizeService ReadAuthorizeService;
     @Autowired
     private ReadOnlineService ReadOnlineService;
+    @Autowired
+    private ReadBlacklistService ReadBlacklistService;
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -50,6 +53,7 @@ public class CustomFilter implements Filter{
             this.request = (HttpServletRequest) servletRequest;
             this.response = (HttpServletResponse) servletResponse;
 
+
             String requestUrl = this.request.getRequestURI().replace(this.request.getContextPath(), "");
            // log.info("访问地址"+requestUrl);
             //静态文件直接放行
@@ -58,6 +62,13 @@ public class CustomFilter implements Filter{
             //如果是所有平台的,直接放行
             List<String> authorize=ReadAuthorizeService.getAuthorizeStringList(CommonStatus.AuthorizeType.All.seq);
             if(authorize.contains(requestUrl)){return;}
+
+            //检测是否在黑名单
+            boolean blackFlag=CommonUntil.CheckBlack(request,ReadBlacklistService);
+            if(blackFlag){
+                response.sendRedirect(request.getContextPath()+"/Error/errorBlack");
+                return;
+            }
 
             //逐个验证
             int Authorize= CommonUntil.checkAuthorize(requestUrl);

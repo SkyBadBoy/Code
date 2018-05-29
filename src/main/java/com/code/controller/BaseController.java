@@ -65,6 +65,12 @@ public class BaseController {
 	protected ArticleService ArticleService;
 	@Autowired
 	protected HelpService HelpService;
+	@Autowired
+	protected BlacklistService BlacklistService;
+	@Autowired
+	protected DepartmentService DepartmentService;
+	@Autowired
+	protected PostService PostService;
 
 	@Autowired
 	protected ReadErrorService ReadErrorService;
@@ -104,6 +110,12 @@ public class BaseController {
 	protected ReadArticleService ReadArticleService;
 	@Autowired
 	protected ReadHelpService ReadHelpService;
+	@Autowired
+	protected ReadBlacklistService ReadBlacklistService;
+	@Autowired
+	protected ReadDepartmentService ReadDepartmentService;
+	@Autowired
+	protected ReadPostService ReadPostService;
 
 
 

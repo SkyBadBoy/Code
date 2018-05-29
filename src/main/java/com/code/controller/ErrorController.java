@@ -18,6 +18,9 @@ import com.code.until.CommonUntil;
 /**
  * <p> 控制器 Class</p>
  *
+ *
+ * 错误:-1    正常:0    token:1    地址访问受限:2
+ *
  * @author majian 自动构建脚本
  */
 @Api("Error")
@@ -39,6 +42,14 @@ public class ErrorController extends BaseController {
     public Return ErrorErrorToken() {
         Return returnMap = null;
         returnMap=CommonUntil.ReturnMap(1,"Token异常,请重新登录",null);
+        return returnMap;
+    }
+
+    @GetMapping("errorBlack")
+    @ApiOperation(value = "地址访问受限")
+    public Return errorBlack() {
+        Return returnMap = null;
+        returnMap=CommonUntil.ReturnMap(2,"访问受限,请联系管理人员",null);
         return returnMap;
     }
 

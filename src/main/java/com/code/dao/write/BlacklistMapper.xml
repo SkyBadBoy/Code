@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.code.dao.write.BlacklistMapper">
+	<sql id="sql">
+		Blacklist_ID,Blacklist_CreateTime,Blacklist_ModifyTime,Blacklist_Status,Blacklist_Name,Blacklist_Memo,Blacklist_Type
+	</sql>
+	<sql id="where">
+		1=1 
+		<if test="ID!=null">
+				 and Blacklist_ID = #{ID}
+</if>
+<if test="CreateTime!=null">
+				 and Blacklist_CreateTime = #{CreateTime}
+</if>
+<if test="ModifyTime!=null">
+				 and Blacklist_ModifyTime = #{ModifyTime}
+</if>
+<if test="Status!=null">
+				 and Blacklist_Status = #{Status}
+</if>
+<if test="Name!=null">
+				 and Blacklist_Name = #{Name}
+</if>
+<if test="Memo!=null">
+				 and Blacklist_Memo = #{Memo}
+</if>
+<if test="Type!=null">
+				 and Blacklist_Type = #{Type}
+</if>
+
+	</sql>
+
+	<!-- 插入数据 -->
+	<insert id="insert" parameterType="com.code.domain.Blacklist"  useGeneratedKeys="true">
+		insert into t_Blacklist( <include refid="sql"></include> )
+		values(
+				#{ID},
+now(),
+now(),
+#{Status},
+#{Name},
+#{Memo},
+#{Type}
+				)
+	</insert>
+	<update id="update" parameterType="com.code.domain.Blacklist">
+		update t_Blacklist set Blacklist_ModifyTime = now(),Blacklist_Status = #{Status},Blacklist_Name = #{Name},Blacklist_Memo = #{Memo},Blacklist_Type = #{Type}
+		<where>
+			Blacklist_ID= #{ID} 
+		</where>
+	</update>
+
+
+	<!-- 根据编号删除 by majian-->
+	<update id="deleteById" parameterType="com.code.domain.Blacklist">
+		update t_Blacklist set Blacklist_Status=88 where Blacklist_ID = #{_parameter} 
+	</update>
+
+	<!-- 根据编号恢复 by majian-->
+	<update id="recoverByID" parameterType="com.code.domain.Blacklist">
+		update t_Blacklist set Blacklist_Status=1 where Blacklist_ID = #{_parameter} 
+	</update>
+
+	<!-- 根据条件删除 by majian-->
+	<update id="deleteByCondition" parameterType="com.code.domain.Blacklist">
+		update t_Blacklist set Blacklist_Status=88 
+		<where>
+			<include refid="where"></include>
+		</where>
+	</update>
+
+	<!-- 根据条件恢复 by majian-->
+	<update id="recoverByCondition" parameterType="com.code.domain.Blacklist">
+		update t_Blacklist set Blacklist_Status=1 
+		<where>
+			<include refid="where"></include>
+		</where>
+	</update>
+
+
+</mapper>

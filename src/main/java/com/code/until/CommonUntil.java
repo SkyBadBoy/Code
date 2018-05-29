@@ -304,4 +304,35 @@ public class CommonUntil {
         return basePath;
     }
 
+    /**
+     * 获取真IP
+     * @param request
+     * @return
+     */
+    public static String getIpAddr(HttpServletRequest request) {
+        String ip = request.getHeader("x-forwarded-for");
+        if(ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("Proxy-Client-IP");
+        }
+        if(ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("WL-Proxy-Client-IP");
+        }
+        if(ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getRemoteAddr();
+        }
+        return ip;
+    }
+
+    public static boolean CheckBlack(HttpServletRequest request,ReadBlacklistService blacklistService){
+        boolean f=false;
+        Map queryMap=new HashMap();
+        queryMap.put(Blacklist.COLUMN_Status,CommonStatus.Status.Ectivity.getid());
+        queryMap.put(Blacklist.COLUMN_Name,getIpAddr(request));
+        PageInfo<Blacklist> Blacklist=blacklistService.queryPage(queryMap,1,1);
+        if(Blacklist.getSize()>0){
+            f=true;
+        }
+        return f;
+    }
+
 }

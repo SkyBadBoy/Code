@@ -3,57 +3,62 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.code.dao.write.AdminMapper">
 	<sql id="sql">
-		Admin_ID,Admin_Name,Admin_CreateTime,Admin_ModifyTime,Admin_Status,Admin_HeadImg,Admin_LoginName,Admin_PassWord,Admin_Phone,Admin_ProvinceID,Admin_AreaID,Admin_CityID,Admin_LongAddress,Admin_Address,Admin_RoleID
+		Admin_ID,Admin_Name,Admin_CreateTime,Admin_ModifyTime,Admin_Status,Admin_HeadImg,Admin_LoginName,Admin_PassWord,Admin_Phone,Admin_ProvinceID,Admin_AreaID,Admin_CityID,Admin_LongAddress,Admin_Address,Admin_RoleID,Admin_DepartmentID,Admin_PostID
 	</sql>
 	<sql id="where">
 		1=1 
 		<if test="ID!=null">
 				 and Admin_ID = #{ID}
-</if>
-<if test="Name!=null">
-				 and Admin_Name = #{Name}
-</if>
-<if test="CreateTime!=null">
-				 and Admin_CreateTime = #{CreateTime}
-</if>
-<if test="ModifyTime!=null">
-				 and Admin_ModifyTime = #{ModifyTime}
-</if>
-<if test="Status!=null">
-				 and Admin_Status = #{Status}
-</if>
-<if test="HeadImg!=null">
-				 and Admin_HeadImg = #{HeadImg}
-</if>
-<if test="LoginName!=null">
-				 and Admin_LoginName = #{LoginName}
-</if>
-<if test="PassWord!=null">
-				 and Admin_PassWord = #{PassWord}
-</if>
-<if test="Phone!=null">
-				 and Admin_Phone = #{Phone}
-</if>
-<if test="ProvinceID!=null">
-				 and Admin_ProvinceID = #{ProvinceID}
-</if>
-<if test="AreaID!=null">
-				 and Admin_AreaID = #{AreaID}
-</if>
-<if test="CityID!=null">
-				 and Admin_CityID = #{CityID}
-</if>
-<if test="LongAddress!=null">
-				 and Admin_LongAddress = #{LongAddress}
-</if>
-<if test="Address!=null">
-				 and Admin_Address = #{Address}
-</if>
+		</if>
+		<if test="Name!=null">
+						 and Admin_Name = #{Name}
+		</if>
+		<if test="CreateTime!=null">
+						 and Admin_CreateTime = #{CreateTime}
+		</if>
+		<if test="ModifyTime!=null">
+						 and Admin_ModifyTime = #{ModifyTime}
+		</if>
+		<if test="Status!=null">
+						 and Admin_Status = #{Status}
+		</if>
+		<if test="HeadImg!=null">
+						 and Admin_HeadImg = #{HeadImg}
+		</if>
+		<if test="LoginName!=null">
+						 and Admin_LoginName = #{LoginName}
+		</if>
+		<if test="PassWord!=null">
+						 and Admin_PassWord = #{PassWord}
+		</if>
+		<if test="Phone!=null">
+						 and Admin_Phone = #{Phone}
+		</if>
+		<if test="ProvinceID!=null">
+						 and Admin_ProvinceID = #{ProvinceID}
+		</if>
+		<if test="AreaID!=null">
+						 and Admin_AreaID = #{AreaID}
+		</if>
+		<if test="CityID!=null">
+						 and Admin_CityID = #{CityID}
+		</if>
+		<if test="LongAddress!=null">
+						 and Admin_LongAddress = #{LongAddress}
+		</if>
+		<if test="Address!=null">
+						 and Admin_Address = #{Address}
+		</if>
+
 		<if test="RoleID!=null">
 			and Admin_RoleID = #{RoleID}
 		</if>
-
-
+		<if test="DepartmentID!=null">
+			and Admin_DepartmentID = #{DepartmentID}
+		</if>
+		<if test="PostID!=null">
+			and Admin_PostID = #{PostID}
+		</if>
 	</sql>
 
 	<!-- 插入数据 -->
@@ -61,25 +66,26 @@
 		insert into t_Admin( <include refid="sql"></include> )
 		values(
 				#{ID},
-#{Name},
-now(),
-now(),
-#{Status},
-#{HeadImg},
-#{LoginName},
-#{PassWord},
-#{Phone},
-#{ProvinceID},
-#{AreaID},
-#{CityID},
-#{LongAddress},
-#{Address},
-#{RoleID}
-
+				#{Name},
+				now(),
+				now(),
+				#{Status},
+				#{HeadImg},
+				#{LoginName},
+				#{PassWord},
+				#{Phone},
+				#{ProvinceID},
+				#{AreaID},
+				#{CityID},
+				#{LongAddress},
+				#{Address},
+				#{RoleID},
+				#{DepartmentID},
+				#{PostID}
 				)
 	</insert>
 	<update id="update" parameterType="com.code.domain.Admin">
-		update t_Admin set Admin_Name = #{Name},Admin_ModifyTime = now(),Admin_Status = #{Status},Admin_HeadImg = #{HeadImg},Admin_LoginName = #{LoginName},Admin_PassWord = #{PassWord},Admin_Phone = #{Phone},Admin_ProvinceID = #{ProvinceID},Admin_AreaID = #{AreaID},Admin_CityID = #{CityID},Admin_LongAddress = #{LongAddress},Admin_Address = #{Address},Admin_RoleID = #{RoleID}
+		update t_Admin set Admin_Name = #{Name},Admin_ModifyTime = now(),Admin_Status = #{Status},Admin_HeadImg = #{HeadImg},Admin_LoginName = #{LoginName},Admin_PassWord = #{PassWord},Admin_Phone = #{Phone},Admin_ProvinceID = #{ProvinceID},Admin_AreaID = #{AreaID},Admin_CityID = #{CityID},Admin_LongAddress = #{LongAddress},Admin_Address = #{Address},Admin_RoleID = #{RoleID},Admin_DepartmentID = #{DepartmentID},Admin_PostID = #{PostID}
 		<where>
 			Admin_ID= #{ID} 
 		</where>

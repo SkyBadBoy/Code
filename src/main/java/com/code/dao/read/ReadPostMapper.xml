@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.code.dao.read.ReadPostMapper">
+	<!-- 返回的map -->
+	<resultMap id="post" type="com.code.domain.Post">
+		<result property="ID" column="Post_ID" />
+		<result property="CreateTime" column="Post_CreateTime" />
+		<result property="ModifyTime" column="Post_ModifyTime" />
+		<result property="Status" column="Post_Status" />
+		<result property="Name" column="Post_Name" />
+		<result property="Memo" column="Post_Memo" />
+		<result property="DepartmentID" column="Post_DepartmentID" />
+	</resultMap>
+	<!-- sql查询语句-->
+	<sql id="sql">
+		Post_ID,Post_CreateTime,Post_ModifyTime,Post_Status,Post_Name,Post_Memo,Post_DepartmentID
+	</sql>
+	<!-- sql查询条件-->
+	<sql id="where">
+		1=1 
+		<if test="ID!=null">
+				 and Post_ID = #{ID}
+</if>
+<if test="CreateTime!=null">
+				 and Post_CreateTime = #{CreateTime}
+</if>
+<if test="ModifyTime!=null">
+				 and Post_ModifyTime = #{ModifyTime}
+</if>
+<if test="Status!=null">
+				 and Post_Status = #{Status}
+</if>
+<if test="Name!=null">
+				 and Post_Name = #{Name}
+</if>
+<if test="Memo!=null">
+				 and Post_Memo = #{Memo}
+</if>
+<if test="DepartmentID!=null">
+				 and Post_DepartmentID = #{DepartmentID}
+</if>
+
+		<!-- 这边要数据自己处理 -->
+		<if test="search != null">
+			and (
+				Post_ID like binary CONCAT(CONCAT('%', #{search,jdbcType=VARCHAR}),'%') or 
+				Post_CreateTime like binary CONCAT(CONCAT('%', #{search,jdbcType=VARCHAR}),'%') or 
+				Post_ModifyTime like binary CONCAT(CONCAT('%', #{search,jdbcType=VARCHAR}),'%') or 
+				Post_Status like binary CONCAT(CONCAT('%', #{search,jdbcType=VARCHAR}),'%') or 
+				Post_Name like binary CONCAT(CONCAT('%', #{search,jdbcType=VARCHAR}),'%') or 
+				Post_Memo like binary CONCAT(CONCAT('%', #{search,jdbcType=VARCHAR}),'%') or 
+				Post_DepartmentID like binary CONCAT(CONCAT('%', #{search,jdbcType=VARCHAR}),'%') or 
+				
+				1 != 1
+			)
+		</if>
+	</sql>
+	<!-- 根据ID 查找-->
+	<select id="findById" resultMap="post" parameterType="long">
+		SELECT
+		<include refid="sql"></include>
+		FROM t_Post
+		<where>
+			Post_ID = #{_parameter} 
+		</where>
+	</select>
+	<!-- 根据条件 查找-->
+	<select id="query"  resultMap="post"
+		parameterType="java.util.Map">
+		SELECT
+		<include refid="sql"></include>
+		FROM t_Post
+		<where>
+			<include refid="where"></include>
+		</where>
+	
+	</select>
+	<!-- 根据条件总数-->
+	<select id="queryCount" parameterType="map" resultType="int">
+		SELECT
+			Count(1)
+			FROM t_Post
+			<where>
+				<include refid="where"></include>
+			</where>
+	</select>
+
+
+
+</mapper>

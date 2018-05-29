@@ -10,7 +10,7 @@
 </head>
 <body class="gray-bg">
 <div class="wrapper wrapper-content" id="app">
-    <!-- loading 固定格式不要删除-->
+     <!-- loading 固定格式不要删除-->
     <div id="overlay" style="background:#000;filter:alpha(opacity=50);opacity:0.5;display:none;position:absolute;top:0px;left:0px;width:100%;height:100%;z-index:100;display:none;"><div class="sk-spinner sk-spinner-double-bounce" style="margin-top: 300px;"><div class="sk-double-bounce1"></div> <div class="sk-double-bounce2"></div></div></div>
     <!-- Panel Other -->
     <div class="ibox float-e-margins">
@@ -19,26 +19,21 @@
                 <div class="ibox float-e-margins">
                     <div class="ibox-content">
                         <div class="form-horizontal">
+
 	                            <div class="form-group">
-	                                <label class="col-sm-2 control-label" >地址</label>
+	                                <label class="col-sm-2 control-label" v-text="name"></label>
 	                                <div class="col-sm-10">
-	                                    <input type="text" v-model="data.title" class="form-control">
+	                                    <input type="text" v-model="data.name" class="form-control">
 	                            </div>
                             </div>
-
-                            <div class="hr-line-dashed" ></div>
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label" >类型</label>
-                                <div class="col-sm-10">
-                                    <select class="form-control m-b" v-model="data.type">
-                                        <option value="0">所有平台</option>
-                                        <option value="1">后台管理</option>
-                                        <option value="2">接口</option>
-                                    </select>
-
-                                </div>
+							    <div class="hr-line-dashed" ></div>
+	                            <div class="form-group">
+	                                <label class="col-sm-2 control-label" v-text="memo"></label>
+	                                <div class="col-sm-10">
+	                                    <input type="text" v-model="data.memo" class="form-control">
+	                            </div>
                             </div>
-
+                          
                             <div class="hr-line-dashed"></div>
                             <div class="form-group">
                                 <div class="col-sm-4 col-sm-offset-2">
@@ -58,29 +53,42 @@
         var app = new Vue({
             el: "#app",
             data: {
+
+                    name:"岗位名字",
+                    memo:"备注",
                 data:{
                     iD:getUrlKey("id"),
-                    	type:0,
-                    	title:"",
+                    	name:"",
+                    	memo:"",
+                    	departmentID:getUrlKey("departmentID"),
                 }
             },
             methods: {
                 save: function () {
-                    if(!chechIsUnll(tempApp.data.title)){
-                        error("标题不能为空")
-                       return;
-                    }
-                    savaData(this,"../Authorize/modifyAuthorize")
+                    if(validate()){return};
+                    savaData(this,"../Post/modifyPost")
                 }
             },
             mounted: function () {
                 tempApp=this;
                 if(this.data.iD!=0){
-                    findByID(this,this.data.iD,"../Authorize/findAuthorize/")
+                    findByID(this,this.data.iD,"../Post/findPost/")
                 }
                 bindImgError()
             }
         })
+    }
+    function validate(){
+        var message="不允许为空。"
+        if(!chechIsUnll(tempApp.data.name)){
+            error(tempApp.name+message);
+            return true;
+        }
+        if(!chechIsUnll(tempApp.data.memo)){
+            error(tempApp.memo+message);
+            return true;
+        }
+        return false;
     }
 </script>
 </body>

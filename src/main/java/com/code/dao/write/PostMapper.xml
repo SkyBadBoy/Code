@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.code.dao.write.PostMapper">
+	<sql id="sql">
+		Post_ID,Post_CreateTime,Post_ModifyTime,Post_Status,Post_Name,Post_Memo,Post_DepartmentID
+	</sql>
+	<sql id="where">
+		1=1 
+		<if test="ID!=null">
+				 and Post_ID = #{ID}
+</if>
+<if test="CreateTime!=null">
+				 and Post_CreateTime = #{CreateTime}
+</if>
+<if test="ModifyTime!=null">
+				 and Post_ModifyTime = #{ModifyTime}
+</if>
+<if test="Status!=null">
+				 and Post_Status = #{Status}
+</if>
+<if test="Name!=null">
+				 and Post_Name = #{Name}
+</if>
+<if test="Memo!=null">
+				 and Post_Memo = #{Memo}
+</if>
+<if test="DepartmentID!=null">
+				 and Post_DepartmentID = #{DepartmentID}
+</if>
+
+	</sql>
+
+	<!-- 插入数据 -->
+	<insert id="insert" parameterType="com.code.domain.Post"  useGeneratedKeys="true">
+		insert into t_Post( <include refid="sql"></include> )
+		values(
+				#{ID},
+now(),
+now(),
+#{Status},
+#{Name},
+#{Memo},
+#{DepartmentID}
+				)
+	</insert>
+	<update id="update" parameterType="com.code.domain.Post">
+		update t_Post set Post_ModifyTime = now(),Post_Status = #{Status},Post_Name = #{Name},Post_Memo = #{Memo},Post_DepartmentID = #{DepartmentID}
+		<where>
+			Post_ID= #{ID} 
+		</where>
+	</update>
+
+
+	<!-- 根据编号删除 by majian-->
+	<update id="deleteById" parameterType="com.code.domain.Post">
+		update t_Post set Post_Status=88 where Post_ID = #{_parameter} 
+	</update>
+
+	<!-- 根据编号恢复 by majian-->
+	<update id="recoverByID" parameterType="com.code.domain.Post">
+		update t_Post set Post_Status=1 where Post_ID = #{_parameter} 
+	</update>
+
+	<!-- 根据条件删除 by majian-->
+	<update id="deleteByCondition" parameterType="com.code.domain.Post">
+		update t_Post set Post_Status=88 
+		<where>
+			<include refid="where"></include>
+		</where>
+	</update>
+
+	<!-- 根据条件恢复 by majian-->
+	<update id="recoverByCondition" parameterType="com.code.domain.Post">
+		update t_Post set Post_Status=1 
+		<where>
+			<include refid="where"></include>
+		</where>
+	</update>
+
+
+</mapper>

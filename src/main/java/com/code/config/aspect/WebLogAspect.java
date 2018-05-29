@@ -71,7 +71,7 @@ public class WebLogAspect {
         HttpServletRequest request = attributes.getRequest();
         RequestURL=request.getRequestURL().toString();
         Method=request.getMethod();
-        RemoteAddr=request.getRemoteAddr();
+        RemoteAddr=CommonUntil.getIpAddr(request);
         ClassName=joinPoint.getSignature().getDeclaringTypeName() + "." + joinPoint.getSignature().getName();
         Args=Arrays.toString(joinPoint.getArgs());
 

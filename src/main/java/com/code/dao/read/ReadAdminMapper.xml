@@ -19,12 +19,14 @@
 		<result property="LongAddress" column="Admin_LongAddress" />
 		<result property="Address" column="Admin_Address" />
 		<result property="RoleID" column="Admin_RoleID" />
+		<result property="DepartmentID" column="Admin_DepartmentID" />
+		<result property="PostID" column="Admin_PostID" />
 
 		<association property="Role" column="Admin_RoleID" select="com.code.dao.read.ReadRoleMapper.findById" fetchType="eager"/>
 	</resultMap>
 	<!-- sql查询语句-->
 	<sql id="sql">
-		Admin_ID,Admin_Name,Admin_CreateTime,Admin_ModifyTime,Admin_Status,Admin_HeadImg,Admin_LoginName,Admin_PassWord,Admin_Phone,Admin_ProvinceID,Admin_AreaID,Admin_CityID,Admin_LongAddress,Admin_Address,Admin_RoleID
+		Admin_ID,Admin_Name,Admin_CreateTime,Admin_ModifyTime,Admin_Status,Admin_HeadImg,Admin_LoginName,Admin_PassWord,Admin_Phone,Admin_ProvinceID,Admin_AreaID,Admin_CityID,Admin_LongAddress,Admin_Address,Admin_RoleID,Admin_DepartmentID,Admin_PostID
 	</sql>
 	<!-- sql查询条件-->
 	<sql id="where">
@@ -73,6 +75,12 @@
 </if>
 		<if test="RoleID!=null">
 			and Admin_RoleID = #{RoleID}
+		</if>
+		<if test="DepartmentID!=null">
+			and Admin_DepartmentID = #{DepartmentID}
+		</if>
+		<if test="PostID!=null">
+			and Admin_PostID = #{PostID}
 		</if>
 		<if test="search != null">
 			and (

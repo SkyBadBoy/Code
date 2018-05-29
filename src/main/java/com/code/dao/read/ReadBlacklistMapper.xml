@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.code.dao.read.ReadBlacklistMapper">
+	<!-- 返回的map -->
+	<resultMap id="blacklist" type="com.code.domain.Blacklist">
+		<result property="ID" column="Blacklist_ID" />
+		<result property="CreateTime" column="Blacklist_CreateTime" />
+		<result property="ModifyTime" column="Blacklist_ModifyTime" />
+		<result property="Status" column="Blacklist_Status" />
+		<result property="Name" column="Blacklist_Name" />
+		<result property="Memo" column="Blacklist_Memo" />
+		<result property="Type" column="Blacklist_Type" />
+	</resultMap>
+	<!-- sql查询语句-->
+	<sql id="sql">
+		Blacklist_ID,Blacklist_CreateTime,Blacklist_ModifyTime,Blacklist_Status,Blacklist_Name,Blacklist_Memo,Blacklist_Type
+	</sql>
+	<!-- sql查询条件-->
+	<sql id="where">
+		1=1 
+		<if test="ID!=null">
+				 and Blacklist_ID = #{ID}
+</if>
+<if test="CreateTime!=null">
+				 and Blacklist_CreateTime = #{CreateTime}
+</if>
+<if test="ModifyTime!=null">
+				 and Blacklist_ModifyTime = #{ModifyTime}
+</if>
+<if test="Status!=null">
+				 and Blacklist_Status = #{Status}
+</if>
+<if test="Name!=null">
+				 and Blacklist_Name = #{Name}
+</if>
+<if test="Memo!=null">
+				 and Blacklist_Memo = #{Memo}
+</if>
+<if test="Type!=null">
+				 and Blacklist_Type = #{Type}
+</if>
+
+		<!-- 这边要数据自己处理 -->
+		<if test="search != null">
+			and (
+				Blacklist_ID like binary CONCAT(CONCAT('%', #{search,jdbcType=VARCHAR}),'%') or 
+				Blacklist_CreateTime like binary CONCAT(CONCAT('%', #{search,jdbcType=VARCHAR}),'%') or 
+				Blacklist_ModifyTime like binary CONCAT(CONCAT('%', #{search,jdbcType=VARCHAR}),'%') or 
+				Blacklist_Status like binary CONCAT(CONCAT('%', #{search,jdbcType=VARCHAR}),'%') or 
+				Blacklist_Name like binary CONCAT(CONCAT('%', #{search,jdbcType=VARCHAR}),'%') or 
+				Blacklist_Memo like binary CONCAT(CONCAT('%', #{search,jdbcType=VARCHAR}),'%') or 
+				Blacklist_Type like binary CONCAT(CONCAT('%', #{search,jdbcType=VARCHAR}),'%') or 
+				
+				1 != 1
+			)
+		</if>
+	</sql>
+	<!-- 根据ID 查找-->
+	<select id="findById" resultMap="blacklist" parameterType="long">
+		SELECT
+		<include refid="sql"></include>
+		FROM t_Blacklist
+		<where>
+			Blacklist_ID = #{_parameter} 
+		</where>
+	</select>
+	<!-- 根据条件 查找-->
+	<select id="query"  resultMap="blacklist"
+		parameterType="java.util.Map">
+		SELECT
+		<include refid="sql"></include>
+		FROM t_Blacklist
+		<where>
+			<include refid="where"></include>
+		</where>
+	
+	</select>
+	<!-- 根据条件总数-->
+	<select id="queryCount" parameterType="map" resultType="int">
+		SELECT
+			Count(1)
+			FROM t_Blacklist
+			<where>
+				<include refid="where"></include>
+			</where>
+	</select>
+
+
+
+</mapper>

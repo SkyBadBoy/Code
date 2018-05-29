@@ -45,6 +45,10 @@ public class Admin  implements Serializable{
 
     public static final String COLUMN_RoleID = "RoleID";
 
+    public static final String COLUMN_DepartmentID = "DepartmentID";
+
+    public static final String COLUMN_PostID = "PostID";
+
     @ApiModelProperty(value = "编号")
     private String ID;
 
@@ -89,6 +93,12 @@ public class Admin  implements Serializable{
 
     @ApiModelProperty(value = "角色编号")
     private String RoleID ;
+
+    @ApiModelProperty(value = "部门编号")
+    private String DepartmentID ;
+
+    @ApiModelProperty(value = "岗位编号")
+    private String PostID ;
 
     @ApiModelProperty(value = "用户")
     private Role Role ;
